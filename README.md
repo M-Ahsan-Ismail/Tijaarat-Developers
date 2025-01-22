@@ -1,6 +1,6 @@
 # Tijaarat-Developers
 
-## Migrated The Athher_Hr Malatan Compnay Module TO V17
+## Migrated The Atheer_Hr (Malatan Compnay Module TO V17)
 
 ## Tijaarat Maintainence Custom 
 
