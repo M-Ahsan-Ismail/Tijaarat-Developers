@@ -1,0 +1,3 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_fund_requisition,access.fund.requisition,model_fund_requisition,,1,1,1,0
+access_fund_requisition_line,access.fund.requisition.line,model_fund_requisition_line,,1,1,1,1

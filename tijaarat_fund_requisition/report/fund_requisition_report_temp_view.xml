@@ -1,0 +1,128 @@
+<odoo>
+    <template id="report_fund_reqosition_id">
+        <t t-call="web.html_container">
+            <t t-foreach="docs" t-as="obj">
+                <t t-call="web.external_layout">
+                    <div class="page">
+                        <center>
+                            <h1 class="text-center" style="text-align:center; top:2px">
+                                <span t-field="obj.analytic_account_id"/>
+                            </h1>
+                            <h3 class="text-center" style="text-align:center; top:2px">
+                                Financial Requisition
+                            </h3>
+                        </center>
+
+                        <div class="row">
+                            <div class="col-9">
+                                <strong><span t-field="obj.name"/></strong>
+                            </div>
+                            <div class="col-3" style="text-align-last: end;">
+                                <strong><span t-esc="obj.date.strftime('%m-%d-%Y')"/></strong>
+                            </div>
+                        </div>
+
+                        <table class="table table-sm table-bordered" width="100%">
+                            <thead>
+                                <tr>
+                                    <th>Sr.</th>
+                                    <th>Description</th>
+                                    <th>Avg Men Power</th>
+                                    <th>Previous Amount Paid From Last Demand</th>
+                                    <th>Current Amount Demand</th>
+                                    <th>Total Amount To Dated</th>
+                                    <th>Remarks</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <t t-set="counter" t-value="0"/>
+                                <t t-set="total_avg_men" t-value="0"/>
+                                <t t-set="total_prev_amount" t-value="0"/>
+                                <t t-set="total_current_amount" t-value="0"/>
+                                <t t-set="total_total_amount" t-value="0"/>
+
+                                <t t-if="obj.line_ids">
+                                    <t t-foreach="obj.line_ids" t-as="line">
+                                        <t t-set="counter" t-value="counter + 1"/>
+
+                                        <t t-set="total_avg_men" t-value="total_avg_men + line.average_pwd"/>
+                                        <t t-set="total_prev_amount"
+                                           t-value="total_prev_amount + line.previous_amount_paid"/>
+                                        <t t-set="total_current_amount"
+                                           t-value="total_current_amount + line.current_amount_demand"/>
+                                        <t t-set="total_total_amount" t-value="total_total_amount + line.total_amount"/>
+
+                                        <tr>
+                                            <td style="text-align: center;">
+                                                <t t-esc="counter"/>
+                                            </td>
+                                            <td style="text-align: center;">
+                                                <span t-field="line.account_id.name"/>
+                                            </td>
+                                            <td style="text-align: center;">
+                                                <span t-field="line.average_pwd"/>
+                                            </td>
+                                            <td style="text-align: center;">
+                                                <span t-field="line.previous_amount_paid"/>
+                                            </td>
+                                            <td style="text-align: center;">
+                                                <span t-field="line.current_amount_demand"/>
+                                            </td>
+                                            <td style="text-align: center;">
+                                                <span t-field="line.total_amount"/>
+                                            </td>
+                                            <td style="text-align: center;">
+                                                <span t-field="line.remarks"/>
+                                            </td>
+                                        </tr>
+                                    </t>
+                                </t>
+                                <t t-else="">
+                                    <tr>
+                                        <td colspan="7" style="text-align: center;">No data available</td>
+                                    </tr>
+                                </t>
+                            </tbody>
+                            <tfoot>
+                                <tr>
+                                    <td colspan="2" style="text-align: center;"><strong>Total Net Amount</strong></td>
+                                    <td style="text-align: center;"><strong><t t-esc="total_avg_men"/></strong></td>
+                                    <td style="text-align: center;"><strong><t t-esc="total_prev_amount"/></strong></td>
+                                    <td style="text-align: center;"><strong><t
+                                            t-esc="total_current_amount"/></strong></td>
+                                    <td style="text-align: center;"><strong><t
+                                            t-esc="total_total_amount"/></strong></td>
+                                    <td></td>
+                                </tr>
+                            </tfoot>
+                        </table>
+
+
+                        <div class="row" style="margin-top: 100px; text-align: center;">
+                            <div class="col-3">
+                                <span>_______________________</span><br/>
+                                <strong style="display: inline-block; margin-top: 5px;">Recommended By</strong>
+                            </div>
+                            <div class="col-3">
+                                <span>_______________________</span><br/>
+                                <strong style="display: inline-block; margin-top: 5px;">Prepared By</strong>
+<!--                                <span t-esc="env.user.name"/>-->
+                            </div>
+                            <div class="col-3">
+                                <span>_______________________</span><br/>
+                                <strong style="display: inline-block; margin-top: 5px;">Checked By</strong>
+                            </div>
+                            <div class="col-3">
+                                <span>_______________________</span><br/>
+                                <strong style="display: inline-block; margin-top: 5px;">Approved By</strong>
+                            </div>
+                        </div>
+
+
+                    </div>
+                </t>
+            </t>
+        </t>
+    </template>
+</odoo>
+

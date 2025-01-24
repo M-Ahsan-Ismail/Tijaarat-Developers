@@ -1,0 +1,91 @@
+<odoo>
+    <record id="seq_fund_requisition" model="ir.sequence">
+        <field name="name">Fund Requisition Sequence</field>
+        <field name="code">fund.requisition.seq</field>
+        <!--    <field name="prefix">F-</field>-->
+        <field name="padding">4</field>
+        <field name="suffix">-%(month)s/%(year)s</field>
+    </record>
+
+
+    <record id="fund_requisition_form_view" model="ir.ui.view">
+        <field name="name">fund.requisition.form</field>
+        <field name="model">fund.requisition</field>
+        <field name="arch" type="xml">
+            <form>
+                <header>
+                    <button name="print_report" string="Print Report" type="object" class="btn-primary"/>
+                </header>
+                <sheet>
+                    <div class="oe_title">
+                        <h1>
+                            <field name="name" readonly="1"/>
+                        </h1>
+                    </div>
+                    <group>
+                        <group>
+                            <field name="analytic_account_id" required="1"/>
+                        </group>
+                        <group>
+                            <field name="date" readonly="1"/>
+                            <field name="date_start" required="1"/>
+                            <field name="date_end" required="1"/>
+                        </group>
+                    </group>
+                    <notebook>
+                        <page string="Lines">
+                            <field name="line_ids">
+                                <tree editable="bottom">
+                                    <field name="account_id"/>
+                                    <field name="date" column_invisible="1"/>
+                                    <field name="date_start" readonly="1" column_invisible="1"/>
+                                    <field name="date_end" readonly="1" column_invisible="1"/>
+                                    <field name="average_pwd"/>
+                                    <field name="previous_amount_paid" sum="Total"/>
+                                    <field name="current_amount_demand" sum="Total"/>
+                                    <field name="total_amount" sum="Total"/>
+                                    <field name="remarks"/>
+                                </tree>
+                            </field>
+                        </page>
+                    </notebook>
+                </sheet>
+                <div class="oe_chatter">
+                    <field name="message_follower_ids" groups="base.group_user"/>
+                    <field name="activity_ids"/>
+                    <field name="message_ids" options="{'post_refresh': 'always'}"/>
+                </div>
+            </form>
+        </field>
+    </record>
+
+
+    <record id="fund_requisition_tree_view" model="ir.ui.view">
+        <field name="name">fund.requisition.tree</field>
+        <field name="model">fund.requisition</field>
+        <field name="arch" type="xml">
+            <tree>
+                <field name="name"/>
+                <field name="analytic_account_id"/>
+                <field name="date"/>
+                <field name="date_start"/>
+                <field name="date_end"/>
+            </tree>
+        </field>
+    </record>
+
+
+    <record id="bss_fund_requisition_record_action" model="ir.actions.act_window">
+        <field name="name">Fund Requisition</field>
+        <field name="res_model">fund.requisition</field>
+        <field name="view_mode">tree,form</field>
+    </record>
+
+    <menuitem
+            id="bss_fund_requisition_id"
+            name="Fund Requisition"
+            parent="account.menu_finance_entries_accounting_miscellaneous"
+            action="bss_fund_requisition_record_action"
+            sequence="11"/>
+
+</odoo>
