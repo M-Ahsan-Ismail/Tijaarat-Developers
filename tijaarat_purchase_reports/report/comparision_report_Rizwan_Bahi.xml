@@ -1,0 +1,226 @@
+<odoo>
+
+
+    <template id="comparison_report_document">
+        <t t-call="web.html_container">
+            <t t-foreach="docs" t-as="o">
+                <t t-call="web.basic_layout">
+                    <div class="page" style="font-size:11pt; line-height:1;">
+                        <h2 class="text-center">Tijaarat Developers</h2>
+                        <h3 class="text-center">Project: <span
+                                t-esc="o.project_id.name or o.analytic_account_id.name"/></h3>
+                        <h3 class="text-center">Estimate (Comparison): </h3>
+                        <t t-if="o.ordering_date">
+                            <h3 class="text-center" t-esc="o.ordering_date.strftime('%d/%m/%Y')"/>
+                        </t>
+<!--                        <t t-if="is_same == True">-->
+                            <table class="table table-sm table-bordered" width="100%"
+                                   style="padding:0px; margin:0px;">
+                                <thead>
+                                    <tr>
+                                        <th rowspan="2" style="text-align:center; vertical-align: middle;">
+                                            Sr.#
+                                        </th>
+                                        <th rowspan="2" style="text-align:center; vertical-align: middle;">
+                                            Description
+                                        </th>
+                                        <th rowspan="2" style="text-align:center; vertical-align: middle;">
+                                            Unit
+                                        </th>
+                                        <t t-if="purchase_ids">
+                                            <t t-foreach="purchase_ids" t-as="po">
+                                                <th colspan="3" style="text-align:center;">
+                                                    <span t-esc="po.partner_id.name"/>
+                                                </th>
+                                            </t>
+                                        </t>
+                                    </tr>
+                                    <tr>
+                                        <t t-if="purchase_ids">
+                                            <t t-foreach="purchase_ids" t-as="po">
+                                                <th style="text-align:center;">Qty</th>
+                                                <th style="text-align:right;">Rate</th>
+                                                <th style="text-align:right;">Amount</th>
+                                            </t>
+                                        </t>
+                                    </tr>
+                                    <t t-set="sr_no" t-value="0"/>
+                                    <t t-foreach="o.line_ids" t-as="line">
+                                        <t t-set="sr_no" t-value="sr_no + 1"/>
+                                        <tr>
+                                            <td style="text-align:center;">
+                                                <t t-esc="sr_no"/>
+                                            </td>
+                                            <td>
+                                                <span t-esc="line.product_id.name"/>
+                                            </td>
+                                            <td style="text-align:center;">
+                                                <span t-esc="line.product_uom_id.name"/>
+                                            </td>
+                                            <t t-if="purchase_ids">
+                                                <t t-foreach="purchase_ids" t-as="po">
+                                                    <t t-foreach="po.order_line" t-as="po_line">
+                                                        <!--                                                            <t t-if="po_line.order_id == po">-->
+                                                        <t t-if="po_line.product_id == line.product_id">
+                                                            <td style="text-align:center;">
+                                                                <t t-esc="po_line.product_qty"
+                                                                   t-options="{&quot;widget&quot;: &quot;float&quot;, &quot;precision&quot;: 2}"/>
+                                                            </td>
+                                                            <td style="text-align:right;">
+                                                                <t t-esc="po_line.price_unit"
+                                                                   t-options="{&quot;widget&quot;: &quot;float&quot;, &quot;precision&quot;: 2}"/>
+                                                            </td>
+                                                            <td style="text-align:right;">
+                                                                <t t-esc="round(line.product_qty) * po_line.price_unit"
+                                                                   t-options="{&quot;widget&quot;: &quot;float&quot;, &quot;precision&quot;: 2}"/>
+                                                            </td>
+                                                            <!--                                                                </t>-->
+                                                        </t>
+                                                    </t>
+                                                </t>
+                                            </t>
+                                        </tr>
+
+                                    </t>
+                                    <tr>
+                                        <td>
+                                        </td>
+                                        <th>
+                                            Total amount (<span t-esc="res_company.currency_id.name"/>)
+                                        </th>
+                                        <td style="text-align:right;">
+                                        </td>
+                                        <t t-if="purchase_ids">
+                                            <t t-foreach="purchase_ids" t-as="po">
+                                                <td style="text-align:right;"/>
+                                                <td style="text-align:right;"/>
+                                                <th style="text-align:right;">
+                                                    <span t-esc="po.amount_total"
+                                                          t-options="{&quot;widget&quot;: &quot;float&quot;, &quot;precision&quot;: 2}"/>
+                                                </th>
+                                            </t>
+                                        </t>
+                                    </tr>
+                                </thead>
+                            </table>
+<!--                        </t>-->
+<!--                        <t t-else="">-->
+<!--                            <table class="table table-sm table-bordered" width="100%"-->
+<!--                                   style="padding:0px; margin:0px;">-->
+<!--                                <thead>-->
+<!--                                    <tr>-->
+<!--                                        <th rowspan="2" style="text-align:center;">-->
+<!--                                            Sr.#-->
+<!--                                        </th>-->
+<!--                                        <th rowspan="2" style="text-align:center;">-->
+<!--                                            Description-->
+<!--                                        </th>-->
+<!--                                        <th rowspan="2" style="text-align:center;">-->
+<!--                                            Unit-->
+<!--                                        </th>-->
+<!--                                        <t t-if="purchase_ids">-->
+<!--                                            <t t-foreach="purchase_ids" t-as="po">-->
+<!--                                                <th colspan="3" style="text-align:center;">-->
+<!--                                                    <span t-esc="po.partner_id.name"/>-->
+<!--                                                </th>-->
+<!--                                            </t>-->
+<!--                                        </t>-->
+<!--                                    </tr>-->
+<!--                                    <tr>-->
+<!--                                        <t t-if="purchase_ids">-->
+<!--                                            <t t-foreach="purchase_ids" t-as="po">-->
+<!--                                                <th style="text-align:center;">Qty</th>-->
+<!--                                                <th style="text-align:right;">Rate</th>-->
+<!--                                                <th style="text-align:right;">Amount</th>-->
+<!--                                            </t>-->
+<!--                                        </t>-->
+<!--                                    </tr>-->
+<!--                                    <t t-set="sr_no" t-value="0"/>-->
+<!--                                    <t t-foreach="o.line_ids" t-as="line">-->
+<!--                                        <t t-set="sr_no" t-value="sr_no + 1"/>-->
+<!--                                        <tr>-->
+<!--                                            <td style="text-align:center;">-->
+<!--                                                <t t-esc="sr_no"/>-->
+<!--                                            </td>-->
+<!--                                            <td>-->
+<!--                                                <span t-esc="line.product_id.name"/>-->
+<!--                                            </td>-->
+<!--                                            <td style="text-align:center;">-->
+<!--                                                <span t-esc="line.product_uom_id.name"/>-->
+<!--                                            </td>-->
+<!--                                            <t t-if="purchase_ids">-->
+<!--                                                <t t-foreach="purchase_ids" t-as="po">-->
+<!--                                                    <t t-foreach="po.order_line" t-as="po_line">-->
+<!--                                                        <t t-if="po_line.product_id == line.product_id">-->
+<!--                                                            <td style="text-align:center;">-->
+<!--                                                                <t t-esc="po_line.product_qty"-->
+<!--                                                                   t-options="{&quot;widget&quot;: &quot;float&quot;, &quot;precision&quot;: 2}"/>-->
+<!--                                                            </td>-->
+<!--                                                            <td style="text-align:right;">-->
+<!--                                                                <t t-esc="po_line.price_unit"-->
+<!--                                                                   t-options="{&quot;widget&quot;: &quot;float&quot;, &quot;precision&quot;: 2}"/>-->
+<!--                                                            </td>-->
+<!--                                                            <td style="text-align:right;">-->
+<!--                                                                <t t-esc="round(line.product_qty) * po_line.price_unit"-->
+<!--                                                                   t-options="{&quot;widget&quot;: &quot;float&quot;, &quot;precision&quot;: 2}"/>-->
+<!--                                                            </td>-->
+<!--                                                        </t>-->
+<!--                                                    </t>-->
+<!--                                                </t>-->
+<!--                                            </t>-->
+<!--                                        </tr>-->
+<!--                                    </t>-->
+<!--                                    <tr>-->
+<!--                                        <td>-->
+<!--                                        </td>-->
+<!--                                        <th>-->
+<!--                                            Total amount (<span t-esc="res_company.currency_id.name"/>)-->
+<!--                                        </th>-->
+<!--                                        <td style="text-align:right;">-->
+<!--                                        </td>-->
+<!--                                        <t t-if="purchase_ids">-->
+<!--                                            <t t-foreach="purchase_ids" t-as="po">-->
+<!--                                                <td style="text-align:right;"/>-->
+<!--                                                <td style="text-align:right;"/>-->
+<!--                                                <th style="text-align:right;">-->
+<!--                                                    <span t-esc="po.amount_total"-->
+<!--                                                          t-options="{&quot;widget&quot;: &quot;float&quot;, &quot;precision&quot;: 2}"/>-->
+<!--                                                </th>-->
+<!--                                            </t>-->
+<!--                                        </t>-->
+<!--                                    </tr>-->
+<!--                                </thead>-->
+<!--                            </table>-->
+<!--                        </t>-->
+                    </div>
+                </t>
+            </t>
+        </t>
+    </template>
+
+
+    <record id="comparative_statement_paper_format" model="report.paperformat">
+        <field name="name">European A4</field>
+        <field name="default" eval="True"/>
+        <field name="format">A4</field>
+        <!--            <field name="orientation">Portrait</field>-->
+        <field name="orientation">Landscape</field>
+        <field name="margin_top">5</field>
+        <field name="margin_bottom">5</field>
+        <field name="margin_left">5</field>
+        <field name="margin_right">5</field>
+        <field name="header_line" eval="False"/>
+        <field name="header_spacing">5</field>
+        <field name="dpi">90</field>
+    </record>
+
+    <record id="comparative_statement_report_id_final" model="ir.actions.report">
+        <field name="name">Comparison Report</field>
+        <field name="model">purchase.requisition</field>
+        <field name="report_type">qweb-pdf</field>
+        <field name="report_name">tijaarat_purchase_reports.comparison_report_document</field>
+        <field name="binding_model_id" ref="purchase_requisition.model_purchase_requisition"/>
+        <field name="binding_type">report</field>
+        <field name="paperformat_id" ref="comparative_statement_paper_format"/>
+    </record>
+</odoo>

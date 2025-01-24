@@ -1,0 +1,135 @@
+<odoo>
+    <template id="comparison_report_purchase_requisition_id">
+        <t t-call="web.html_container">
+            <t t-foreach="docs" t-as="obj">
+                <t t-call="web.basic_layout">
+                    <div class="col-12" style="text-align: center">
+                        <span><strong>Tijaarat Developers</strong></span><br/><br/>
+                        <span><strong>Project: <t t-esc="obj.project_id.name"></t></strong></span><br/><br/>
+                        <span><strong>Estimate(Comparison): </strong></span><br/><br/>
+                        <span><strong><t t-esc="obj.ordering_date"></t></strong></span>
+                    </div>
+                    <br/><br/><br/>
+
+
+                    <table class="table table-sm table-bordered" width="100%">
+                        <thead>
+                            <tr>
+                                <th class="col-1">Sr.No</th>
+                                <th class="col-1">Vendor</th>
+                                <th class="col-2">Product Name</th>
+                                <th class="col-1">Quantity</th>
+                                <th class="col-1">Unit Price</th>
+                                <th class="col-1">SubTotal</th>
+                                <th class="col-1">Unit</th>
+                                <th class="col-1">Total</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <t t-set="vendor_prices" t-value="obj.Comparison()"/>
+                            <t t-set="counter" t-value="0"/>
+                            <t t-foreach="vendor_prices.items()" t-as="vendor_data">
+                                <t t-set="counter" t-value="counter + 1"/>
+                                <!-- Extract vendor name and data -->
+                                <t t-set="vendor_name" t-value="vendor_data[0]"/>
+                                <t t-set="vendor_info" t-value="vendor_data[1]"/>
+                                <t t-set="products" t-value="vendor_info['products']"/>
+                                <t t-set="total_each_vendor" t-value="vendor_info['total_each_vendor']"/>
+                                <!-- Calculate rowspan for vendor and total columns -->
+                                <t t-set="rowspan" t-value="len(products)"/>
+                                <!-- Loop through products for this vendor -->
+                                <t t-foreach="products" t-as="product" t-index="product_index">
+                                    <tr>
+                                        <!-- Sr.No cell with rowspan, displayed only in the first row -->
+                                        <td style="text-align: center; vertical-align: middle;" class="col-1"
+                                            t-if="product_index == 0" t-att-rowspan="rowspan">
+                                            <t t-esc="counter"/>
+                                        </td>
+                                        <!-- Vendor cell with rowspan, displayed only in the first row -->
+                                        <td style="text-align: center; vertical-align: middle;" class="col-1"
+                                            t-if="product_index == 0" t-att-rowspan="rowspan">
+                                            <t t-esc="vendor_name"/>
+                                        </td>
+                                        <td style="text-align: left;" class="col-2">
+                                            <t t-esc="product['name']"/>
+                                        </td>
+                                        <td style="text-align: center;" class="col-1">
+                                            <t t-esc="product['product']"/>
+                                        </td>
+                                        <td style="text-align: center;" class="col-1">
+                                            <t t-esc="product['price']"/>
+                                        </td>
+
+                                        <td style="text-align: center;" class="col-1">
+                                            <t t-esc="product['amount']"/>
+                                        </td>
+                                        <td style="text-align: center;" class="col-1">
+                                            <t t-esc="product['unit']"/>
+                                        </td>
+                                        <!-- Total cell with rowspan, displayed only in the first row -->
+                                        <td style="text-align: center; vertical-align: middle;" class="col-1"
+                                            t-if="product_index == 0" t-att-rowspan="rowspan">
+                                            <t t-esc="total_each_vendor"/>
+                                        </td>
+                                    </tr>
+                                </t>
+                            </t>
+                        </tbody>
+                    </table>
+
+
+                    <!--                    <table class="table table-sm table-bordered" width="100%">-->
+                    <!--                        <thead>-->
+                    <!--                            <tr>-->
+                    <!--                                <th class="col-1">-->
+                    <!--                                    Sr.No-->
+                    <!--                                </th>-->
+                    <!--                                <th class="col-2">-->
+                    <!--                                    Description-->
+                    <!--                                </th>-->
+                    <!--                                <th class="col-1">-->
+                    <!--                                    Unit-->
+                    <!--                                </th>-->
+                    <!--                            </tr>-->
+                    <!--                        </thead>-->
+
+                    <!--                        <tbody>-->
+                    <!--                            <t t-set="matched_products" t-value="obj.Comparison_description()"/>-->
+                    <!--                            <t t-set="counter" t-value="0"/>-->
+                    <!--                            <t t-foreach="matched_products" t-as="product">-->
+                    <!--                                <t t-set="counter" t-value="counter + 1"/>-->
+                    <!--                                <tr>-->
+                    <!--                                    <td style="text-align: center;" class="col-1">-->
+                    <!--                                        <t t-esc="counter"/>-->
+                    <!--                                    </td>-->
+                    <!--                                    <td style="text-align: left;" class="col-2">-->
+                    <!--                                        <t t-esc="product[0]"/> &lt;!&ndash; Description &ndash;&gt;-->
+                    <!--                                    </td>-->
+                    <!--                                    <td style="text-align: left;" class="col-1">-->
+                    <!--                                        <t t-esc="product[1]"/> &lt;!&ndash; Unit &ndash;&gt;-->
+                    <!--                                    </td>-->
+                    <!--                                </tr>-->
+                    <!--                            </t>-->
+                    <!--                        </tbody>-->
+                    <!--                    </table>-->
+
+
+                </t>
+
+
+            </t>
+        </t>
+    </template>
+
+    <record id="comparison_report_purchase_requisition_action_id" model="ir.actions.report">
+        <field name="name">Comparison Report</field>
+        <field name="model">purchase.requisition</field>
+        <field name="report_type">qweb-pdf</field>
+        <field name="report_name">tijaarat_purchase_reports.comparison_report_purchase_requisition_id</field>
+        <field name="paperformat_id" ref="tijaarat_purchase_reports.report_paper_format_id"/>
+        <field name="binding_model_id" ref="purchase_requisition.model_purchase_requisition"/>
+        <field name="binding_type">report</field>
+    </record>
+</odoo>
+
+
