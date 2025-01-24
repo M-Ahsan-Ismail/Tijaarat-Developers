@@ -1,0 +1,105 @@
+<odoo>
+    <record id="hr_equipment_stage_view_tree_custom" model="ir.ui.view">
+        <field name="name">maintenance.stage.form.inherit</field>
+        <field name="model">maintenance.stage</field>
+        <field name="inherit_id" ref="maintenance.hr_equipment_stage_view_tree"/>
+        <field name="arch" type="xml">
+            <xpath expr="//tree" position="attributes">
+                <attribute name="create">0</attribute>
+                <attribute name="delete">0</attribute>
+            </xpath>
+        </field>
+    </record>
+
+
+    <record id="view_tijaarat_maintenance_custom" model="ir.ui.view">
+        <field name="name">maintenance.request.form.inherit</field>
+        <field name="model">maintenance.request</field>
+        <field name="inherit_id" ref="maintenance.hr_equipment_request_view_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='stage_id']" position="attributes">
+                <attribute name="options">{"clickable": false}</attribute>
+            </xpath>
+            <xpath expr="//field[@name='email_cc']" position="after">
+                <field name="maintenance_cost"/>
+                <field name="move_id" readonly="1" invisible="1" />
+                <field name="reject_remarks" invisible="1"/>
+            </xpath>
+            <xpath expr="//field[@name='equipment_id']" position="before">
+                <field name="partner_id" required="1"/>
+            </xpath>
+
+            <xpath expr="//header/button[last()]" position="after">
+                <field name="stage_seq" invisible="1"/>
+                <button name="action_submit"
+                        type="object"
+                        string="Submit"
+                        class="btn-primary" invisible="stage_seq != 1"/>
+                <button name="action_ceo_approval"
+                        type="object"
+                        string="CEO Approval"
+                        class="btn-primary" invisible="stage_seq != 2"
+                        groups="tijaarat_maintenance_custom.ceo_approval_maintenance"/>
+                <button name="action_in_progress"
+                        type="object"
+                        string="In Progress"
+                        class="btn-primary" invisible="stage_seq != 3"/>
+                <button name="action_repaired"
+                        type="object"
+                        string="Repaired"
+                        class="btn-primary" invisible="stage_seq != 4"/>
+                <button name="action_scrap"
+                        type="object"
+                        string="Scrap"
+                        class="btn-primary" invisible="stage_seq != 5"/>
+                <button name="action_reject"
+                        type="object"
+                        string="Reject"
+                        class="btn-primary" invisible="stage_seq not in [1,2]"/>
+            </xpath>
+            <xpath expr="//header/button[last()]" position="after">
+                <button name="create_vendor_bill"
+                        type="object"
+                        string="Create Bill"
+                        class="btn-primary" invisible="stage_seq != 5 or move_id"/>
+            </xpath>
+            <xpath expr="//button[@name='archive_equipment_request']" position="attributes">
+                <attribute name="invisible">stage_seq in [6, 7] or move_id</attribute>
+            </xpath>
+
+        </field>
+    </record>
+
+    <record id="view_move_form_custom" model="ir.ui.view">
+        <field name="name">account.move.form.inherit</field>
+        <field name="model">account.move</field>
+        <field name="inherit_id" ref="account.view_move_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='partner_shipping_id']" position="after">
+                <field name="maintenance_id" invisible="not maintenance_id or move_type !='in_invoice'" readonly="1"/>
+            </xpath>
+        </field>
+    </record>
+
+
+
+
+    <record id="view_tijaarat_maintenance_smart_button" model="ir.ui.view">
+        <field name="name">maintenance.history.form.inherit</field>
+        <field name="model">maintenance.request</field>
+        <field name="inherit_id" ref="maintenance.hr_equipment_request_view_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//form/sheet" position="inside">
+                <div class="oe_button_box" name="button_box">
+                    <button name="action_open_maintenance_history" type="object" class="oe_stat_button"
+                            icon="fa-pencil-square-o">
+                        <div class="o_stat_info">
+                            <field name="maintenance_count" class="o_stat_value"/>
+                            <span class="o_stat_text">Bills</span>
+                        </div>
+                    </button>
+                </div>
+            </xpath>
+        </field>
+    </record>
+</odoo>

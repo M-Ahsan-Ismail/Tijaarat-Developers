@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+
+    <record id="view_maintenance_approvals_wizard_form" model="ir.ui.view">
+        <field name="name">maintenance.approval.wizard.form</field>
+        <field name="model">maintenance.approval.wizard</field>
+        <field name="arch" type="xml">
+            <form>
+                    <group>
+                        <field name="remark" required="1"/>
+                        <field name="state" invisible="1"/>
+                    </group>
+                <footer>
+                    <button name="update_maintenance_request" string="Save" type="object"
+                            class="btn-primary" data-hotkey="q"/>
+                    <button special="cancel" data-hotkey="z" string="Discard"/>
+                </footer>
+            </form>
+        </field>
+    </record>
+
+    <record id="action_maintenance_approval_reason_view" model="ir.actions.act_window">
+        <field name="name">Add Reason</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">maintenance.approval.wizard</field>
+        <field name="view_mode">form</field>
+        <field name="target">new</field>
+    </record>
+
+</odoo>

@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record id="ceo_approval_maintenance" model="res.groups">
+        <field name="name">Maintenance CEO Approval</field>
+    </record>
+
+</odoo>
