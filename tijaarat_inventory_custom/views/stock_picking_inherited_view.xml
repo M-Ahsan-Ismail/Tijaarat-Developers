@@ -1,0 +1,23 @@
+<odoo>
+    <data>
+        <record id="view_picking_form_inherited" model="ir.ui.view">
+            <field name="name">stock.picking.form.view</field>
+            <field name="model">stock.picking</field>
+            <field name="inherit_id" ref="stock.view_picking_form"/>
+            <field name="arch" type="xml">
+                <xpath expr="//field[@name='partner_id']" position="after">
+                    <field name="project_id" readonly="state != 'draft'"/>
+                    <field name="analytic_account_id" readonly="state != 'draft'"/>
+                    <field name="is_quality_check" invisible="1"/>
+                </xpath>
+                <xpath expr="//header/button[last()]" position="after">
+                    <button name="action_quality_check"
+                            type="object"
+                            string="Quality Check"
+                            class="btn-primary" invisible="is_quality_check"/>
+                </xpath>
+            </field>
+        </record>
+
+    </data>
+</odoo>
