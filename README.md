@@ -1,17 +1,15 @@
 # Tijaarat-Developers
-Assisted In customizing the hrms modules and its portal development and assited in customization of purchase ,inventory ,accounting , requistion , sale modules. 
+Assisted In customizing the hrms modules and its portal development and assited in customization of---> purchase ,inventory ,accounting , project modules.  
 
-## Migrated The Atheer_Hr (Malatan Compnay Module TO V17)
-Migrated the atheer_hr module having almost all custom developments of HR functionalities to odoo v17 by converting syntax from attrs to external_ids;.  
-
-## Tijaarat Maintainence Custom
-Developed  custom  module for the maintenance process, adding features like cost tracking and integration with vendor billing. Enhanced tracking of maintenance cost summaries and maintenance history. Workflows for rejecting requests with remarks and generating vendor bills directly from maintenance requests.
+## Tijaarat Maintainence Module
+Developed module for the maintenance process, adding features like cost tracking(add cost before ceo approval) and integration with vendor billing.
+Also generates activity and has Workflows for rejecting requests with remarks and generating vendor bills directly from maintenance requests if maintainence is  approved and in in progress stage.
 
 ## Tijaarat Inventory Custom 
 Customized the stock picking process in Odoo by adding a feature for quality checks. This ensures that users must complete a quality check before validating the stock picking, improving inventory accuracy.
 
-## Tijaarat Fund Requisition 
-Developed fund requisition system to track project-related expenses. The module allows users to create fund requisitions, manage associated lines, and calculate previous and current amounts paid, along with generating Qweb(Pdf) reports.
+## Tijaarat Fund Requisition Module
+Developed fund requisition system to track project-related expenses. The module allows users to create fund requisitions, manage lines  calculate previous and total amounts paid, along with Qweb(Pdf) report.
 
 ## Tijaarat Purchase Reports
 Developed the comparison report for purchase requisition. This report helps compare vendor prices for products across different vendors. It displays product details, quantities, unit prices, and totals, sorted by vendor and filtered to show the top 4 vendors based on their total amounts, providing a clear, comparative overview for decision-making.
@@ -20,3 +18,8 @@ Developed the report for Purchase Orders and Quotations, which dynamically adjus
 
 ## Tijaarat Purchase Discount
 Customized, Developed and tested the functionality of wm_purchase-global_discount for discount scenerios on purchase orders like discount in sales module.
+
+
+-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+## Migrated The Atheer_Hr (Malatan Compnay Module TO V17)
+Migrated the atheer_hr module having almost all custom developments of HR functionalities to odoo v17 by converting syntax from attrs to external_ids;. 
