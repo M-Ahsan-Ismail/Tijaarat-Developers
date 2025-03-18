@@ -1,0 +1,408 @@
+<odoo>
+    <template id="tijaarat_project_task_wise_report_id">
+        <t t-call="web.html_container">
+            <t t-foreach="docs" t-as="obj">
+                <t t-call="web.external_layout">
+                    <div class="page">
+                        <h3 class="text-center">
+                            <span><strong>Project:</strong></span>
+                            <t t-if="obj.name">
+                                <span t-esc="obj.name"/>
+                            </t>
+                        </h3>
+                        <br/><br/>
+
+                        <!-- Updated table with border: none -->
+                        <table class="table table-sm table-borderless"
+                               style="width: 100%; margin: 0px; padding: 0px; border: none;">
+                            <!-- Table Header -->
+                            <tr>
+                                <td style="border: none;" colspan="6">
+                                    <span><h4>Material</h4></span>
+                                </td>
+                            </tr>
+                            <tr>
+                                <th style="text-align: left; border: none;"></th>
+                                <th width="20%" style="text-align: left; border: none;">Material</th>
+                                <th width="10%" style="text-align: right; border: none;">Planned QTY</th>
+                                <th width="10%" style="text-align: right; border: none;">Issued QTY</th>
+                                <th width="10%" style="text-align: right; border: none;">Purchased QTY</th>
+                                <th width="10%" style="text-align: right; border: none;">Billed QTY</th>
+                            </tr>
+
+                            <!-- Loop through parent tasks in the project -->
+                            <t t-foreach="obj.task_ids.filtered(lambda t: not t.parent_id)" t-as="task">
+                                <!-- Loop through tasks and subtasks hierarchically -->
+                                <t t-foreach="obj._get_task_hierarchy(task)" t-as="item">
+                                    <tr>
+                                        <!-- Task/Subtask Name with Indentation -->
+                                        <td style="border: none;">
+                                            <span style="margin-left: 30px;">
+                                                <a t-att-href="'/web#id=%s&amp;model=project.task&amp;view_type=form' % item['id']"
+                                                   target="_parent">
+                                                    <span t-attf-style="margin-left: {{ item['level'] * 20}}px;">
+                                                        <t t-esc="item['name']"/>
+                                                    </span>
+                                                </a>
+                                            </span>
+                                        </td>
+
+                                        <!-- Material -->
+                                        <td style="text-align: left; width:20%; border: none;">
+                                            <t t-foreach="item['material_line_ids']" t-as="line">
+                                                <span style="color:green;" t-esc="line.product_id.name"/>
+                                                <br/>
+                                            </t>
+                                        </td>
+
+                                        <!-- Planned QTY -->
+                                        <td style="text-align: right; border: none;">
+                                            <t t-foreach="item['material_line_ids']" t-as="line">
+                                                <span style="color:green;" t-esc="line.product_qty"/>
+                                                <br/>
+                                            </t>
+                                        </td>
+
+                                        <!-- Issued QTY -->
+                                        <td style="text-align: right; border: none;">
+                                            <t t-foreach="item['material_line_ids']" t-as="line">
+                                                <span style="color:green;" t-esc="line.actual_issued_qty"/>
+                                                <br/>
+                                            </t>
+                                        </td>
+
+                                        <!-- Purchased QTY -->
+                                        <td style="text-align: right; border: none;">
+                                            <t t-foreach="item['material_line_ids']" t-as="line">
+                                                <span style="color:green;" t-esc="line.actual_quantity"/>
+                                                <br/>
+                                            </t>
+                                        </td>
+
+                                        <!-- Billed QTY -->
+                                        <td style="text-align: right; border: none;">
+                                            <t t-foreach="item['material_line_ids']" t-as="line">
+                                                <span style="color:green;" t-esc="line.actual_invoice_quantity"/>
+                                                <br/>
+                                            </t>
+                                        </td>
+                                    </tr>
+                                </t>
+                            </t>
+                        </table>
+
+                        <br/><br/><br/><br/>
+
+
+                        <table class="table table-sm table-borderless"
+                               style="width: 100%; margin: 0px; padding: 0px; border: none;">
+                            <!-- Table Header -->
+                            <tr>
+                                <th style="text-align: left; border: none;"></th>
+                                <th style="text-align: right; border: none;">
+                                    <span><strong>Sub Contractor</strong></span>
+                                </th>
+                                <th width="20%" style="text-align: right; border: none;">
+                                    <span><strong>Product</strong></span>
+                                </th>
+                                <th style="text-align: right; border: none;">
+                                    <span><strong>Quantity</strong></span>
+                                </th>
+                                <th style="text-align: right; border: none;">
+                                    <span><strong>Cost/Unit</strong></span>
+                                </th>
+                                <th style="text-align: right; border: none;">
+                                    <span><strong>Cost Price Subtotal</strong></span>
+                                </th>
+                            </tr>
+
+                            <!-- Labour heading -->
+                            <tr>
+                                <td style="border: none;" colspan="6">
+                                    <span><h4>Labour</h4></span>
+                                </td>
+                            </tr>
+
+                            <!-- Loop through parent tasks in the project -->
+                            <t t-foreach="obj.task_ids.filtered(lambda t: not t.parent_id)" t-as="task">
+                                <!-- Loop through tasks and subtasks hierarchically -->
+                                <t t-foreach="obj._get_task_hierarchy(task)" t-as="item">
+                                    <!-- Fetch the task record for the current item -->
+                                    <t t-set="task_record" t-value="obj.env['project.task'].browse(item['id'])"/>
+                                    <!-- Get task_labour_line_ids for the current task/subtask -->
+                                    <t t-set="labour_lines" t-value="task_record.task_labour_line_ids"/>
+                                    <!-- Only display if there are labour lines for this task/subtask -->
+                                    <t t-if="labour_lines">
+                                        <tr>
+                                            <!-- Task/Subtask Name with Indentation -->
+                                            <td style="border: none;">
+                                                <span style="margin-left: 30px;">
+                                                    <a t-att-href="'/web#id=%s&amp;model=project.task&amp;view_type=form' % item['id']"
+                                                       target="_parent">
+                                                        <span t-attf-style="margin-left: {{ item['level'] * 20}}px;">
+                                                            <t t-esc="item['name']"/>
+                                                        </span>
+                                                    </a>
+                                                </span>
+                                            </td>
+
+                                            <!-- Sub Contractor -->
+                                            <td style="text-align: right; border: none;">
+                                                <t t-foreach="labour_lines" t-as="line">
+                                                    <span style="color: green;"
+                                                          t-esc="line.sub_contractor_id.name if line.sub_contractor_id else 'N/A'"/>
+                                                    <br/><br/>
+                                                </t>
+                                            </td>
+
+                                            <!-- Product -->
+                                            <td style="text-align: right; width: 20%; border: none;">
+                                                <t t-foreach="labour_lines" t-as="line">
+                                                    <span style="color: green;"
+                                                          t-esc="line.product_id.name if line.product_id else 'N/A'"/>
+                                                    <br/><br/>
+                                                </t>
+                                            </td>
+
+                                            <!-- Quantity -->
+                                            <td style="text-align: right;  border: none;">
+                                                <t t-foreach="labour_lines" t-as="line">
+                                                    <span style="color: green;"
+                                                          t-esc="line.hours if line.hours else 0.0"/>
+                                                    <br/><br/>
+                                                </t>
+                                            </td>
+
+                                            <!-- Cost/Unit -->
+                                            <td style="text-align: right;  border: none;">
+                                                <t t-foreach="labour_lines" t-as="line">
+                                                    <span style="color: green;"
+                                                          t-esc="line.cost_price if line.cost_price else 0.0"/>
+                                                    <br/><br/>
+                                                </t>
+                                            </td>
+
+                                            <!-- Cost Price Subtotal -->
+                                            <td style="text-align: right;  border: none;">
+                                                <t t-foreach="labour_lines" t-as="line">
+                                                    <span style="color: green;"
+                                                          t-esc="line.total_cost if line.total_cost else 0.0"/>
+                                                    <br/><br/>
+                                                </t>
+                                            </td>
+                                        </tr>
+                                    </t>
+                                </t>
+                            </t>
+
+                            <!-- If no task_labour_line_ids for any tasks/subtasks, display a message -->
+                            <t t-if="not any(obj.task_ids)">
+                                <tr>
+                                    <td style="border: none;" colspan="6">
+                                        <span>No Labour Lines Available</span>
+                                    </td>
+                                </tr>
+                            </t>
+                        </table>
+
+
+                        <br/><br/><br/>
+                        <table class="table table-sm table-borderless"
+                               style="width: 100%; margin: 0px; padding: 0px; border: none;">
+                            <!-- Table Header -->
+                            <tr>
+                                <th style="text-align: left; border: none;"></th>
+                                <th style="text-align: right; border: none;">
+                                    <span><strong>Product</strong></span>
+                                </th>
+                                <th width="20%" style="text-align: right; border: none;">
+                                    <span><strong>Description</strong></span>
+                                </th>
+                                <th style="text-align: right; border: none;">
+                                    <span><strong>Material+Labor Amount</strong></span>
+                                </th>
+                                <th style="text-align: right; border: none;">
+                                    <span><strong>Cost/Unit</strong></span>
+                                </th>
+                                <th style="text-align: right; border: none;">
+                                    <span><strong>Cost Price Subtotal</strong></span>
+                                </th>
+                            </tr>
+
+                            <!-- Labour heading -->
+                            <tr>
+                                <td style="border: none;" colspan="6">
+                                    <span><h4>OverHead</h4></span>
+                                </td>
+                            </tr>
+
+                            <!-- Loop through parent tasks in the project -->
+                            <t t-foreach="obj.task_ids.filtered(lambda t: not t.parent_id)" t-as="task">
+                                <!-- Loop through tasks and subtasks hierarchically -->
+                                <t t-foreach="obj._get_task_hierarchy(task)" t-as="item">
+                                    <!-- Fetch the task record for the current item -->
+                                    <t t-set="task_record" t-value="obj.env['project.task'].browse(item['id'])"/>
+                                    <!-- Get task_labour_line_ids for the current task/subtask -->
+                                    <t t-set="overhead_lines" t-value="task_record.task_overhead_line_ids"/>
+                                    <!-- Only display if there are labour lines for this task/subtask -->
+                                    <t t-if="overhead_lines">
+                                        <tr>
+                                            <!-- Task/Subtask Name with Indentation -->
+                                            <td style="border: none;">
+                                                <span style="margin-left: 30px;">
+                                                    <a t-att-href="'/web#id=%s&amp;model=project.task&amp;view_type=form' % item['id']"
+                                                       target="_parent">
+                                                        <span t-attf-style="margin-left: {{ item['level'] * 20}}px;">
+                                                            <t t-esc="item['name']"/>
+                                                        </span>
+                                                    </a>
+                                                </span>
+                                            </td>
+
+                                            <!-- Sub Contractor -->
+                                            <td style="text-align: right; border: none;">
+                                                <t t-foreach="overhead_lines" t-as="line">
+                                                    <span style="color: green;"
+                                                          t-esc="line.product_id.name"/>
+                                                    <br/><br/>
+                                                </t>
+                                            </td>
+
+                                            <!-- Product -->
+                                            <td style="text-align: right; width: 20%; border: none;">
+                                                <t t-foreach="overhead_lines" t-as="line">
+                                                    <span style="color: green;"
+                                                          t-esc="line.description"/>
+                                                    <br/><br/>
+                                                </t>
+                                            </td>
+
+                                            <!-- Quantity -->
+                                            <td style="text-align: right;  border: none;">
+                                                <t t-foreach="overhead_lines" t-as="line">
+                                                    <span style="color: green;"
+                                                          t-esc="line.product_qty"/>
+                                                    <br/><br/>
+                                                </t>
+                                            </td>
+
+                                            <!-- Cost/Unit -->
+                                            <td style="text-align: right;  border: none;">
+                                                <t t-foreach="overhead_lines" t-as="line">
+                                                    <span style="color: green;"
+                                                          t-esc="line.cost_price"/>
+                                                    <br/><br/>
+                                                </t>
+                                            </td>
+
+                                            <!-- Cost Price Subtotal -->
+                                            <td style="text-align: right;  border: none;">
+                                                <t t-foreach="overhead_lines" t-as="line">
+                                                    <span style="color: green;"
+                                                          t-esc="line.total_cost"/>
+                                                    <br/><br/>
+                                                </t>
+                                            </td>
+                                        </tr>
+                                    </t>
+                                </t>
+                            </t>
+
+                            <!-- If no task_labour_line_ids for any tasks/subtasks, display a message -->
+                            <t t-if="not any(obj.task_ids)">
+                                <tr>
+                                    <td style="border: none;" colspan="6">
+                                        <span>No OverHead Lines Available</span>
+                                    </td>
+                                </tr>
+                            </t>
+                        </table>
+
+
+
+
+
+                    </div>
+                </t>
+            </t>
+        </t>
+    </template>
+
+
+    <record id="paperformat_project_task" model="report.paperformat">
+        <field name="name">Task Hierarchy Report</field>
+        <field name="default" eval="True"/>
+        <field name="format">A4</field>
+        <field name="page_height">0</field>
+        <field name="page_width">0</field>
+        <field name="orientation">Landscape</field>
+        <field name="margin_top">28</field>
+        <field name="margin_bottom">20</field>
+        <field name="margin_left">3</field>
+        <field name="margin_right">3</field>
+        <field name="header_line" eval="False"/>
+        <field name="header_spacing">25</field>
+        <field name="dpi">90</field>
+    </record>
+
+
+    <record id="tijaarat_project_task_wise_report_action" model="ir.actions.report">
+        <field name="name">Project Task Wise Report PDF</field>
+        <field name="model">project.project</field>
+        <field name="report_type">qweb-pdf</field>
+        <field name="report_name">tijaarat_project_reports.tijaarat_project_task_wise_report_id</field>
+        <field name="report_file">tijaarat_project_reports.tijaarat_project_task_wise_report_id</field>
+        <field name="paperformat_id" ref="tijaarat_project_reports.paperformat_project_task"/>
+        <field name="binding_model_id" ref="project.model_project_project"/>
+        <field name="print_report_name">'%s' % object.name</field>
+        <field name="binding_type">report</field>
+    </record>
+
+
+</odoo>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
