@@ -1,6 +1,30 @@
 # Tijaarat-Developers
 Assisted In customizing the hrms modules and its portal development and assited in customization of---> purchase ,inventory ,accounting , project modules.  
 
+## Project_Reports
+-Task Wise Summary Report
+Developed the project task summary report that shows the main project, all its tasks, and their subtasks. For each subtask, it lists the materials used,  with Planned Quantity, Issued Quantity, Purchased Quantity,  Billed Quantity. also includes details for each task , subtask like labor , overhead info. The report has links so you can easily click to open the form for any task, subtask, labor, or overhead
+
+## Inventory_Rreports
+-Goods receiving report
+Developed a  report to  give a full picture of the received goods. it  check received goods in inventory. It shows details like the vendor, material description, unit, quantity, rate, total amount, previous price, and the difference for each project. previous rate comes from  last time received product rate.
+
+-Stock Transfer report
+Developed the report to track items moved between locations. Shows details  transfer number, date, transport mode, starting location, destination, and a list of items with their description, unit, quantity, rate, and total amount.
+
+
+-Store Purchase Requisition(required)
+Developed report to request materials for a store. It shows the project, date, and a list of items required with details like material name, unit, quantity ,  balance to buy. 
+
+## Accounting__Inv_Bill_Rep_Inherit
+
+-Invoice Report On Bills Customized
+customized the invoice report on bill, receipts added the analytic distribution column in table and move reference next to date.
+
+
+
+
+
 ## Tijaarat Maintainence Module
 Developed module for the maintenance process, adding features like cost tracking(add cost before ceo approval) and integration with vendor billing.
 Also generates activity and has Workflows for rejecting requests with remarks and generating vendor bills directly from maintenance requests if maintainence is  approved and in in progress stage.
