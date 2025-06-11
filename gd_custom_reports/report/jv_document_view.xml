@@ -1,0 +1,178 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <template id="jv_document_id">
+        <t t-call="web.html_container">
+            <t t-foreach="docs" t-as="o">
+                <!--                <t t-call="gd_custom_reports.gd_custom_header_footer"/>-->
+                <t t-call="web.external_layout">
+                    <div class="page">
+                        <div class="oe_structure"/>
+                        <h2 class="text-center" style="font-weight: bold;">
+                            <b>Journal Voucher</b>
+                        </h2>
+                        <br/>
+                        <br/>
+                        <div class="top" style="font-size:16px;">
+                            <div class="row" style="font-weight: bold; font-size:18px;">
+                                <div class="col-5">
+                                    <table class="table table-sm table-borderless" width="100%"
+                                           style="padding: 0px; margin: 0px; border:0;">
+                                        <tr>
+                                            <th style="text-align: left;">
+                                                <b>Voucher No :</b>
+                                            </th>
+                                            <th style="text-align: left;">
+                                                <b>
+                                                    <u>
+                                                        <span t-field="o.name"/>
+                                                    </u>
+                                                </b>
+                                            </th>
+                                        </tr>
+                                    </table>
+                                </div>
+                                <div class="col-2"/>
+                                <div class="col-5">
+                                    <table class="table table-sm table-borderless" width="100%"
+                                           style="line-height:1; border:0;">
+                                        <tr>
+                                            <th style="text-align: left;">
+                                                <b>Voucher Date :</b>
+                                            </th>
+                                            <th style="text-align: left;">
+                                                <b>
+                                                    <u>
+                                                        <span t-esc="o.date.strftime('%d %b %Y')"/>
+                                                    </u>
+                                                </b>
+                                            </th>
+                                        </tr>
+                                        <tr>
+                                            <th style="text-align: left;">
+                                                <b>Voucher Status :</b>
+                                            </th>
+                                            <th style="text-align: left;">
+                                                <b>
+                                                    <u>
+                                                        <span t-field="o.state"/>
+                                                    </u>
+                                                </b>
+                                            </th>
+                                        </tr>
+                                    </table>
+                                </div>
+                            </div>
+                            <br/>
+                            <table class="table table-sm table-bordered" width="100%"
+                                   style="line-height:1;">
+                                <thead>
+                                    <tr>
+                                        <th style="text-align:left" width="15%">
+                                            <b>Account Code</b>
+                                        </th>
+                                        <th style="text-align:left">
+                                            <b>Account Name</b>
+                                        </th>
+                                        <th style="text-align:left" width="10%">
+                                            <b>Ref #</b>
+                                        </th>
+                                        <th style="text-align:left">
+                                            <b>Analytic Distribution</b>
+                                        </th>
+                                        <th style="text-align:left">
+                                            <b>Narration</b>
+                                        </th>
+                                        <th style="text-align:right">
+                                            <b>DR</b>
+                                        </th>
+                                        <th style="text-align:right">
+                                            <b>CR</b>
+                                        </th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <t t-set="credit_total" t-value="0"/>
+                                    <t t-set="debit_total" t-value="0"/>
+                                    <t t-foreach="o.line_ids" t-as="line">
+                                        <t t-set="credit_total" t-value="credit_total + line.credit"/>
+                                        <t t-set="debit_total" t-value="debit_total + line.debit"/>
+                                        <tr>
+                                            <td>
+                                                <span t-esc="line.account_id.code"/>
+                                            </td>
+                                            <td>
+                                                <span t-esc="line.account_id.name"/>
+                                            </td>
+                                            <td></td>
+                                            <td>
+                                                <t t-if="line.compute_analytic_distribution_formatted()">
+                                                    <t t-foreach="line.compute_analytic_distribution_formatted()"
+                                                       t-as="distribution">
+                                                        <span t-esc="distribution"/>
+                                                        <br/>
+                                                    </t>
+                                                </t>
+                                            </td>
+                                            <td>
+                                                <span t-esc="line.name"/>
+                                            </td>
+                                            <td style="text-align:right;">
+                                                <span t-esc="line.debit"
+                                                      t-options="{&quot;widget&quot;: &quot;float&quot;, &quot;precision&quot;: 2}"/>
+                                            </td>
+                                            <td style="text-align:right;">
+                                                <span t-esc="line.credit"
+                                                      t-options="{&quot;widget&quot;: &quot;float&quot;, &quot;precision&quot;: 2}"/>
+                                            </td>
+                                        </tr>
+                                    </t>
+                                    <tr style="background-color:#AF8807; color:white;">
+                                        <th colspan="5" style="text-align:right;">
+                                            Total:
+                                        </th>
+                                        <th style="text-align:right;">
+                                            <t t-esc="debit_total"
+                                               t-options="{&quot;widget&quot;: &quot;float&quot;, &quot;precision&quot;: 2}"/>
+                                        </th>
+                                        <th style="text-align:right;">
+                                            <t t-esc="credit_total"
+                                               t-options="{&quot;widget&quot;: &quot;float&quot;, &quot;precision&quot;: 2}"/>
+                                        </th>
+                                    </tr>
+                                </tbody>
+                            </table>
+                            <div>
+                                <span style="font-weight:bold;font-size:18px;">
+                                    <b>Amount in words :</b>
+                                </span>
+                                <u>
+                                    <span t-esc="o.get_amount_in_words(debit_total)"/>
+                                </u>
+                            </div>
+                        </div>
+
+                        <div class="row" style="margin-top: 100px; text-align: center;">
+                            <div class="col-3">
+                                <div style="display: inline-block; border-top: 1px solid black; width: 150px; margin-bottom: 5px;"/><br/>
+                                <span><strong>Prepared By</strong></span>
+                            </div>
+                            <div class="col-3">
+                                <div style="display: inline-block; border-top: 1px solid black; width: 150px; margin-bottom: 5px;"/><br/>
+                                <span><strong>Checked By</strong></span>
+                            </div>
+                            <div class="col-3">
+                                <div style="display: inline-block; border-top: 1px solid black; width: 150px; margin-bottom: 5px;"/><br/>
+                                <span><strong>Reviewed By</strong></span>
+                            </div>
+                            <div class="col-3">
+                                <div style="display: inline-block; border-top: 1px solid black; width: 150px; margin-bottom: 5px;"/><br/>
+                                <span><strong>Approved By</strong></span>
+                            </div>
+                        </div>
+                    </div>
+                </t>
+            </t>
+        </t>
+    </template>
+</odoo>
+

@@ -1,0 +1,97 @@
+<!--report_purchasequotation_document-->
+<odoo>
+    <data>
+        <template id="purcasequotaion_report_inherited" inherit_id="purchase.report_purchasequotation_document">
+            <xpath expr="//div[hasclass('page')]" position="after">
+                <!--                <div class="row" style="margin-top:80px;color:black;">-->
+                <!--                    <div class="col-2">-->
+                <!--                        <b>Requested By :</b>-->
+                <!--                    </div>-->
+                <!--                    <div class="col-3" style="border-bottom:2px dashed black;text-align:center;">-->
+                <!--                    </div>-->
+                <!--                    <div class="col-1"/>-->
+                <!--                    <div class="col-2">-->
+                <!--                        <b>Prepared By :</b>-->
+                <!--                    </div>-->
+                <!--                    <div class="col-3" style="border-bottom:2px dashed black;text-align:center;">-->
+                <!--                    </div>-->
+                <!--                </div>-->
+                <!--                <div class="row" style="margin-top:40px;color:black;">-->
+                <!--                    <div class="col-2">-->
+                <!--                        <b>Name :</b>-->
+                <!--                    </div>-->
+                <!--                    <div class="col-3" style="border-bottom:2px dashed black;text-align:center;">-->
+                <!--                    </div>-->
+                <!--                    <div class="col-1"/>-->
+                <!--                    <div class="col-2">-->
+                <!--                        <b>Name :</b>-->
+                <!--                    </div>-->
+                <!--                    <div class="col-3" style="border-bottom:2px dashed black;text-align:center;">-->
+                <!--                    </div>-->
+                <!--                </div>-->
+                <!--                <div class="row" style="margin-top:40px; color:black;">-->
+                <!--                    <div class="col-2">-->
+                <!--                        <b>Signature :</b>-->
+                <!--                    </div>-->
+                <!--                    <div class="col-3" style="border-bottom:2px dashed black;text-align:center;">-->
+                <!--                    </div>-->
+                <!--                    <div class="col-1"/>-->
+                <!--                    <div class="col-2">-->
+                <!--                        <b>Signature :</b>-->
+                <!--                    </div>-->
+                <!--                    <div class="col-3" style="border-bottom:2px dashed black;text-align:center;">-->
+                <!--                    </div>-->
+                <!--                </div>-->
+                <!--                <div style="margin-top:80px;color:black;">-->
+                <!--                    <strong style="margin-top:100px;color:black;">Approved By: <u><span t-field="o.approved_by.name"/></u></strong>-->
+                <!--                    <br/>-->
+                <!--                    <br/>-->
+                <!--                    <br/>-->
+                <!--                    <br/>-->
+                <!--                    <br/>-->
+                <!--                    <div class="row">-->
+                <!--                        <div class="col-3" style="border-top:1px solid black; text-align:center;">-->
+                <!--                            <strong>Finance Controller</strong>-->
+                <!--                        </div>-->
+                <!--                        <div class="col-6"></div>-->
+                <!--                        <div class="col-3" style="border-top:1px solid black; text-align:center;">-->
+                <!--                            <strong>General Manager</strong>-->
+                <!--                        </div>-->
+                <!--                    </div>-->
+                <!--                </div>-->
+                <div style="padding-top:50px;">
+                    <table class="table table-sm table-borderless" width="100%" style="border:0px;">
+                        <tr style="border:0px;">
+                            <th style="text-align:left;" t-if="o.requested_by">
+                                <b>Requested By:&#160;&#160;&#160;&#160;&#160;</b>
+                                <u>
+                                    <span t-field="o.requested_by"/>
+                                </u>
+                            </th>
+                            <th style="text-align:left;" t-if="o.create_uid">
+                                <b>Prepared By:&#160;&#160;&#160;&#160;&#160;</b>
+                                <u>
+                                    <span t-field="o.create_uid"/>
+                                </u>
+                            </th>
+                            <th style="text-align:left;" t-if="o.approved_by">
+                                <b>Approved By:&#160;&#160;&#160;&#160;&#160;</b>
+                                <u>
+                                    <span t-field="o.approved_by"/>
+                                </u>
+                            </th>
+                            <th style="text-align:left;" t-if="o.confirmed_by">
+                                <b>Confirmed By:&#160;&#160;&#160;&#160;&#160;</b>
+                                <u>
+                                    <span t-field="o.confirmed_by"/>
+                                </u>
+
+                            </th>
+                        </tr>
+                    </table>
+                </div>
+
+            </xpath>
+        </template>
+    </data>
+</odoo>

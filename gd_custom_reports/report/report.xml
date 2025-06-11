@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <record id="paperformat_gd_voucher" model="report.paperformat">
+            <field name="name">Vouchers Paper Format</field>
+            <field name="default" eval="True"/>
+            <field name="format">A4</field>
+            <field name="orientation">Portrait</field>
+            <field name="page_height">0</field>
+            <field name="page_width">0</field>
+            <field name="margin_top">30</field>
+            <field name="margin_bottom">20</field>
+            <field name="margin_left">5</field>
+            <field name="margin_right">5</field>
+            <field name="header_spacing">25</field>
+            <field name="dpi">90</field>
+        </record>
+
+
+<!--        <record id="action_jv_template" model="ir.actions.report">-->
+<!--            <field name="name">Journal Voucher</field>-->
+<!--            <field name="model">account.move</field>-->
+<!--            <field name="report_type">qweb-pdf</field>-->
+<!--            <field name="report_name">gd_custom_reports.jv_document_id</field>-->
+<!--            <field name="report_file">gd_custom_reports.jv_document_id</field>-->
+<!--            <field name="print_report_name">'Journal Voucher - %s' % (object.name)</field>-->
+<!--            <field name="binding_model_id" ref="account.model_account_move"/>-->
+<!--            <field name="binding_type">report</field>-->
+<!--            <field name="paperformat_id" ref="gd_custom_reports.paperformat_gd_voucher"/>-->
+<!--        </record>-->
+        <record id="action_bank_cash_template" model="ir.actions.report">
+            <field name="name">Bank/Cash Voucher</field>
+            <field name="model">account.payment</field>
+            <field name="report_type">qweb-pdf</field>
+            <field name="report_name">gd_custom_reports.bank_cash_document_id</field>
+            <field name="report_file">gd_custom_reports.bank_cash_document_id</field>
+            <field name="print_report_name">object.print_report_name</field>
+            <field name="binding_model_id" ref="account.model_account_payment"/>
+            <field name="binding_type">report</field>
+            <field name="paperformat_id" ref="gd_custom_reports.paperformat_gd_voucher"/>
+        </record>
+
+    </data>
+</odoo>

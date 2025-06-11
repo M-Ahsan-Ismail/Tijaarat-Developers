@@ -1,0 +1,2 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_gd_custom_reports_gd_custom_reports,gd_custom_reports.gd_custom_reports,model_gd_custom_reports_gd_custom_reports,base.group_user,1,1,1,1
