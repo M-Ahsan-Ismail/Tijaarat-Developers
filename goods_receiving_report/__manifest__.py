@@ -1,0 +1,25 @@
+{
+    "name": "Goods Receiving Report",
+    "summary": "Enhanced reporting for goods receiving, stock transfers, and purchase requisitions.",
+    "author": "Ahsan",
+    "category": "Inventory/Purchase",
+    "license": "LGPL-3",
+    "version": "17.0.1.0",
+    "depends": [
+        "purchase",
+        "stock",
+        "sale",
+        "sale_stock",
+        "material_purchase_requisitions",
+    ],
+    "data": [
+        "security/ir.model.access.csv",
+        "views/stock_move_lines_inherited.xml",
+        "views/goods_receipt_report.xml",
+        "views/stock_transfer_report.xml",
+        "views/store_purchase_requisition_report.xml",
+    ],
+    "installable": True,
+    "application": True,
+    "auto_install": False,
+}

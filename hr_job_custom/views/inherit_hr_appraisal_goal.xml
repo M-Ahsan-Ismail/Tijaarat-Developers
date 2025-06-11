@@ -1,0 +1,37 @@
+<odoo>
+  <data>
+    <record model="ir.ui.view" id="inherit_hr_appraisal_goal_view">
+      <field name="name">inherit Hr Appraisal Goal form</field>
+      <field name="model">hr.appraisal.goal</field>
+      <field name="inherit_id" ref="hr_appraisal.hr_appraisal_goal_view_form" />
+      <field name="type">form</field>
+      <field name="arch" type="xml">
+        <header>
+        <field name="state" invisible='1' />
+        <button string="Submit for Approval" type="object" class="oe_highlight"
+              name="submit_for_approval" invisible="state != 'draft'"/>
+
+        <button string="Withdraw Approval" type="object" class="oe_highlight"
+              name="action_withdraw" invisible="state in ['draft','approved','rejected']"/>
+      </header>
+      <xpath expr="//widget[@name='web_ribbon']" position="before">
+        <div name="button_box" class="oe_button_box">
+          <button string="Approval" type="object" icon="fa-file-text-o"
+            name="open_related_approval" />
+        </div>
+      </xpath>
+      <xpath expr="//button[@name='action_confirm']" position="attributes">
+        <attribute name="invisible">state != 'approved'</attribute>
+      </xpath>
+      <xpath expr="//field[@name='employee_id']" position="after">
+        <field name="state"/>
+        <field name="manager_rating" invisible="state != 'approved'"/>
+        <!-- make the above readonly if the person accessing it is not the employee's manager-->
+        <field name="employee_rating" invisible="state != 'approved'"/>
+      </xpath>
+      
+
+      </field>
+    </record>
+  </data>
+</odoo>

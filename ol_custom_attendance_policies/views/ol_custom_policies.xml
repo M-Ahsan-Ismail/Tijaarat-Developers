@@ -1,0 +1,170 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <!-- Inherited view for Working Schedules -->
+        <record id="hr_workingschedules_inherited_view" model="ir.ui.view">
+            <field name="name">Inherited view of working schedules</field>
+            <field name="model">resource.calendar</field>
+            <field name="inherit_id" ref="resource.resource_calendar_form"/>
+            <field name="arch" type="xml">
+                <xpath expr="//page[@name='working_hours']" position="after">
+                    <page name="attendence_policy" string="Attendance Policies">
+                        <div class="col-12">
+                            <h3 style="text-align:left; text-decoration: underline;">In Policy</h3>
+                        </div>
+                        <field name="in_policy_ids" nolabel="1">
+                            <tree editable="bottom">
+                                <field name="sequence" widget="handle"/>
+                                <field name="time_from" widget="timepicker"/>
+                                <field name="time_to" widget="timepicker"/>
+                                <field name="status"/>
+                            </tree>
+                        </field>
+                        <div class="col-12">
+                            <h3 style="text-align:left; text-decoration: underline;">Out Policy</h3>
+                        </div>
+                        <field name="out_policy_ids" nolabel="1">
+                            <tree editable="bottom">
+                                <field name="sequence" widget="handle"/>
+                                <field name="time_from" widget="timepicker" invisible="True"/>
+                                <field name="time_to" widget="timepicker" string="Hours To"/>
+                                <field name="status"/>
+                            </tree>
+                        </field>
+                    </page>
+                </xpath>
+            </field>
+        </record>
+
+        <!-- Inherited attendance tree view -->
+        <record id="view_attendance_tree_inherit" model="ir.ui.view">
+            <field name="name">hr.attendance.view.tree.inherit</field>
+            <field name="model">hr.attendance</field>
+            <field name="inherit_id" ref="hr_attendance.view_attendance_tree"/>
+            <field name="arch" type="xml">
+                <xpath expr="//field[@name='check_out']" position="after">
+                    <field name="status"/>
+                    <field name="day"/>
+                </xpath>
+                <xpath expr="//field[@name='day']" position="after">
+                    <field name="is_wfh" optional="hide"/>
+                    <field name="wfh_reason" optional="hide"/>
+                    <field name="description" optional="hide"/>
+                </xpath>
+            </field>
+        </record>
+        <record id="hr_attendance_view_form_inherit" model="ir.ui.view">
+            <field name="name">hr.attendance.view.form.inherit</field>
+            <field name="model">hr.attendance</field>
+            <field name="inherit_id" ref="hr_attendance.hr_attendance_view_form"/>
+            <field name="arch" type="xml">
+                <xpath expr="//field[@name='worked_hours']" position="after">
+                    <field name="status" readonly="False"/>
+                    <field name="day" readonly="1"/>
+                </xpath>
+            </field>
+        </record>
+
+<!--        &lt;!&ndash; Inherited hr.leave view form &ndash;&gt;-->
+<!--        <record id="hr_leave_view_form_inherited" model="ir.ui.view">-->
+<!--            <field name="name">hr.leave.view.form.inherited</field>-->
+<!--            <field name="model">hr.leave</field>-->
+<!--            <field name="inherit_id" ref="hr_holidays.hr_leave_view_form"/>-->
+<!--            <field name="arch" type="xml">-->
+<!--                <xpath expr="//label[@for='request_unit_half']" position="replace">-->
+<!--                    <label for="request_unit_half" string=""/>-->
+<!--                </xpath>-->
+<!--                <xpath expr="//field[@name='request_unit_half']" position="replace">-->
+<!--                    <field name="request_unit_half" class="oe_inline" invisible="True"/>-->
+<!--                </xpath>-->
+<!--            </field>-->
+<!--        </record>-->
+
+        <!-- Another hr.leave view form modification -->
+<!--        <record id="hr_leave_view_inherited" model="ir.ui.view">-->
+<!--            <field name="name">hr.leave.view.inherited</field>-->
+<!--            <field name="model">hr.leave</field>-->
+<!--            <field name="inherit_id" ref="hr_holidays.hr_leave_view_form"/>-->
+<!--            <field name="arch" type="xml">-->
+<!--                <xpath expr="//label[@for='request_unit_half']" position="replace"/>-->
+<!--                <xpath expr="//div[@name='duration_display']" position="replace"/>-->
+
+<!--                &lt;!&ndash; Group modification for custom fields &ndash;&gt;-->
+<!--                <xpath expr="//group[@name='col_left']" position="replace">-->
+<!--                    <group>-->
+<!--                        <field name="holiday_status_id" force_save="1"-->
+<!--                               domain="['|', ('requires_allocation', '=', 'no'), '&amp;', ('has_valid_allocation', '=', True), '&amp;', ('virtual_remaining_leaves', '&gt;', 0), ('max_leaves', '&gt;', '0')]"-->
+<!--                               context="{'employee_id': employee_id, 'default_date_from': date_from, 'default_date_to': date_to}"-->
+<!--                               options="{'no_create': True, 'no_open': True, 'request_type': 'leave'}"/>-->
+<!--                        <field name="date_from" invisible="True"/>-->
+<!--                        <field name="date_to" invisible="True"/>-->
+
+<!--                        <label for="request_date_from"-->
+<!--                               invisible="request_unit_half == False and request_unit_hours == False" string="Date"/>-->
+<!--                        <div class="o_row" invisible="request_unit_half == False and request_unit_hours == False">-->
+<!--                            <field name="request_date_from" class="oe_inline" string="Date"/>-->
+<!--                            <field name="request_date_from_period" invisible="request_unit_half != True"-->
+<!--                                   required="request_unit_half == True"/>-->
+<!--                        </div>-->
+
+<!--                        &lt;!&ndash; Full days: show date start/end with daterange &ndash;&gt;-->
+<!--                        <label for="request_date_from"-->
+<!--                               invisible="request_unit_half == True or request_unit_hours == True"/>-->
+<!--                        <div class="o_row" invisible="request_unit_half == True or request_unit_hours == True">-->
+<!--                            <span class="text-muted">From</span>-->
+<!--                            <field name="request_date_from" class="oe_inline"-->
+<!--                                   readonly="state not in ['draft', 'confirm']"-->
+<!--                                   required="date_from == False or date_to == False" widget="daterange"-->
+<!--                                   options="{'related_end_date': 'request_date_to'}"/>-->
+<!--                            <span class="text-muted">To</span>-->
+<!--                            <field name="request_date_to" class="oe_inline" readonly="state not in ['draft', 'confirm']"-->
+<!--                                   required="date_from == False or date_to == False" widget="daterange"-->
+<!--                                   options="{'related_end_date': 'request_date_from'}"/>-->
+<!--                        </div>-->
+
+<!--                        &lt;!&ndash; Additional custom fields and logic &ndash;&gt;-->
+<!--                        <div colspan="2" style="margin-left: -2px;">-->
+<!--                            <field name="request_unit_half" class="oe_inline"-->
+<!--                                   readonly="state not in ['draft', 'confirm']"/>-->
+<!--                            <label for="request_unit_half" string="Half-Day"/>-->
+<!--                            <field name="request_unit_hours" class="ms-5" readonly="state not in ['draft', 'confirm']"-->
+<!--                                   invisible="leave_type_request_unit != 'hour'"/>-->
+<!--                            <label for="request_unit_hours" invisible="leave_type_request_unit != 'hour'"/>-->
+<!--                        </div>-->
+
+<!--                        <label for="number_of_days_display" string="Duration"-->
+<!--                               invisible="request_unit_half == True or leave_type_request_unit == 'hour'"/>-->
+<!--                        <div name="duration_display"-->
+<!--                             invisible="request_unit_half == True or leave_type_request_unit == 'hour'">-->
+<!--                            <div invisible="request_unit_half == True or request_unit_hours == True">-->
+<!--                                <field name="number_of_days_display" class="oe_inline"/>-->
+<!--                                <span>Days</span>-->
+<!--                            </div>-->
+<!--                            <div invisible="leave_type_request_unit != 'hour'">-->
+<!--                                <field name="number_of_hours_text"/>-->
+<!--                            </div>-->
+<!--                        </div>-->
+<!--                        <field name="name" readonly="state not in ['draft', 'confirm']" widget="text"-->
+<!--                               placeholder="Add a description..."/>-->
+<!--                        <field name="user_id" invisible="True"/>-->
+<!--                        <field name="leave_type_support_document" invisible="True"/>-->
+<!--                        <label for="supported_attachment_ids" string="Supporting Document"-->
+<!--                               invisible="leave_type_support_document == False or state not in ['draft', 'confirm', 'validate1']"/>-->
+<!--                        <field name="supported_attachment_ids" widget="many2many_binary" nolabel="1"-->
+<!--                               invisible="leave_type_support_document == False or state not in ['draft', 'confirm', 'validate1']"/>-->
+<!--                    </group>-->
+<!--                </xpath>-->
+<!--            </field>-->
+<!--        </record>-->
+
+        <record id="action_get_status_previous" model="ir.actions.server">
+            <field name="name">Get Status</field>
+            <field name="model_id" ref="model_hr_attendance"/>
+            <field name="binding_model_id" ref="model_hr_attendance"/>
+            <field name="state">code</field>
+            <field name="code">
+                if records: action = records.get_status_previous()
+            </field>
+        </record>
+    </data>
+</odoo>

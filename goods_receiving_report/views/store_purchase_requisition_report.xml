@@ -1,0 +1,139 @@
+<odoo>
+    <template id="tijaarat_store_purchase_requisition_report_report_id">
+        <t t-call="web.html_container">
+            <t t-foreach="docs" t-as="obj">
+                <t t-call="web.external_layout">
+                    <div class="page">
+                        <h2 class="text-center">STORE PURCHASE REQUISITION</h2>
+
+                        <div class="row">
+                            <div class="col-5"></div>
+                            <div class="col-4" style="text-align:start;">
+                                <h5><strong>Project:</strong> <t t-esc="obj.project_id.name or 'N/A'"/></h5>
+                            </div>
+
+                            <div class="col-3" style="text-align:start;">
+                                <span>Date: <t t-esc="obj.request_date.strftime('%d/%m/%Y') or ''"/></span>
+                            </div>
+                        </div>
+
+
+                        <div class="row">
+                            <div class="col-4" style="text-align:start;">
+                                <strong><span>Material Required: </span></strong>
+                            </div>
+                            <div class="col-5"></div>
+
+                            <div class="col-3" style="text-align:start;">
+                                <strong><span>Sr.No.: </span></strong>
+                            </div>
+                        </div>
+
+
+                        <table class="table table-sm table-bordered" style="width: 100%;">
+                            <thead>
+                                <tr>
+                                    <th class="text-center" rowspan="2">Sr.#</th>
+                                    <th class="text-center" rowspan="2">Material Description</th>
+                                    <th class="text-center" rowspan="2">Unit</th>
+                                    <th class="text-center" colspan="4">Last Purchase</th>
+                                    <th class="text-center" colspan="3">To Date Record</th>
+                                    <th class="text-center" rowspan="2">Quantity Required</th>
+                                    <th class="text-center" rowspan="2">Quantity Approved</th>
+                                    <th class="text-center" rowspan="2">Purpose / Remarks</th>
+                                    <th class="text-center" rowspan="2">Balance to be Purchase</th>
+                                    <th class="text-center" rowspan="2">Unit Cost</th>
+                                    <th class="text-center" rowspan="2">Total Cost</th>
+                                </tr>
+                                <tr>
+                                    <th>SPR No#</th>
+                                    <th>Dated</th>
+                                    <th>Qty Received</th>
+                                    <th>Rate</th>
+                                    <th>Received</th>
+                                    <th>Consumed</th>
+                                    <th>In Stock</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <t t-set="counter" t-value="0"/>
+                                <t t-foreach="obj.requisition_line_ids" t-as="line">
+                                    <t t-set="counter" t-value="counter + 1"/>
+                                    <tr>
+                                        <td style="text-align: center;"><t t-esc="counter"/></td>
+                                        <td style="text-align: left;"><t t-esc="line.product_id.name"/></td>
+                                        <td style="text-align: center;"><t t-esc="line.uom.name"/></td>
+                                        <td style="text-align: center;"></td>
+                                        <td style="text-align: center;"><t
+                                                t-esc="obj.request_date.strftime('%d/%m/%Y')"/></td>
+                                        <td style="text-align: right;"><t t-esc="line.onhand_qty"
+                                                                          t-options='{"widget": "float", "precision": 2}'/></td>
+                                        <td style="text-align: right;"></td>
+                                        <td style="text-align: right;"></td>
+                                        <td style="text-align: right;"></td>
+                                        <td style="text-align: right;"></td>
+                                        <td style="text-align: right;"></td>
+                                        <td style="text-align: right;"><t t-esc="line.qty"
+                                                                          t-options='{"widget": "float", "precision": 2}'/></td>
+                                        <td style="text-align: left;"><t t-esc="obj.reason"/></td>
+                                        <td style="text-align: center;"><t t-esc="line.balance"
+                                                                           t-options='{"widget": "float", "precision": 2}'/></td>
+                                        <td style="text-align: right;"></td>
+                                        <td style="text-align: right;"></td>
+                                    </tr>
+                                </t>
+                                <tr>
+                                    <td colspan="13"
+                                        style="border-bottom: none; border-left: none; border-top: none;"></td>
+                                    <td colspan="2" class="text-center"><strong><span>Total Rs.</span></strong></td>
+                                    <td class="text-center"></td>
+                                </tr>
+
+                            </tbody>
+                        </table>
+                        <div class="row text-center" style="margin-top: 100px;">
+                            <div class="col-2"><span>________________</span><br/><strong>SSK</strong></div>
+                            <div class="col-2"><span>________________</span><br/><strong>SI</strong></div>
+                            <div class="col-2"><span>________________</span><br/><strong>Purchaser</strong></div>
+                            <div class="col-2"><span>________________</span><br/><strong>Project Manager</strong></div>
+                            <div class="col-2"><span>________________</span><br/><strong>GM(Proj.)</strong></div>
+                            <div class="col-2"><span>________________</span><br/><strong>MD</strong></div>
+                        </div>
+
+
+                    </div>
+                </t>
+            </t>
+        </t>
+    </template>
+
+
+    <record id="paper_format_id" model="report.paperformat">
+        <field name="name">PDC</field>
+        <field name="default" eval="True"/>
+        <field name="format">A4</field>
+        <field name="page_height">0</field>
+        <field name="page_width">0</field>
+        <field name="orientation">Landscape</field>
+        <field name="margin_top">30</field>
+        <field name="margin_bottom">8</field>
+        <field name="margin_left">2</field>
+        <field name="margin_right">2</field>
+        <field name="header_line" eval="False"/>
+        <field name="header_spacing">30</field>
+        <field name="dpi">80</field>
+    </record>
+
+    <record id="tijaarat_store_purchase_requisition_report_action_id" model="ir.actions.report">
+        <field name="name">Store Purchase Requisition</field>
+        <field name="model">material.purchase.requisition</field>
+        <field name="report_type">qweb-pdf</field>
+        <field name="report_name">goods_receiving_report.tijaarat_store_purchase_requisition_report_report_id</field>
+        <field name="binding_model_id" ref="material_purchase_requisitions.model_material_purchase_requisition"/>
+        <field name="paperformat_id" ref="goods_receiving_report.paper_format_id"/>
+        <field name="binding_type">report</field>
+    </record>
+
+
+</odoo>
+

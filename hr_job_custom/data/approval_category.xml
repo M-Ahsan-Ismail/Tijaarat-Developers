@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<odoo>
+    <!-- <record id="job_application_approval_category" model="approval.category">
+        <field name="name">Job Applications Approvals</field>
+        <field name="manager_approval">approver</field>
+        <field name="description">Approval for Job Applications</field>
+        <field name="approver_ids" eval="[(0, 0, {'user_id': admin.id})]"/>
+    </record> -->
+</odoo>

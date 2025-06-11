@@ -1,0 +1,211 @@
+<odoo>
+    <template id="tijaarat_sub_contractor_report_id">
+        <t t-call="web.html_container">
+            <t t-foreach="docs" t-as="o">
+                <t t-call="web.external_layout">
+                    <div class="page">
+                        <h1 class="text-center"><t t-esc="o.company_id.name"/></h1>
+                        <h4 class="text-center">
+                            <t t-if="o.project_id">
+                                <span><t t-esc="o.project_id.name"/></span>
+                            </t>
+                        </h4>
+                        <h3 style="text-align: center;">
+                            <span>SUB CONTRACTOR RUNNING BILL</span>
+                        </h3>
+
+                        <div class="row" style="margin-top: 15px;">
+                            <div class="col-6" style="text-align: left;">
+                                <p>
+                                    <strong>Sub Contractor Name:</strong>
+                                    <t t-esc="o.sub_contractor_id.name"/><br/>
+                                    <em>Nature of Work</em><br/>
+
+                                </p>
+                            </div>
+                            <div class="col-6" style="text-align: right;">
+                                <p>
+                                    <strong>Bill:-</strong> <t t-esc="o.name"/>
+                                    <br/>Bill for the Month of: <t t-esc="o.date_from.strftime('%B')"/> &amp; <t
+                                        t-esc="o.date_to.strftime('%B')"/> <t t-esc="o.date_from.strftime('%Y')"/>
+                                    <br/>Bill Preparation Date: <t t-esc="o.create_date.strftime('%d %B - %Y')"/>
+                                </p>
+                            </div>
+                        </div>
+
+
+                        <br/><br/>
+                        <table class="table table-sm table-bordered" style="width: 100%;">
+                            <thead>
+                                <tr>
+                                    <th class="text-center" rowspan="2">Sr.#</th>
+                                    <th class="text-center" rowspan="2">Description</th>
+                                    <th class="text-center" rowspan="2">Unit</th>
+                                    <th class="text-center" rowspan="2">Rate in Rs.</th>
+                                    <th class="text-center" colspan="3">Work Done Quantity</th>
+                                    <th class="text-center" colspan="4">To Dated</th>
+                                </tr>
+                                <tr>
+                                    <th class="text-center">Previous</th>
+                                    <th class="text-center">This Bill</th>
+                                    <th class="text-center">Todated</th>
+                                    <th class="text-center">Amount in Rs.</th>
+                                </tr>
+
+                            </thead>
+                            <tbody>
+                                <t t-set="counter" t-value="0"/>
+                                <t t-set="total_amount" t-value="0"/>
+                                <t t-foreach="o.work_lines" t-as="line">
+                                    <t t-set="counter" t-value="counter+1"/>
+                                    <t t-set="total_amount" t-value="total_amount + (line.total_amount or 0.0)"/>
+                                    <tr>
+                                        <td style="text-align: center;"><t t-esc="counter"/></td>
+                                        <td style="text-align:left"><t t-esc="line.product_id.name"/></td>
+                                        <td style="text-align:center"><t t-esc="line.uom.name"/></td>
+                                        <td style="text-align:right"><t t-esc="line.unit_price"
+                                                                        t-options='{"widget": "float", "precision": 2}'/></td>
+                                        <td style="text-align:right"><t t-esc="line.previous_work_done"
+                                                                        t-options='{"widget": "float", "precision": 2}'/></td>
+                                        <td style="text-align:right"><t t-esc="line.this_bill"
+                                                                        t-options='{"widget": "float", "precision": 2}'/></td>
+                                        <td style="text-align:right"><t t-esc="line.todated"
+                                                                        t-options='{"widget": "float", "precision": 2}'/></td>
+                                        <td style="text-align:right"><t t-esc="line.total_amount"
+                                                                        t-options='{"widget": "float", "precision": 2}'/></td>
+
+                                    </tr>
+                                </t>
+                                <tr>
+                                    <td style="text-align: center"><strong>a)</strong></td>
+                                    <td colspan="6" style="text-align: right"><strong>Value of Work Done Amount
+                                        =</strong></td>
+                                    <td style="text-align: right"><strong><t t-esc="total_amount"
+                                                                             t-options='{"widget": "float", "precision": 2}'/></strong></td>
+                                </tr>
+                                <tr>
+                                    <td style="text-align: center"><strong>b)</strong></td>
+                                    <td colspan="6" style="text-align: right"><strong>Workdone Upto Last Bill
+                                        =</strong></td>
+                                    <td style="text-align: right"><strong><t t-esc="o.sum_previous"
+                                                                             t-options='{"widget": "float", "precision": 2}'/></strong></td>
+                                </tr>
+                                <tr>
+                                    <td style="text-align: center"><strong>c)</strong></td>
+                                    <td colspan="6" style="text-align: right"><strong>Work Done This Bill
+                                        =</strong></td>
+                                    <td style="text-align: right"><strong><t t-esc="o.sum_this_bill"
+                                                                             t-options='{"widget": "float", "precision": 2}'/></strong></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                        <table class="table table-sm table-bordered" style="width: 100%;">
+                            <thead>
+                                <tr>
+                                    <th class="text-center" rowspan="2">Sr.#</th>
+                                    <th class="text-center" rowspan="2">Description</th>
+                                    <th class="text-center" rowspan="2">Upto date Bill Amount</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td style="text-align: center">1</td>
+                                    <td style="text-align: left">Value of Work Done Amount </td>
+                                    <td style="text-align: right"><t t-esc="o.sum_total_amount"
+                                                                     t-options='{"widget": "float", "precision": 2}'/></td>
+                                </tr>
+                                <tr>
+                                    <td style="text-align: center">2</td>
+                                    <td style="text-align: left">Deduction</td>
+                                    <td style="text-align: right"><t t-esc="o.total_deduction"
+                                                                     t-options='{"widget": "float", "precision": 2}'/></td>
+                                </tr>
+
+                                <t t-set="counter" t-value="2"/>
+                                <t t-set="total_amount" t-value="0.0"/> <!-- Initialize total_amount to 0.0 -->
+                                <t t-foreach="o.deduction_lines" t-as="lines">
+                                    <t t-set="counter" t-value="counter + 1"/>
+                                    <t t-set="total_amount"
+                                       t-value="total_amount + (lines.amount or 0.0)"/> <!-- Use total_amount, not amount -->
+                                    <tr>
+                                        <td style="text-align: center;"><t t-esc="counter"/></td>
+                                        <td style="text-align:left"><t t-esc="lines.description"/></td>
+                                        <td style="text-align:right"><t t-esc="lines.amount"
+                                                                        t-options='{"widget": "float", "precision": 2}'/></td>
+                                    </tr>
+                                </t>
+                                <tr>
+                                    <td style="text-align: center"><t t-esc="counter"/></td>
+                                    <td style="text-align: left">Total Deduction</td>
+                                    <td style="text-align: right"><strong><t t-esc="total_amount"
+                                                                             t-options='{"widget": "float", "precision": 2}'/></strong></td>
+                                </tr>
+                                <tr>
+                                    <td style="text-align: center"></td>
+                                    <td style="text-align: right"><strong>Net Payable Amount (1-<t t-esc="counter"/>
+                                        )</strong></td>
+                                    <td style="text-align: right"><strong><t t-esc="o.net_payable_amount"
+                                                                             t-options='{"widget": "float", "precision": 2}'/></strong></td>
+                                </tr>
+                            </tbody>
+                        </table>
+
+                        <div class="row" style="margin-top: 100px; text-align: center;">
+                            <div class="col-3">
+                                <span>_______________________</span><br/>
+                                <strong style="display: inline-block; margin-top: 5px;">Prepared By<br/>
+                                    Faiz ul Hassan (QS)</strong>
+                            </div>
+                            <div class="col-3">
+                                <span>_______________________</span><br/>
+                                <strong style="display: inline-block; margin-top: 5px;">Checked By<br/>
+                                    Site Engr.</strong>
+                            </div>
+                            <div class="col-3">
+                                <span>_______________________</span><br/>
+                                <strong style="display: inline-block; margin-top: 5px;">Recommended By<br/>
+                                    Project Manager</strong>
+                            </div>
+                            <div class="col-3">
+                                <span>_______________________</span><br/>
+                                <strong style="display: inline-block; margin-top: 5px;">Approved By<br/>
+                                    Project Director</strong>
+                            </div>
+                        </div>
+
+                    </div>
+                </t>
+            </t>
+        </t>
+    </template>
+
+
+    <record id="paper_format_id" model="report.paperformat">
+        <field name="name">PDC</field>
+        <field name="default" eval="True"/>
+        <field name="format">A4</field>
+        <field name="page_height">0</field>
+        <field name="page_width">0</field>
+        <field name="orientation">Landscape</field>
+        <field name="margin_top">30</field>
+        <field name="margin_bottom">8</field>
+        <field name="margin_left">2</field>
+        <field name="margin_right">2</field>
+        <field name="header_line" eval="False"/>
+        <field name="header_spacing">30</field>
+        <field name="dpi">80</field>
+    </record>
+
+    <record id="tijaarat_sub_contractor_report_action_id" model="ir.actions.report">
+        <field name="name">Bill Report</field>
+        <field name="model">subcontractor.bill</field>
+        <field name="report_type">qweb-pdf</field>
+        <field name="report_name">subcontractor_bill.tijaarat_sub_contractor_report_id</field>
+        <field name="binding_model_id" ref="subcontractor_bill.model_subcontractor_bill"/>
+        <field name="paperformat_id" ref="subcontractor_bill.paper_format_id"/>
+        <field name="binding_type">report</field>
+    </record>
+
+
+</odoo>
+

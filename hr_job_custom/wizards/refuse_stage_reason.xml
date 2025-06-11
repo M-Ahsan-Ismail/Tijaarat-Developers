@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!-- Maaz -->
+<odoo>
+    <record id="refuse_stage_reason_view" model="ir.ui.view">
+        <field name="name">Job Refuse confirm Wizard</field>
+        <field name="model">rejection.confirm.reason.wizard</field>
+        <field name="arch" type="xml">
+            <form string="Rejection confirm">
+              <group>
+                <field name="reason"/>
+                <field name="refused_by" widget="radio"/>
+              </group>
+              <footer>
+                <button type='object' name="stage_job_refuse" string="Confirm"/>
+              </footer>
+            </form>
+        </field>
+    </record>
+   
+</odoo>
+<!-- Maaz -->

@@ -1,0 +1,104 @@
+<odoo>
+    <data>
+        <record model="ir.ui.view" id="inherit_approval_request_view_form">
+            <field name="name">inherit approval request view form</field>
+            <field name="model">approval.request</field>
+            <field name="inherit_id" ref="approvals.approval_request_view_form"/>
+            <field name="type">form</field>
+            <field name="arch" type="xml">
+
+                <div name="button_box">
+                    <field name="request_type" invisible="1"/>
+                    <button string="Job Positions" type="object" icon="fa-file-text-o"
+                            name="open_related_hr_job"
+                            invisible="request_type != 'JobPosition'"/>
+                    <button string="Application" type="object" icon="fa-file-text-o"
+                            name="open_related_hr_applicant"
+                            invisible="request_type != 'JobApplication'"/>
+                    <button string="Employee Record" type="object" icon="fa-file-text-o"
+                            name="open_related_employee"
+                            invisible="request_type != 'EmployeePosition'"/>
+                    <button string="Goal" type="object" icon="fa-file-text-o"
+                            name="open_related_goal" invisible="request_type != 'GoalRequest'"/>
+                    <button string="Appraisal" type="object" icon="fa-file-text-o"
+                            name="open_related_appraisal" invisible="request_type != 'AppraisalRequest'"/>
+                    <button string="Contracts" type="object" icon="fa-file-text-o"
+                            name="open_related_contract" invisible="request_type != 'ContractApproval'"/>
+                    <button string="Purchase Orders" type="object" icon="fa-file-text-o"
+                            name="open_related_purchaseOrder" invisible="request_type != 'purchaseOrderRequest'"/>
+                    <button string="WFH Request" type="object" icon="fa-file-text-o"
+                            name="open_related_WFH_request" invisible="request_type != 'WFHRequest'"/>
+                    <button string="Fuel Request" type="object" icon="fa-file-text-o"
+                            name="open_related_fuel" invisible="request_type != 'fuel_upgrade_approval'"/>
+                    <button string="Budget Request" type="object" icon="fa-file-text-o"
+                            name="open_related_budget" invisible="request_type != 'BudgetApproval'"/>
+                    <button string="Payment Request" type="object" icon="fa-file-text-o"
+                            name="open_related_payment"
+                            invisible="request_type not in ['PaymentApproval1','PaymentApproval2','PaymentApproval3','PaymentApproval4','NonCashPaymentApproval']"/>
+                    <button string="Allocation" type="object" icon="fa-file-text-o"
+                            name="open_related_allocation" invisible="request_type != 'leave_allocation'"/>
+                    <button string="Payslip" type="object" icon="fa-file-text-o"
+                            name="open_related_payslip" invisible="request_type != 'payslip_approval'"/>
+<!--                    <button string="Purchase Requests" type="object" icon="fa-file-text-o"-->
+<!--                            name="open_related_purchase_request" invisible="request_type != 'PurchaseRequestApproval'"/>-->
+<!--                    <button string="PR Lines" type="object" icon="fa-file-text-o"-->
+<!--                            name="open_related_purchase_request_line"-->
+<!--                            invisible="request_type not in ['PurchaseRequestLineMGRApproval','PurchaseRequestLineCTOApproval']"/>-->
+                </div>
+
+
+                <xpath expr="//form[1]/sheet[1]/group[1]/group[@name='request_main']/field[@name='request_owner_id']"
+                       position="after">
+                    <!-- <field name="employee_position_id" string="Requested For" attrs="{'invisible': [('request_type', 'not in', ['EmployeePosition']) ]}"/> -->
+                    <field name="fuel_request_for" invisible="request_type != 'fuel_upgrade_approval'"/>
+                </xpath>
+
+                <xpath expr="//form[1]/sheet[1]/group[1]/group[@name='request_details']/field[@name='company_id']"
+                       position="after">
+                    <field name="reason_for_rejection" invisible="request_status != 'refused'" readonly='1'/>
+                    <!-- <field name="approval_type" /> -->
+                </xpath>
+
+                <xpath expr="//form/header/button[@name='action_cancel']" position="replace">
+                    <button name="action_cancel" string="Cancel" type="object"
+                            invisible="request_type in ['JobPosition','JobApplication'] or request_status in ['new','cancel'] or (not user_status or not has_access_to_request)"
+                            data-hotkey="z"/>
+                </xpath>
+
+                <xpath expr="//form/header/button[@name='action_withdraw']" position="replace">
+                    <button name="action_withdraw" string="Withdraw" type="object"
+                            invisible="request_type == 'JobPosition' or request_status == 'new' or user_status in ['waiting', 'pending','cancel'] "
+                            data-hotkey="y"/>
+                </xpath>
+
+            </field>
+        </record>
+        <record id="inherit_approval_request_view_tree" model="ir.ui.view">
+            <field name="name">inherit_approval_request.view.tree</field>
+            <field name="model">approval.request</field>
+            <field name="inherit_id" ref="approvals.approval_request_view_tree"/>
+            <field name="type">tree</field>
+            <field name="arch" type="xml">
+                <xpath expr="//tree/field[@name='request_owner_id']" position="before">
+                    <field name="request_type" invisible="1"/>
+                    <field name="employee_position_id" string="Requested For"
+                           invisible="request_type not in ['EmployeePosition','fuel_upgrade_approval']"/>
+                </xpath>
+            </field>
+        </record>
+
+        <record id="inherit_approval_category_view_form" model="ir.ui.view">
+            <field name="name">inherit.approval.category.view.form</field>
+            <field name="model">approval.category</field>
+            <field name="inherit_id" ref="approvals.approval_category_view_form"/>
+            <field name="type">form</field>
+            <field name="arch" type="xml">
+                <xpath expr="//field[@name='approval_minimum']" position="after">
+                    <field name="show_minimum_approval_amount" invisible="1"/>
+                    <field name="minimum_approval_amount"
+                           invisible="not show_minimum_approval_amount"/>
+                </xpath>
+            </field>
+        </record>
+    </data>
+</odoo>

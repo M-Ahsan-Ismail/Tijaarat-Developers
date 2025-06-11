@@ -1,0 +1,52 @@
+<odoo>
+    <data>
+        <record model="ir.ui.view" id="inherit_purchase_request_line_view">
+            <field name="name">inherit.purchase.request.line.form</field>
+            <field name="model">purchase.request.line</field>
+            <field name="inherit_id" ref="purchase_request.purchase_request_line_form"/>
+            <field name="type">form</field>
+            <field name="arch" type="xml">
+                <!-- <div name="button_box" class="oe_button_box">
+                  <button string="PRL Approvals" type="object" icon="fa-file-text-o" name="open_related_approval" />
+                </div> -->
+                <xpath expr="//field[@name='request_state']" position="replace">
+                    <field name="line_state" widget="statusbar"/>
+                </xpath>
+                <xpath expr="//group[@name='quantities']" position="replace">
+                    <div class="o_row">
+                        <group name="quantities" string="Tracking">
+                            <group>
+                                <field name="pending_qty_to_receive"/>
+                                <field name="qty_in_progress"/>
+                                <field name="qty_done"/>
+                                <field name="qty_cancelled"/>
+                            </group>
+                        </group>
+                        <group name="approval">
+                            <field name="approval_state"/>
+                            <field name="selection_vendor" domain="[('id', 'in', selection_vendor_ids)]"
+                                   readonly="approval_state != 'draft'"/>
+                            <field name="selection_vendor_ids" invisible="1"/>
+                            <button string="Submit for Manager's Approval" type="object" class="oe_highlight"
+                                    name="submit_for_approval_manager"
+                                    invisible="line_state != 'draft'"/>
+                            <button string="Withdraw Manager's Approval" type="object" class="oe_highlight"
+                                    name="action_withdraw_manager"
+                                    invisible="line_state != 'to_approve_mgr'"/>
+
+                            <button string="Submit for CTO's Approval" type="object" class="oe_highlight"
+                                    name="submit_for_approval_cto"
+                                    invisible="line_state != 'manager_approved'"/>
+                            <button string="Withdraw CTO's Approval" type="object" class="oe_highlight"
+                                    name="action_withdraw_cto"
+                                    invisible="line_state != 'to_approve_cto'"/>
+
+                            <button string="PRL Approvals" type="object" icon="fa-file-text-o"
+                                    name="open_related_approval"/>
+                        </group>
+                    </div>
+                </xpath>
+            </field>
+        </record>
+    </data>
+</odoo>

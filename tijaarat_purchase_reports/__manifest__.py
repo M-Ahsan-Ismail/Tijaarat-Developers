@@ -10,23 +10,21 @@
 Long description of module's purpose
     """,
 
-    'author': "M.Ahsan",
+    'author': "M.Rizwan & M.Ahsan",
     'website': "https://bssuniversal.com/",
 
-    # Categories can be used to filter modules in modules listing
-    # Check https://github.com/odoo/odoo/blob/15.0/odoo/addons/base/data/ir_module_category_data.xml
     # for the full list
-    'category': 'Uncategorized',
+    'category': 'Customizations',
     'version': '17.0.1.0',
+    "license": "LGPL-3",
 
     # any module necessary for this one to work correctly
-    'depends': ['base', 'purchase','purchase_requisition'],
+    'depends': ['base', 'purchase', 'purchase_requisition', 'material_purchase_requisitions','tijaarat_po_approval_workflow'],
 
     # always loaded
     'data': [
-        'report/report.xml',
         'report/tijaarat_purchase_report_template.xml',
-        'report/tijaarat_reports_comparison.xml',
+        'report/comparision_report.xml',
         'views/tijaarat_purchase_order_custom_view.xml'
 
     ],

@@ -1,0 +1,4 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_subcontractor_bill,subcontractor.bill,model_subcontractor_bill,,1,1,1,1
+access_contractor_work_done,contractor.work.done,model_contractor_work_done,,1,1,1,1
+access_contractor_deduction_advance,contractor.deduction.advance,model_contractor_deduction_advance,,1,1,1,1

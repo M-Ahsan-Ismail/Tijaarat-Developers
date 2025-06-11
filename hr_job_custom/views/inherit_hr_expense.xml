@@ -1,0 +1,28 @@
+<odoo>
+  <data>
+    <record model="ir.ui.view" id="hr_expense_hr_expense_view_form_inherit_update">
+      <field name="name">hr.expense.hr.expense.view.form.inherit.update</field>
+      <field name="model">hr.expense</field>
+      <field name="inherit_id" ref="hr_expense.hr_expense_view_form" />
+      <field name="type">form</field>
+      <field name="arch" type="xml">
+<!--        <xpath expr="//header" position="inside">-->
+<!--           <button string="Submit for approval" name="submit_for_approval_expense" type="object" invisible="expense_approval_state in ['submit_for_approval','approved','rejected']" class="oe_highlight"/>-->
+<!--          <button string="Withdraw approval" name="action_withdraw" type="object" class="oe_highlight"/>-->
+<!--        </xpath>-->
+<!--        <xpath expr="//field[@name='employee_id']" position="after">-->
+<!--            <field name='expense_approval_state'/>-->
+<!--        </xpath> -->
+
+        <xpath expr="//button[@name='action_submit_expenses'][1]" position="attributes">
+          <attribute name="string">Submit Expense</attribute>
+        </xpath>
+
+        <xpath expr="//button[@name='action_submit_expenses'][2]" position="attributes">
+          <attribute name="string">Submit Expense</attribute>
+        </xpath>
+      </field>
+    </record>
+
+  </data>
+</odoo>

@@ -1,0 +1,136 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo noupdate="1">
+    <data noupdate="1">
+        <record id="sequence_subcontractor_bill" model="ir.sequence">
+            <field name="name">Subcontractor Bill Sequence</field>
+            <field name="code">subcontractor.bill.sequence</field>
+            <field name="prefix">SBILL/%(year)s/</field>
+            <field name="padding">5</field>
+            <field name="number_increment">1</field>
+            <field name="number_next_actual">1</field>
+        </record>
+    </data>
+
+    <record id="view_subcontractor_bill_form" model="ir.ui.view">
+        <field name="name">subcontractor.bill.form</field>
+        <field name="model">subcontractor.bill</field>
+        <field name="arch" type="xml">
+            <form string="Subcontractor Bill">
+                <sheet>
+                    <div class="oe_title">
+                        <h1>
+                            <field name="name" readonly="1"/>
+                        </h1>
+                    </div>
+
+                    <group>
+                        <group string="Project">
+                            <field name="project_id"/>
+                        </group>
+                        <group string="Company">
+                            <field name="company_id" readonly="1"/>
+                        </group>
+                    </group>
+
+                    <group>
+                        <group string="Sub Contractor">
+                            <field name="sub_contractor_id"/>
+                        </group>
+                        <group string="Period">
+                            <div>
+                                <field name="date_from" class="oe_inline"/> - <field name="date_to" class="oe_inline"/>
+                            </div>
+                        </group>
+                    </group>
+
+                    <notebook>
+                        <page string="Work Lines">
+                            <field name="work_lines">
+                                <tree editable="bottom">
+                                    <field name="product_id"/>
+                                    <field name="uom" readonly="1"/>
+                                    <field name="unit_price"/>
+                                    <field name="previous_work_done"/>
+                                    <field name="this_bill"/>
+                                    <field name="todated" readonly="1"/>
+                                    <field name="total_amount" readonly="1"/>
+                                </tree>
+                            </field>
+                            <group class="oe_subtotal_footer oe_right" colspan="2">
+                                <field name="sum_total_amount" widget="monetary"/>
+                                <field name="sum_previous" widget="monetary"/>
+                                <field name="sum_this_bill" widget="monetary"/>
+                            </group>
+                            <div class="oe_clear"/>
+                        </page>
+                        <page string="Deduction &amp; Advances">
+                            <field name="deduction_lines">
+                                <tree editable="bottom">
+                                    <field name="description"/>
+                                    <field name="amount" sum="Total"/>
+                                </tree>
+                            </field>
+                        </page>
+                    </notebook>
+                </sheet>
+                <div class="oe_chatter">
+                    <field name="message_follower_ids"/>
+                    <field name="message_ids" colspan="4" nolabel="1"/>
+                </div>
+            </form>
+        </field>
+    </record>
+
+    <record id="view_subcontractor_bill_tree" model="ir.ui.view">
+        <field name="name">subcontractor.bill.tree</field>
+        <field name="model">subcontractor.bill</field>
+        <field name="arch" type="xml">
+            <tree>
+                <field name="priority" widget="priority"/>
+                <field name="name"/>
+                <field name="project_id"/>
+                <field name="sub_contractor_id"/>
+                <field name="company_id"/>
+            </tree>
+        </field>
+    </record>
+
+    <record id="view_subcontractor_bill_kanban" model="ir.ui.view">
+        <field name="name">subcontractor.bill.kanban</field>
+        <field name="model">subcontractor.bill</field>
+        <field name="arch" type="xml">
+            <kanban>
+                <field name="id"/> <!-- Required for click-to-open behavior -->
+                <field name="priority"/>
+                <field name="name"/>
+                <field name="project_id"/>
+                <field name="sub_contractor_id"/>
+                <field name="company_id"/>
+                <templates>
+                    <t t-name="kanban-box">
+                        <div t-att-style="'border-left: 5px solid ' + (priority == 'high' ? '#ff4d4f' : '#40c4ff') + '; background: linear-gradient(145deg, #f5f7fa, #e4e7eb); border-radius: 8px; box-shadow: 0 3px 6px rgba(0,0,0,0.1); margin: 8px; border: none;'">
+                            <div class="oe_kanban_content" style="padding: 12px;">
+                                <!-- Priority Stars -->
+                                <div style="float: right;">
+                                    <field name="priority" widget="priority" style="color: #ff4d4f;"/>
+                                </div>
+                                <!-- Bill Name -->
+                                <h4 style="margin: 0 0 8px; color: #1a237e; font-weight: 600; text-transform: uppercase; letter-spacing: 1px;">
+                                    <field name="name"/>
+                                </h4>
+                                <!-- Details -->
+                                <div style="font-size: 0.9em; color: #455a64;">
+                                    <div><field name="project_id"/></div>
+                                    <div><field name="sub_contractor_id"/></div>
+                                    <div><field name="company_id"/></div>
+                                </div>
+                            </div>
+                        </div>
+                    </t>
+                </templates>
+            </kanban>
+        </field>
+    </record>
+
+
+</odoo>

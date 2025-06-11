@@ -1,0 +1,126 @@
+<odoo>
+    <data noupdate="1">
+        <record id="payment_approvals" model="approval.category">
+            <field name="name">Payment Approvals</field>
+            <field name="id_char">payment_approvals</field>
+            <field name="manager_approval">approver</field>
+            <field name="requirer_document">optional</field>
+            <field name="has_partner">no</field>
+            <field name="has_date">no</field>
+            <field name="has_period">no</field>
+            <field name="has_product">no</field>
+            <field name="has_quantity">no</field>
+            <field name="has_amount">no</field>
+            <field name="has_reference">no</field>
+            <field name="has_location">no</field>
+        </record>
+    </data>
+    <data>
+        <!--    <record id="payment_approval_1" model="approval.category">-->
+        <!--      <field name="name">Payment Approval for Amounts less than or equal to 5000</field>-->
+        <!--      <field name="id_char">payment_approval_1</field>-->
+        <!--      <field name="manager_approval">approver</field>-->
+        <!--      <field name="requirer_document">optional</field>-->
+        <!--      <field name="has_partner">no</field>-->
+        <!--      <field name="has_date">no</field>-->
+        <!--      <field name="has_period">no</field>-->
+        <!--      <field name="has_product">no</field>-->
+        <!--      <field name="has_quantity">no</field>-->
+        <!--      <field name="has_amount">no</field>-->
+        <!--      <field name="has_reference">no</field>-->
+        <!--      <field name="has_location">no</field>-->
+        <!--    </record>-->
+        <!--    -->
+        <!--    <record id="payment_approval_2" model="approval.category">-->
+        <!--      <field name="name">Payment Approval for Amounts less than or equal to 50000 and greater than 5000</field>-->
+        <!--      <field name="id_char">payment_approval_2</field>-->
+        <!--      <field name="manager_approval">approver</field>-->
+        <!--      <field name="requirer_document">optional</field>-->
+        <!--      <field name="has_partner">no</field>-->
+        <!--      <field name="has_date">no</field>-->
+        <!--      <field name="has_period">no</field>-->
+        <!--      <field name="has_product">no</field>-->
+        <!--      <field name="has_quantity">no</field>-->
+        <!--      <field name="has_amount">no</field>-->
+        <!--      <field name="has_reference">no</field>-->
+        <!--      <field name="has_location">no</field>-->
+        <!--    </record>-->
+
+        <!--    <record id="payment_approval_3" model="approval.category">-->
+        <!--      <field name="name">Payment Approval for Amounts less than or equal to 100000 and greater than 50000</field>-->
+        <!--      <field name="id_char">payment_approval_3</field>-->
+        <!--      <field name="manager_approval">approver</field>-->
+        <!--      <field name="requirer_document">optional</field>-->
+        <!--      <field name="has_partner">no</field>-->
+        <!--      <field name="has_date">no</field>-->
+        <!--      <field name="has_period">no</field>-->
+        <!--      <field name="has_product">no</field>-->
+        <!--      <field name="has_quantity">no</field>-->
+        <!--      <field name="has_amount">no</field>-->
+        <!--      <field name="has_reference">no</field>-->
+        <!--      <field name="has_location">no</field>-->
+        <!--    </record>-->
+
+        <!--    <record id="payment_approval_4" model="approval.category">-->
+        <!--      <field name="name">Payment Approval for Amounts greater than 100000</field>-->
+        <!--      <field name="id_char">payment_approval_4</field>-->
+        <!--      <field name="manager_approval">approver</field>-->
+        <!--      <field name="requirer_document">optional</field>-->
+        <!--      <field name="has_partner">no</field>-->
+        <!--      <field name="has_date">no</field>-->
+        <!--      <field name="has_period">no</field>-->
+        <!--      <field name="has_product">no</field>-->
+        <!--      <field name="has_quantity">no</field>-->
+        <!--      <field name="has_amount">no</field>-->
+        <!--      <field name="has_reference">no</field>-->
+        <!--      <field name="has_location">no</field>-->
+        <!--    </record>-->
+
+        <!--    <record id="non_cash_payment_approval" model="approval.category">-->
+        <!--      <field name="name">Payment(Non Cash) Approvals</field>-->
+        <!--      <field name="description">Approval for Non Cash Payment Approvals</field>-->
+        <!--      <field name="id_char">non_cash_payment_approval</field>-->
+        <!--      <field name="manager_approval">approver</field>-->
+        <!--      <field name="requirer_document">optional</field>-->
+        <!--      <field name="has_partner">no</field>-->
+        <!--      <field name="has_date">no</field>-->
+        <!--      <field name="has_period">no</field>-->
+        <!--      <field name="has_product">no</field>-->
+        <!--      <field name="has_quantity">no</field>-->
+        <!--      <field name="has_amount">no</field>-->
+        <!--      <field name="has_reference">no</field>-->
+        <!--      <field name="has_location">no</field>-->
+        <!--    </record>-->
+
+        <record id="access_hr_employee_public_portal" model="ir.model.access">
+            <field name="name">hr.employee_public_portal</field>
+            <field name="model_id" ref="hr.model_hr_employee_public"/>
+            <field name="group_id" ref="base.group_portal"/>
+            <field name="perm_read" eval="1"/>
+            <field name="perm_write" eval="0"/>
+            <field name="perm_create" eval="0"/>
+            <field name="perm_unlink" eval="0"/>
+        </record>
+
+
+        <record id="access_hr_expense_portal" model="ir.model.access">
+            <field name="name">hr.expense.portal</field>
+            <field name="model_id" ref="hr_expense.model_hr_expense"/>
+            <field name="group_id" ref="base.group_portal"/>
+            <field name="perm_read" eval="1"/>
+            <field name="perm_write" eval="1"/>
+            <field name="perm_create" eval="1"/>
+            <field name="perm_unlink" eval="0"/>
+        </record>
+        <!-- <record id="edit_false_at_submit_for_approval" model="ir.rule">
+          <field name="name"> Ristrict user until approve </field>
+          <field name="model_id" ref="model_hr_job" />
+          <field name="groups" eval="[(4, ref('base.group_user'))]" />
+          <field name="perm_read" eval="True" />
+          <field name="perm_write" eval="True" />
+          <field name="perm_create" eval="True" />
+          <field name="perm_unlink" eval="True" />
+          <field name="domain_force"> [('state', '!=', 'submit_for_approval')] </field> -->
+        <!-- </record> -->
+    </data>
+</odoo>

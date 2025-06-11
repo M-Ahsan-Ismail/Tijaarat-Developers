@@ -1,0 +1,65 @@
+<odoo>
+    <record id="action_subcontractor_bill" model="ir.actions.act_window">
+        <field name="name">Subcontractor Bills</field>
+        <field name="res_model">subcontractor.bill</field>
+        <field name="view_mode">tree,kanban,form</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                Create a new Subcontractor Bill to track work and deductions.
+            </p>
+        </field>
+    </record>
+    <record id="action_subcontractor_work_done" model="ir.actions.act_window">
+        <field name="name">Work Done</field>
+        <field name="res_model">contractor.work.done</field>
+        <field name="view_mode">tree,form</field>
+        <field name="domain">[('subcontractor_id', '!=', False)]</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                View and manage contractor work done records.
+            </p>
+        </field>
+    </record>
+
+    <record id="action_subcontractor_deduction_advance" model="ir.actions.act_window">
+        <field name="name">Deduction &amp; Advances</field>
+        <field name="res_model">contractor.deduction.advance</field>
+        <field name="view_mode">tree,form</field>
+        <field name="domain">[('subcontractor_id', '!=', False)]</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                View and manage contractor deduction and advance records.
+            </p>
+        </field>
+    </record>
+
+    <menuitem id="base_menu_subcontractor_bill"
+              web_icon="subcontractor_bill,static/description/icon.png"
+              name="Subcontractor Bills"
+              sequence="5"/>
+
+    <menuitem id="menu_subcontractor_bill"
+              name="Subcontractor Bills"
+              parent="base_menu_subcontractor_bill"
+              action="action_subcontractor_bill"
+              sequence="1"/>
+
+    <menuitem id="menu_subcontractor_configuration"
+              name="Configuration"
+              parent="base_menu_subcontractor_bill"
+              sequence="2"/>
+
+    <menuitem id="menu_subcontractor_work_done"
+              name="Work Done"
+              parent="menu_subcontractor_configuration"
+              action="action_subcontractor_work_done"
+              sequence="1"/>
+
+    <menuitem id="menu_subcontractor_deduction_advance"
+              name="Deduction &amp; Advances"
+              parent="menu_subcontractor_configuration"
+              action="action_subcontractor_deduction_advance"
+              sequence="2"/>
+
+
+</odoo>

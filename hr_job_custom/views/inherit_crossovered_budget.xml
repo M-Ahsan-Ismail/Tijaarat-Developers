@@ -1,0 +1,55 @@
+<odoo>
+    <data>
+        <record model="ir.ui.view" id="inherit_crossovered_budget_view">
+            <field name="name">Inherited Crossovered Budget Form</field>
+            <field name="model">crossovered.budget</field>
+            <field name="inherit_id" ref="account_budget.crossovered_budget_view_form"/>
+            <field name="type">form</field>
+            <field name="arch" type="xml">
+                <xpath expr="//header" position='replace'>
+                    <header>
+                        <button string="Confirm" name="action_budget_confirm"
+                                invisible="state != 'draft' or approval_state != 'approved'"
+                                type="object" class="oe_highlight"/>
+                        <!-- <button string="Approve" name="action_budget_validate" attrs="{'invisible': [('state','!=','pending'),'|',('approval_state', '!=', 'approved'),('state','in',['done'])]}" states="confirm" type="object" class="oe_highlight"/> -->
+                        <!-- <button string="Done" name="action_budget_done" states="validate" type="object" class="oe_highlight"/> -->
+                        <button string="Reset to Draft" name="action_budget_draft" invisible="state != 'cancel'" type="object"/>
+                        <!-- <button string="Cancel Budget" name="action_budget_cancel" states="confirm,validate" type="object"/> -->
+                        <button string="Submit for Approval" type="object" class="oe_highlight"
+                                name="submit_for_approval" invisible="approval_state != 'draft'"/>
+                        <button string="Withdraw Approval" type="object" class="oe_highlight" name="action_withdraw"
+                                invisible="approval_state in ['draft','approved','rejected']"/>
+                        <button string="Extension" type="object" class="oe_highlight" name="extend_budget_wizard"
+                                invisible="state != 'confirm'"/>
+
+                        <field name="state" widget="statusbar"/>
+                        <field name="budget_state" invisible='1'/>
+                    </header>
+                </xpath>
+
+
+                <xpath expr="//form[1]/sheet[1]/div[not(@name)][1]" position="before">
+                    <div name="button_box" class="oe_button_box">
+                        <button string="Approval" type="object" icon="fa-file-text-o"
+                                name="open_related_approval"/>
+                    </div>
+                </xpath>
+
+
+                <xpath expr="//field[@name='user_id']" position="after">
+                    <field name="approval_state"/>
+                    <field name="parent_budget" invisible="not isExtended" readonl="1"/>
+                </xpath>
+
+                <xpath expr="//form[1]/sheet[1]/group[1]/group[2]/div[1]" position="after">
+                    <field name="isExtended" invisible="1"/>
+                    <field name="extension_reason"
+                           invisible="not isExtended"
+                           required="isExtended"/>
+                    <field name="extension_count" invisible="1"/>
+                </xpath>
+
+            </field>
+        </record>
+    </data>
+</odoo>

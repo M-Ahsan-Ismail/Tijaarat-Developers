@@ -1,0 +1,91 @@
+<odoo>
+    <data>
+        <record model="ir.ui.view" id="inherit_purchase_res_config_settings_view">
+            <field name="name">inherit.purchase.res.config.settings.view</field>
+            <field name="model">res.config.settings</field>
+            <field name="inherit_id" ref="purchase.res_config_settings_view_form_purchase"/>
+            <field name="type">form</field>
+            <field name="arch" type="xml">
+                <xpath expr="//setting[@id='po_order_approval']" position="replace">
+                    <setting id="po_order_approval" company_dependent="1"
+                             help="Request managers to approve orders above a minimum amount">
+                        <field name="po_order_approval"/>
+                        <div class="content-group" invisible="not po_order_approval">
+                            <div class="row mt16">
+                                <label for="minimum_approval_amount" class="col-lg-4 o_light_label"/>
+                                <field name="minimum_approval_amount"/>
+                            </div>
+                        </div>
+                    </setting>
+                </xpath>
+                <!--          <div class="row mt16 o_settings_container" name="purchase_setting_container">-->
+                <!--              <div class="col-12 col-lg-6 o_setting_box" id="po_order_approval">-->
+                <!--              <div class="o_setting_left_pane">-->
+                <!--                  <field name="po_order_approval"/>-->
+                <!--              </div>-->
+                <!--              <div class="o_setting_right_pane">-->
+                <!--                  <label for="po_order_approval" string="Set Minimum amount for Purchase Order Approval"/>-->
+                <!--                  <span class="fa fa-lg fa-building-o" title="Values set here are company-specific." aria-label="Values set here are company-specific." groups="base.group_multi_company" role="img"/>-->
+                <!--                  <div class="text-muted">-->
+                <!--                      Set a minimum amount that necessitates an approval for a Purchase Order regardless of whether it's for an employee or not.-->
+                <!--                  </div>-->
+                <!--                  <div class="content-group" invisible="not po_order_approval">-->
+                <!--                      <div class="row mt16">-->
+                <!--                          <field name="minimum_approval_amount"/>-->
+                <!--                      </div>-->
+                <!--                  </div>-->
+                <!--              </div>-->
+                <!--            </div>-->
+                <!--              <div class="col-12 col-lg-6 o_setting_box" id="automatic_lock_confirmed_orders">-->
+                <!--                  <div class="o_setting_left_pane">-->
+                <!--                      <field name="lock_confirmed_po"/>-->
+                <!--                  </div>-->
+                <!--                  <div class="o_setting_right_pane">-->
+                <!--                      <label for="lock_confirmed_po"/>-->
+                <!--                      <div class="text-muted">-->
+                <!--                          Automatically lock confirmed orders to prevent editing-->
+                <!--                      </div>-->
+                <!--                  </div>-->
+                <!--              </div>-->
+                <!--              <div class="col-12 col-lg-6 o_setting_box" id="get_order_warnings">-->
+                <!--                  <div class="o_setting_left_pane">-->
+                <!--                      <field name="group_warning_purchase"/>-->
+                <!--                  </div>-->
+                <!--                  <div class="o_setting_right_pane">-->
+                <!--                      <label for="group_warning_purchase" string="Warnings"/>-->
+                <!--                      <div class="text-muted">-->
+                <!--                          Get warnings in orders for products or vendors-->
+                <!--                      </div>-->
+                <!--                  </div>-->
+                <!--              </div>-->
+                <!--              <div class="col-12 col-lg-6 o_setting_box" id="manage_purchase_agreements" title="Calls for tenders are when you want to generate requests for quotations with several vendors for a given set of products to compare offers.">-->
+                <!--                  <div class="o_setting_left_pane">-->
+                <!--                      <field name="module_purchase_requisition"/>-->
+                <!--                  </div>-->
+                <!--                  <div class="o_setting_right_pane">-->
+                <!--                      <label for="module_purchase_requisition"/>-->
+                <!--                      <a href="https://www.odoo.com/documentation/16.0/applications/inventory_and_mrp/purchase/manage_deals/agreements.html" title="Documentation" class="o_doc_link" target="_blank"/>-->
+                <!--                      <div class="text-muted">-->
+                <!--                          Manage your purchase agreements (call for tenders, blanket orders)-->
+                <!--                      </div>-->
+                <!--                      <div class="content-group" attrs="{'invisible': [('module_purchase_requisition', '=', False)]}">-->
+                <!--                          <div id="use_purchase_requisition"/>-->
+                <!--                      </div>-->
+                <!--                  </div>-->
+                <!--              </div>-->
+                <!--              <div class="col-12 col-lg-6 o_setting_box" id="auto_receipt_reminder">-->
+                <!--                  <div class="o_setting_left_pane">-->
+                <!--                      <field name="group_send_reminder"/>-->
+                <!--                  </div>-->
+                <!--                  <div class="o_setting_right_pane">-->
+                <!--                      <label for="group_send_reminder"/>-->
+                <!--                      <div class="text-muted">-->
+                <!--                          Automatically remind the receipt date to your vendors-->
+                <!--                      </div>-->
+                <!--                  </div>-->
+                <!--              </div>-->
+                <!--          </div>-->
+            </field>
+        </record>
+    </data>
+</odoo>

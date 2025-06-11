@@ -1,0 +1,48 @@
+<odoo>
+    <data>
+        <record id="view_hr_leave_allocation_form_inherit" model="ir.ui.view">
+            <field name="name">hr.leave.allocation.form.inherit</field>
+            <field name="model">hr.leave.allocation</field>
+            <field name="inherit_id" ref="hr_holidays.hr_leave_allocation_view_form_manager"/>
+            <field name="arch" type="xml">
+<!--                <xpath expr="//button[@name='action_confirm']" position="attributes">-->
+<!--                    <attribute name="invisible">1</attribute>-->
+<!--                </xpath>-->
+                <xpath expr="//button[@name='action_refuse']" position="attributes">
+                    <attribute name="invisible">1</attribute>
+                </xpath>
+                <xpath expr="//button[@name='action_validate']" position="attributes">
+                    <attribute name="invisible">1</attribute>
+                </xpath>
+<!--                <xpath expr="//button[@name='action_draft']" position="attributes">-->
+<!--                    <attribute name="invisible">1</attribute>-->
+<!--                </xpath>-->
+            </field>
+        </record>
+
+        <record model="ir.ui.view" id="view_hr_leave_allocation_approval_form_inherit">
+            <field name="name">hr.leave.allocation.approval.form.inherit</field>
+            <field name="model">hr.leave.allocation</field>
+            <field name="inherit_id" ref="hr_holidays.hr_leave_allocation_view_form_manager" />
+            <field name="type">form</field>
+            <field name="arch" type="xml">
+                <header>
+                <field name="allocation_state" invisible='1'/>
+                <button string="Submit for Approval" type="object" class="oe_highlight"
+                    name="submit_for_approval" invisible="allocation_state != 'draft'"/>
+
+                <button string="Withdraw Approval" type="object" class="oe_highlight"
+                    name="action_withdraw"
+                        invisible="allocation_state in ['draft','approved','rejected']"/>
+                </header>
+                <div name="button_box" class="oe_button_box">
+                    <button string="Allocation Approvals" type="object" icon="fa-file-text-o"
+                    name="open_related_approval" />
+                </div>
+                  <xpath expr="//field[@name='employee_ids']" position="after">
+                        <field name="allocation_state" string="Allocation State" readonly="1"/>
+                  </xpath>
+            </field>
+        </record>
+    </data>
+</odoo>

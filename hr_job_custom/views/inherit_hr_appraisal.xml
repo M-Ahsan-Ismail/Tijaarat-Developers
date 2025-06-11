@@ -1,0 +1,55 @@
+<odoo>
+    <data>
+        <record model="ir.ui.view" id="inherit_hr_appraisal_view">
+            <field name="name">inherit Hr Appraisal form</field>
+            <field name="model">hr.appraisal</field>
+            <field name="inherit_id" ref="hr_appraisal.view_hr_appraisal_form"/>
+            <field name="type">form</field>
+            <field name="arch" type="xml">
+                <header>
+                    <field name="approval_state" invisible='1'/>
+                    <button string="Submit for Approval" type="object" class="oe_highlight"
+                            name="submit_for_approval" invisible="approval_state != 'draft'"/>
+
+                    <button string="Withdraw Approval" type="object" class="oe_highlight"
+                            name="action_withdraw"
+                            invisible="approval_state in ['draft','approved','rejected']"/>
+                </header>
+                <div name="button_box" class="oe_button_box">
+                    <button string="Approval" type="object" icon="fa-file-text-o"
+                            name="open_related_approval"/>
+                </div>
+
+
+                <xpath expr="//button[@name='action_done']" position="attributes">
+                    <attribute name="invisible">state != 'pending' and (approval_state != 'approved' or state == 'done')</attribute>
+                </xpath>
+                <xpath expr="//button[@name='action_confirm']" position="attributes">
+                    <!-- ### Changes By Huzaifa | Because Confirm Button not hiding on confirmed state -->
+                    <attribute name="invisible">approval_state != 'approved' or state in ['done', 'pending', 'cancel']</attribute>
+                    <!-- <attribute name="attrs">{'invisible': [('state','not in',['draft','pending','cancel']),'|',('approval_state', '!=', 'approved'),('state','in',['done','pending'])]}</attribute> -->
+                </xpath>
+                <xpath expr="//field[@name='state']" position="attributes">
+                    <attribute name="invisible">1</attribute>
+                </xpath>
+
+                <xpath expr="//field[@name='department_id']" position="before">
+                    <field name="approval_state"/>
+                    <!-- <field name="manager_rating" widget="radio"/> -->
+                </xpath>
+
+                <xpath expr="//widget[@name='web_ribbon']" position="before">
+                    <widget name="web_ribbon" title="Done" bg_color="bg-success"
+                            invisible="state != 'done'"/>
+                </xpath>
+
+                <xpath expr="//field[@name='date_close']" position="after">
+<!--                    <field name="avg_manager_rating" groups='ol_goals_on_appraisal.manager_rating_on_goals_group'/>-->
+                    <field name="avg_manager_rating"/>
+                    <field name="avg_employee_rating"/>
+                </xpath>
+
+            </field>
+        </record>
+    </data>
+</odoo>

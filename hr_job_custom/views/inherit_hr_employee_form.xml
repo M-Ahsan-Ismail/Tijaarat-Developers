@@ -1,0 +1,99 @@
+<odoo>
+    <data>
+        <record model="ir.ui.view" id="inherit_hr_employee_form">
+            <field name="name">inherit hr employee form</field>
+            <field name="model">hr.employee</field>
+            <field name="inherit_id" ref="hr.view_employee_form"/>
+            <field name="type">form</field>
+            <field name="arch" type="xml">
+                <div name="button_box">
+                    <button string="Approval About Position" type="object" icon="fa-file-text-o"
+                            name="open_related_approval"/>
+                </div>
+                <xpath expr="//page[@name='hr_settings']/group/group[@name='active_group']" position="replace">
+                    <group>
+                        <field name="employee_type"/>
+                        <field name="user_id" string="Related User"
+                               context="{'allow_create_employee': False, 'default_create_employee': False}"/>
+                    </group>
+
+                    <group>
+                        <field name="isNewEmployee" invisible="1"/>
+                        <field name="position_type" readonly="not isNewEmployee"/>
+                        <field name="state" invisible="1"/>
+                        <!-- <field name="change_position" attrs="{'invisible': [('isNewEmployee','=', True)], 'readonly':[('state','=','submit_for_approval')]}"/> -->
+                        <field name="change_position" readonly="state == 'submit_for_approval'"/>
+                        <field name="pin2"></field>
+                        <field name="pin3"></field>
+                        <field name="emergency_relation"></field>
+                        <field name="insurance_father_name"></field>
+                        <div class="">
+                            <field name="show_submit_button" invisible="1"/>
+
+                            <button name="submit_for_approval" string="Submit For Approval" type="object"
+                                    invisible="show_submit_button != True or state == 'submit_for_approval'"/>
+                            <button name="action_withdraw" string="Withdraw Approval Request" type="object"
+                                    invisible="state in ['draft','approved','rejected']"/>
+                        </div>
+                        <field name="state" readonly="1" invisible="state in ['draft','approved','rejected']"/>
+                    </group>
+
+                </xpath>
+
+                <xpath expr="//field[@name='eobi']" position="after">
+                    <field name="job_description"/>
+                    <field name="bonus_type" widget="many2many_tags"/>
+                </xpath>
+
+                <xpath expr="//field[@name='department_id']" position="after">
+                    <field name="id_card_number" readonly="1"/>
+                    <field name="joining_date"/>
+                </xpath>
+            </field>
+        </record>
+
+        <record id="employee_extension_inherit_module_name" model="ir.ui.view">
+            <field name="name">hr.employee.contract.button.ext</field>
+            <field name="model">hr.employee</field>
+            <field name="inherit_id" ref="hr_contract.hr_hr_employee_view_form2"/>
+            <field name="arch" type="xml">
+                <xpath expr="//div[@name='button_box']" position="inside">
+                    <button name="action_open_contract_history" class="oe_stat_button" icon="fa-book" type="object"
+                            groups="hr_contract.group_hr_contract_manager"
+                            invisible="employee_type not in ['employee', 'student', 'trainee','permanent_employee','emp_with_probabtion', '3_month_internshio','consultant']">
+                        <div invisible="not first_contract_date" class="o_stat_info">
+                            <span class="o_stat_text text-success"
+                                  invisible="contract_warning" title="In Contract Since">
+                                In Contract Since</span>
+                            <span class="o_stat_value text-success"
+                                  invisible="contract_warning">
+                                <field name="first_contract_date" readonly="1"/>
+                            </span>
+                            <span class="o_stat_text text-danger"
+                                  invisible="not contract_warning" title="In Contract Since">
+                                In Contract Since
+                            </span>
+                            <span class="o_stat_value text-danger"
+                                  invisible="not contract_warning">
+                                <field name="first_contract_date" readonly="1"/>
+                            </span>
+                        </div>
+                        <div invisible="not contract_warning" class="o_stat_info">
+                            <span class="o_stat_value text-danger">
+                                <field name="contracts_count"/>
+                            </span>
+                            <span invisible="contracts_count != 1"
+                                  class="o_stat_text text-danger">
+                                Contract
+                            </span>
+                            <span invisible="contracts_count != 1" class="o_stat_text text-danger">
+                                Contracts
+                            </span>
+                        </div>
+                    </button>
+
+                </xpath>
+            </field>
+        </record>
+    </data>
+</odoo>

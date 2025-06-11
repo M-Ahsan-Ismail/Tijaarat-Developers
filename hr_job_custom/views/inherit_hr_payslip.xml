@@ -1,0 +1,46 @@
+<odoo>
+    <data>
+      <record model="ir.ui.view" id="hr_payslip_form_inherit_update">
+        <field name="name">hr.payslip.form.inherit.update</field>
+        <field name="model">hr.payslip</field>
+        <field name="inherit_id" ref="hr_payroll.view_hr_payslip_form" />
+        <field name="type">form</field>
+        <field name="arch" type="xml">
+          <xpath expr="//header" position="inside">
+                <button string="Submit for approval" name="submit_for_approval"
+                        invisible="state != 'done' or payslip_state in ['submit_for_approval', 'approved', 'rejected']"
+                        class="oe_highlight" help="Recompute the payslip lines only, not the worked days / input lines"/>
+                
+                <button string="Withdraw Approval" type="object" class="oe_highlight"
+                        name="action_withdraw"
+                        invisible="payslip_state in ['draft','new','approved','rejected']"/>
+          </xpath>
+          
+          <xpath expr="//field[@name='struct_id']" position="after">
+            <field name="payslip_state" string="Payslip Approval State" />
+          </xpath>
+          
+          <xpath expr="//header/button[@name='action_payslip_cancel']" position="replace">
+            <button string="Cancel" name="action_payslip_cancel" type="object"
+                    invisible="payslip_state not in ['draft', 'rejected']"/>
+          </xpath>
+
+          <xpath expr="//header/button[@name='refund_sheet']" position="replace">
+            <button string="Refund" name="refund_sheet" type="object"
+                    invisible="has_refund_slip or credit_note or state != 'paid'"/>
+          </xpath>
+          <xpath expr="//button[@name='action_open_attendances']" position="after">
+            <button string="Payslip Approvals" type="object" icon="fa-file-text-o"
+              name="open_related_approval" />
+          </xpath>
+
+<!--          <xpath expr="//button[@name='action_payslip_paid']" position="replace">-->
+<!--            <button string="Mark as paid" name="action_payslip_paid" type="object" states="done" class="oe_highlight"-->
+<!--                    invisible="payslip_state in ['submit_for_approval','draft']"/>-->
+<!--          </xpath>-->
+        </field>
+      </record>
+    </data>
+  </odoo>
+
+  

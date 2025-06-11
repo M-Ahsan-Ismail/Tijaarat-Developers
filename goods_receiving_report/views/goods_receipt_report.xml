@@ -1,0 +1,150 @@
+<odoo>
+    <template id="tijaarat_goods_receiving_report_id">
+        <t t-call="web.html_container">
+            <t t-foreach="docs" t-as="obj">
+                <t t-call="web.external_layout">
+                    <div class="page">
+                        <h1 class="text-center"><ul>Goods Receiving Report</ul></h1>
+                        <h3 class="text-center"><span><strong>Project:</strong></span>
+                            <t t-if="obj.project_id">
+                                <span><t t-esc="obj.project_id.name"/></span>
+                            </t>
+                        </h3>
+                        <br/><br/>
+                        <div style="display: flex; width: 100%;">
+                            <!-- First Table -->
+                            <table class="table table-sm table-bordered" style="width: 100%;">
+                                <thead>
+                                    <tr>
+                                        <th class="text-center" rowspan="2">Sr.#</th>
+                                        <th class="text-center" rowspan="2">Date</th>
+                                        <th class="text-center" rowspan="2">Vendor</th>
+                                        <th class="text-center" rowspan="2">Material Description</th>
+                                        <th class="text-center" rowspan="2">Unit</th>
+                                        <th class="text-center" rowspan="2">Quantity</th>
+                                        <th class="text-center" rowspan="2">Rate</th>
+                                        <th class="text-center" rowspan="2">Amount</th>
+                                        <th class="text-center" rowspan="2">Previous Rate</th>
+                                        <th class="text-center" rowspan="2">Difference</th>
+                                        <th class="text-center" colspan="4">Store Purchase
+                                            Requisition</th> <!-- This spans across 4 sub-columns -->
+                                    </tr>
+                                    <tr>
+                                        <th class="text-center">SPR No#</th>
+                                        <th class="text-center">QTY Demand</th>
+                                        <th class="text-center">Qty Till Received</th>
+                                        <th class="text-center">Qty Balance</th>
+                                    </tr>
+
+                                </thead>
+                                <tbody>
+                                    <t t-set="counter" t-value="0"/>
+                                    <t t-foreach="obj.move_line_ids_without_package" t-as="line">
+                                        <t t-set="counter" t-value="counter+1"/>
+                                        <t t-set="previous_price"
+                                           t-value="obj.get_previous(line.move_id.product_id.id)"/>
+                                        <t t-set="total_price" t-value="line.move_id.quantity * line.move_id.price"/>
+
+                                        <tr>
+                                            <td style="text-align: center;"><t t-esc="counter"/></td>
+                                            <td style="text-align:center">
+                                                <t t-if="obj.scheduled_date">
+                                                    <t t-esc="obj.scheduled_date.strftime('%d/%m/%Y')"/>
+                                                </t>
+                                            </td>
+                                            <td style="text-align:center"><t t-esc="obj.partner_id.name"/></td>
+                                            <td style="text-align:left"><t t-esc="line.move_id.product_id.name"/></td>
+                                            <td style="text-align:center"><t t-esc="line.move_id.product_uom.name"/></td>
+                                            <td style="text-align:right"><t t-esc="line.move_id.quantity"
+                                                   t-options='{"widget": "float", "precision": 2}'/></td>
+                                            <td style="text-align:right"><t t-esc="line.move_id.price"
+                                                   t-options='{"widget": "float", "precision": 2}'/></td>
+                                            <td style="text-align:right">
+                                                <t t-esc="total_price" t-options='{"widget": "float", "precision": 2}'/>
+                                            </td>
+                                            <td style="text-align:right">
+                                                <t t-esc="previous_price"
+                                                   t-options='{"widget": "float", "precision": 2}'/>
+                                            </td>
+                                            <td style="text-align:right"><t t-esc="total_price - previous_price"
+                                                   t-options='{"widget": "float", "precision": 2}'/></td>
+                                            <td></td>
+                                            <td style="text-align:right">
+                                                <t t-esc="line.move_id.product_uom_qty"
+                                                   t-options='{"widget": "float", "precision": 2}'/>
+
+                                            </td>
+                                            <td style="text-align:right"><t t-esc="line.move_id.quantity"
+                                                   t-options='{"widget": "float", "precision": 2}'/></td>
+                                            <td style="text-align:right"><t t-esc="line.move_id.product_uom_qty - line.move_id.quantity"
+                                                   t-options='{"widget": "float", "precision": 2}'/></td>
+
+                                        </tr>
+                                    </t>
+                                </tbody>
+
+
+                            </table>
+
+                        </div>
+                        <br/><br/><br/>
+
+                        <div class="row" style="margin-top: 100px; text-align: center;">
+                            <div class="col-3">
+                                <span>_______________________</span><br/>
+                                <strong style="display: inline-block; margin-top: 5px;">SSk</strong>
+                            </div>
+                            <div class="col-2">
+                                <span>_______________________</span><br/>
+                                <strong style="display: inline-block; margin-top: 5px;">SI</strong>
+                            </div>
+                            <div class="col-2">
+                                <span>_______________________</span><br/>
+                                <strong style="display: inline-block; margin-top: 5px;">Project Manager</strong>
+                            </div>
+                            <div class="col-2">
+                                <span>_______________________</span><br/>
+                                <strong style="display: inline-block; margin-top: 5px;">GM(Proj.)</strong>
+                            </div>
+                            <div class="col-3">
+                                <span>_______________________</span><br/>
+                                <strong style="display: inline-block; margin-top: 5px;">MD</strong>
+                            </div>
+                        </div>
+
+                    </div>
+                </t>
+            </t>
+        </t>
+    </template>
+
+
+    <record id="paper_format_id" model="report.paperformat">
+        <field name="name">PDC</field>
+        <field name="default" eval="True"/>
+        <field name="format">A4</field>
+        <field name="page_height">0</field>
+        <field name="page_width">0</field>
+        <field name="orientation">Landscape</field>
+        <field name="margin_top">30</field>
+        <field name="margin_bottom">8</field>
+        <field name="margin_left">2</field>
+        <field name="margin_right">2</field>
+        <field name="header_line" eval="False"/>
+        <field name="header_spacing">30</field>
+        <field name="dpi">80</field>
+    </record>
+
+    <record id="tijaarat_goods_receiving_report_action_id" model="ir.actions.report">
+        <field name="name">Goods Receiving Report</field>
+        <field name="model">stock.picking</field>
+        <field name="report_type">qweb-pdf</field>
+        <field name="report_name">goods_receiving_report.tijaarat_goods_receiving_report_id</field>
+        <field name="binding_model_id" ref="stock.model_stock_picking"/>
+        <field name="paperformat_id" ref="goods_receiving_report.paper_format_id"/>
+        <field name="binding_type">report</field>
+    </record>
+
+
+</odoo>
+

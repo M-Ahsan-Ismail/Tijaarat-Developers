@@ -1,0 +1,55 @@
+<odoo>
+    <data>
+        <record model="ir.ui.view" id="inherit_hr_contract_views">
+            <field name="name">inherit Hr Contract form</field>
+            <field name="model">hr.contract</field>
+            <field name="inherit_id" ref="hr_contract.hr_contract_view_form"/>
+            <field name="type">form</field>
+            <field name="arch" type="xml">
+                <header>
+                    <field name="approval_state" invisible='1'/>
+                    <button string="Submit for Approval" type="object" class="oe_highlight"
+                            name="submit_for_contract_approval" invisible="approval_state != 'draft'"/>
+
+                    <button string="Withdraw Approval" type="object" class="oe_highlight"
+                            name="action_withdraw"
+                            invisible="approval_state in ['draft','approved','rejected']"/>
+                </header>
+                <div name="button_box" class="oe_button_box">
+                    <button string="Contract Approvals" type="object" icon="fa-file-text-o"
+                            name="open_related_contract_approval"/>
+                </div>
+                <xpath expr="//form[1]/header[1]/field[@name='state'][2]" position="attributes">
+                    <attribute name="invisible">approval_state != 'approved'</attribute>
+                </xpath>
+                <xpath expr="//form[1]/sheet/group/group[@name='top_info_right']/field[@name='hr_responsible_id']"
+                       position="before">
+                    <field name="approval_state"/>
+                </xpath>
+                <xpath expr="//field[@name='eobi']" position="after">
+                    <field name='extend_internship_probation' invisible="1"/>
+                    <field name='extend_till'
+                           invisible="not extend_internship_probation"
+                           required="extend_internship_probation"/>
+                    <field name='reason'
+                           invisible="not extend_internship_probation"
+                           required="extend_internship_probation"/>
+                </xpath>
+                <xpath expr="//field[@name='work_entry_source']" position="after">
+                    <field name="related_employee_type" invisible="1"/>
+                    <field name="is_internship_end" invisible="1"/>
+                    <field name="is_probation_end" invisible="1"/>
+
+                    <field name="probation_end_date"
+                           invisible="related_employee_type not in ['permanent_employee','emp_with_probabtion']"
+                           readonly="1"/>
+                    <field name="probation_remarks" invisible="not is_probation_end"/>
+
+                    <field name="internship_end_date" readonly="1"
+                           invisible="related_employee_type != '3_month_internshio'"/>
+                    <field name="internship_remarks" invisible="not is_internship_end"/>
+                </xpath>
+            </field>
+        </record>
+    </data>
+</odoo>

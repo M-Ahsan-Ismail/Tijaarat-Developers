@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<odoo>
+    <record id="rejection_confirm_wizard_view" model="ir.ui.view">
+        <field name="name">Job Rejection confirm Wizard</field>
+        <field name="model">rejection.confirm.reason.wizard</field>
+        <field name="arch" type="xml">
+            <form string="Rejection confirm">
+              <group>
+                <field name="reason"/>
+              </group>
+              <footer>
+                <button type='object' name="confirm_refuse" string="Confirm"/>
+              </footer>
+            </form>
+        </field>
+    </record>
+   
+</odoo>

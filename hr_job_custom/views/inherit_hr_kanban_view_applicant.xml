@@ -1,0 +1,29 @@
+<odoo>
+  <data>
+    <record model="ir.ui.view" id="inherit_hr_kanban_view_applicant">
+      <field name="name">inherit hr kanban view applicant</field>
+      <field name="model">hr.applicant</field>
+      <field name="inherit_id" ref="hr_recruitment.hr_kanban_view_applicant" />
+      <field name="type">kanban</field>
+      <field name="arch" type="xml">
+        <xpath expr="//field[@name='categ_ids']" position="after">
+          <field name="show_submit_Button" invisible="1"/>
+          <field name='state' invisible='1'/>
+          <button type="object" name="submit_for_approval" string="Submit For Approval" class="oe_highlight"
+                  invisible="not show_submit_Button or state in ['submit_for_approval', 'approved', 'rejected']"
+
+          />
+          <p invisible="state != 'submit_for_approval'"
+          class="text-warning"
+          >Submited</p>
+          <p invisible="state != 'approved'"
+          class="text-success"
+          >Approved</p>
+          <p invisible="state != 'rejected'"
+          class="text-danger"
+          >Rejected</p>
+          </xpath>
+      </field>
+    </record> 
+  </data>
+</odoo>

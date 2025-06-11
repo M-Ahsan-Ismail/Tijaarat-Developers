@@ -1,0 +1,43 @@
+<odoo>
+  <data>
+    <record model="ir.ui.view" id="inherit_hr_job_view">
+      <field name="name">inherit hr job form</field>
+      <field name="model">hr.job</field>
+      <field name="inherit_id" ref="hr.view_hr_job_form" />
+      <field name="type">form</field>
+      <field name="arch" type="xml">
+        <xpath expr="//field[@name='company_id']" position="after">
+
+          <header>
+
+            <button string="Submit for Approval" type="object" class="oe_highlight"
+              name="submit_for_approval" invisible="state != 'draft'"/>
+
+              <button string="Withdraw Approval" type="object" class="oe_highlight"
+              name="action_withdraw" invisible="state in ['draft','approved','rejected']"/>
+
+          </header>
+        </xpath>
+        <div name="button_box">
+          <button string="Approval" type="object" icon="fa-file-text-o"
+            name="open_related_approval" />
+        </div>
+        <xpath
+          expr="//form[1]/sheet[1]/notebook[1]/page[@name='recruitment_page']/group[1]/group[@name='recruitment2']/label[1]"
+          position="before">
+          <field name="state" readonly='1' />
+        </xpath>
+
+        <!-- Adding an Employment Type Selection field -->
+        <xpath expr="//div[@name='alias_def']" position="after">
+          <field name="employment_type" string="Employment Type"/>
+        </xpath>
+        
+        <!-- Renaming contract_type_id to "Contract Type" from "Employment Type" -->
+        <xpath expr="//field[@name='contract_type_id']" position="replace">
+          <field name="contract_type_id" string="Contract Type" invisible='1'/>
+        </xpath>
+      </field>
+    </record>
+  </data>
+</odoo>

@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!-- Karimdad -->
+<odoo>
+    <record id="extend_button_reason_view" model="ir.ui.view">
+        <field name="name">Extend Budget confirm Wizard</field>
+        <field name="model">rejection.confirm.reason.wizard</field>
+        <field name="arch" type="xml">
+            <form string="Extend Budget">
+              <group>
+                <field name="reason"/>
+              </group>
+              <footer>
+                <button type='object' name="extend_budget_redirect" string="Confirm"/>
+              </footer>
+            </form>
+        </field>
+    </record>
+   
+</odoo>
+<!-- Karimdad -->

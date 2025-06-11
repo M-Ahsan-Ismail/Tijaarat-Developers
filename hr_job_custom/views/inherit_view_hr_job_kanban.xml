@@ -1,0 +1,18 @@
+<odoo>
+  <data>
+    <record model="ir.ui.view" id="inherit_view_hr_job_kanban">
+      <field name="name">inherit hr job kanban view</field>
+      <field name="model">hr.job</field>
+      <field name="inherit_id" ref="hr_recruitment.view_hr_job_kanban" />
+      <field name="type">kanban</field>
+      <field name="arch" type="xml">
+        <xpath expr="//div[@name='kanban_boxes']" position="inside">
+        <field name="state" invisible="1"/>
+        </xpath>
+        <xpath expr="//div[@name='kanban_boxes']" position="attributes">
+          <attribute name="invisible">state != 'approved'</attribute>
+        </xpath>
+      </field>
+    </record> 
+  </data>
+</odoo>

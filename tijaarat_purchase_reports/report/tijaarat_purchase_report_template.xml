@@ -4,145 +4,172 @@
             <t t-foreach="docs" t-as="obj">
                 <t t-call="web.external_layout">
                     <div class="page">
-                        <div class="row">
-                            <div class="col-4">
-                                <t t-if="obj.delivery_add_id">
-                                    <h3 style="text-align: left">Site Address</h3>
-                                    <div t-field="obj.delivery_add_id"
+                        <t t-if="obj.state not in ['draft', 'sent','approved', 'ceo_approval']">
+                            <div class="row">
+                                <div class="col-4">
+                                    <t t-if="obj.delivery_add_id">
+                                        <h3 style="text-align: left">Site Address</h3>
+                                        <div t-field="obj.delivery_add_id"
+                                             t-options='{"widget": "contact", "fields": ["address", "name", "phone", "vat"], "no_marker": True, "phone_icons": True}'/>
+                                    </t>
+                                </div>
+                                <div class="col-4"/>
+                                <div class="col-4">
+                                    <span style="font-size:28px;">
+                                        <strong>PURCHASE ORDER</strong>
+                                    </span>
+                                    <br/>
+                                    <table class="table table-bordered" width="50%">
+                                        <tbody>
+                                            <tr>
+                                                <th style="text-align: left;" width="30%">DATE</th>
+                                                <td style="text-align: center">
+                                                    <t t-if="obj.date_order">
+                                                        <span t-esc="obj.date_order.strftime('%d/%m/%Y')"/>
+                                                    </t>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <th style="text-align: left;">PO #</th>
+                                                <td style="text-align: center;">
+                                                    <span t-field="obj.name"/>
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                            <br/>
+                            <br/>
+                            <div class="row">
+                                <div class="col-4">
+                                    <h3 style="text-align: left">Vendor</h3>
+                                    <div t-field="obj.partner_id"
                                          t-options='{"widget": "contact", "fields": ["address", "name", "phone", "vat"], "no_marker": True, "phone_icons": True}'/>
-                                </t>
+                                </div>
+                                <div class="col-4"/>
+                                <div class="col-4">
+                                    <h3 style="text-align: left">Bill To</h3>
+                                    <div t-field="obj.company_id.partner_id"
+                                         t-options='{"widget": "contact", "fields": ["address", "name", "phone", "vat"], "no_marker": True, "phone_icons": True}'/>
+                                </div>
                             </div>
-                            <div class="col-4"/>
-                            <div class="col-4">
-
-                                <t t-if="obj.state in ['draft', 'sent']">
-                                    <span style="font-size:18px;"><strong>REQUEST FOR QUOTATION</strong></span>
-                                </t>
-                                <t t-else="">
-                                    <span style="font-size:28px;"><strong>PURCHASE ORDER</strong></span>
-                                </t>
-                                <br/>
-                                <table class="table table-sm table-bordered" width="50%">
-                                    <tr>
-                                        <th style="text-align: left;" width="30%">DATE</th>
-                                        <td style="text-align: center">
-                                            <t t-if="obj.date_order">
-                                                <span t-esc="obj.date_order.strftime('%d/%m/%Y')"/>
-                                            </t>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <th style="text-align: left;">PO #</th>
-                                        <td style="text-align: center">
-                                            <span t-field="obj.name"/>
-                                        </td>
-                                    </tr>
-                                </table>
+                        </t>
+                        <t t-if="obj.state in ['draft', 'sent', 'approved', 'ceo_approval']">
+                            <div class="row">
+                                <div class="col-4">
+                                    <!--                                     <h3 style="text-align: left">Vendor</h3> -->
+                                    <div t-field="obj.partner_id"
+                                         t-options='{"widget": "contact", "fields": ["address", "name", "phone", "vat"], "no_marker": True, "phone_icons": True}'/>
+                                </div>
+                                <div class="col-4"/>
+                                <div class="col-4">
+                                    <span style="font-size:18px;">
+                                        <strong>REQUEST FOR QUOTATION</strong>
+                                    </span>
+                                    <br/>
+                                    <table class="table table-bordered" width="50%">
+                                        <tbody>
+                                            <tr>
+                                                <th style="text-align: left;" width="30%">DATE</th>
+                                                <td style="text-align: center">
+                                                    <t t-if="obj.date_order">
+                                                        <span t-esc="obj.date_order.strftime('%d/%m/%Y')"/>
+                                                    </t>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <th style="text-align: left;">RFQ #</th>
+                                                <td style="text-align: center;">
+                                                    <span t-field="obj.name"/>
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
                             </div>
-                        </div>
-                        <br/><br/>
-
-                        <div class="row">
-                            <div class="col-4">
-                                <h3 style="text-align: left">Vendor</h3>
-                                <div t-field="obj.partner_id"
-                                     t-options='{"widget": "contact", "fields": ["address", "name", "phone", "vat"], "no_marker": True, "phone_icons": True}'/>
-                            </div>
-                            <div class="col-4"/>
-                            <div class="col-4">
-                                <h3 style="text-align: left">Bill To</h3>
-                                <div t-field="obj.company_id.partner_id"
-                                     t-options='{"widget": "contact", "fields": ["address", "name", "phone"], "no_marker": True, "phone_icons": True}'
-                                     name="purchase_bill_to"/>
-                            </div>
-                        </div>
-
-                        <br/><br/>
-
-                        <t t-if="obj.state in ['draft', 'sent']">
-                            <table class="table table-sm table-bordered" width="100%">
+                        </t>
+                        <br/>
+                        <br/>
+                        <t t-if="obj.state in ['draft', 'sent', 'approved', 'ceo_approval']">
+                            <table class="table table-bordered" width="100%">
                                 <thead>
                                     <tr>
-                                        <th colspan="2">
-                                            ITEM#
-                                        </th>
-                                        <th colspan="4">
-                                            Description
-                                        </th>
-                                        <th colspan="2">
-                                            UOM
-                                        </th>
+                                        <th colspan="2"> SR# </th>
+                                        <th colspan="4"> Description </th>
+                                        <th colspan="2"> UOM </th>
+                                        <th colspan="2"> QTY </th>
                                     </tr>
                                 </thead>
-
                                 <tbody>
                                     <t t-set="counter" t-value="0"/>
                                     <t t-set="gross_amount" t-value="0"/>
                                     <t t-set="total_tax" t-value="0"/>
-
                                     <t t-foreach="obj.order_line" t-as="line">
                                         <t t-set="counter" t-value="counter + 1"/>
                                         <tr>
-                                            <td colspan="2" style="text-align: left;">
+                                            <td colspan="2" style="text-align: center;">
                                                 <t t-esc="counter"/>
                                             </td>
                                             <td colspan="4" style="text-align: left;">
                                                 <t t-esc="line.name"/>
                                             </td>
                                             <td colspan="2" style="text-align: center;">
-                                                <t t-esc="line.product_uom"/>
+                                                <t t-esc="line.product_uom.name"/>
+                                            </td>
+                                            <td colspan="2" style="text-align: center;">
+                                                <t t-esc="line.product_qty"/>
                                             </td>
                                         </tr>
                                     </t>
                                 </tbody>
                             </table>
                         </t>
-                        <t t-if="obj.state not in ['draft', 'sent']">
-                            <table class="table table-sm table-bordered" width="100%">
+                        <t t-if="obj.state not in ['draft', 'sent','approved', 'ceo_approval']">
+                            <table class="table table-bordered" width="100%">
                                 <thead>
                                     <tr>
-                                        <th colspan="2">
-                                            ITEM#
-                                        </th>
-                                        <th colspan="4">
-                                            Description
-                                        </th>
-                                        <th colspan="2">
-                                            UOM
-                                        </th>
-                                        <th colspan="2" style="text-align: right;">
-                                            UNIT PRICE
-                                        </th>
-                                        <th colspan="2" style="text-align: right;">
-                                            TOTAL
-                                        </th>
+                                        <th colspan="2"> SR# </th>
+                                        <th colspan="4"> Description </th>
+                                        <th colspan="2"> UOM </th>
+                                        <th colspan="2"> QTY </th>
+                                        <th colspan="2" style="text-align: right;"> UNIT PRICE </th>
+                                        <th colspan="2" style="text-align: right;"> Discount </th>
+                                        <th colspan="2" style="text-align: right;"> TOTAL </th>
                                     </tr>
                                 </thead>
-
                                 <tbody>
+                                    <t t-set="total_discount" t-value="0.0"/>
                                     <t t-set="counter" t-value="0"/>
                                     <t t-set="gross_amount" t-value="0"/>
                                     <t t-set="total_tax" t-value="0"/>
-
                                     <t t-foreach="obj.order_line" t-as="line">
+                                        <t t-set="discount_amount"
+                                           t-value="(line.price_unit * line.product_qty) - line.price_subtotal"/>
+                                        <t t-set="total_discount" t-value="total_discount + discount_amount"/>
                                         <t t-set="counter" t-value="counter + 1"/>
                                         <tr>
-                                            <td colspan="2" style="text-align: left;">
+                                            <td colspan="2" style="text-align: center;">
                                                 <t t-esc="counter"/>
                                             </td>
                                             <td colspan="4" style="text-align: left;">
                                                 <t t-esc="line.name"/>
                                             </td>
                                             <td colspan="2" style="text-align: center;">
-                                                <t t-esc="line.product_uom"/>
+                                                <t t-esc="line.product_uom.name"/>
+                                            </td>
+                                            <td colspan="2" style="text-align: center;">
+                                                <t t-esc="line.product_qty"/>
                                             </td>
                                             <td colspan="2" style="text-align: right;">
-                                                <t t-esc="line.price_unit"
-                                                   t-options='{"widget": "float", "precision": 2}'/>
+                                                <t t-esc="line.price_unit"/>
                                             </td>
                                             <td colspan="2" style="text-align: right;">
-                                                <t t-esc="line.price_subtotal"
-                                                   t-options='{"widget": "float", "precision": 2}'/>
+                                                <t t-esc="line.discount"/>
+                                                %
+                                            </td>
+                                            <td colspan="2" style="text-align: right;">
+                                                <t t-esc="line.price_subtotal"/>
                                             </td>
                                         </tr>
                                     </t>
@@ -157,36 +184,39 @@
                                     <span t-field="obj.notes"/>
                                 </t>
                             </div>
-
                             <div class="col-4">
                                 <t t-if="obj.state not in ['draft', 'sent']">
-                                    <table class="table table-sm table-borderless">
+                                    <table class="table table-borderless">
                                         <tr class="border-black o_subtotal">
-                                            <td><strong>Untaxed Amount</strong></td>
-
+                                            <td>
+                                                <strong>Untaxed Amount</strong>
+                                            </td>
                                             <td class="text-end">
                                                 <span t-field="obj.amount_untaxed"/>
                                             </td>
                                         </tr>
-
                                         <tr class="o_discount">
-                                            <td><strong>Discount</strong></td>
-
+                                            <td>
+                                                <strong>Total Discount</strong>
+                                            </td>
                                             <td class="text-end">
-                                                <span>-</span>
+                                                <span t-esc="total_discount"/>
+                                                Rs.
                                             </td>
                                         </tr>
-
                                         <tr class="o_taxes">
-                                            <td><strong>TAX</strong></td>
-
+                                            <td>
+                                                <strong>TAX</strong>
+                                            </td>
                                             <td class="text-end">
                                                 <span t-field="obj.amount_tax"/>
                                             </td>
                                         </tr>
-                                        <!--Total amount with all taxes-->
+                                        <!-- Total amount with all taxes -->
                                         <tr class="border-black o_total">
-                                            <td><strong>Total</strong></td>
+                                            <td>
+                                                <strong>Total</strong>
+                                            </td>
                                             <td class="text-end">
                                                 <span t-field="obj.amount_total"/>
                                             </td>
@@ -195,8 +225,6 @@
                                 </t>
                             </div>
                         </div>
-
-
                     </div>
                 </t>
             </t>
@@ -204,14 +232,16 @@
     </template>
 
     <record id="tijaarat_purchase_report_action_id" model="ir.actions.report">
-        <field name="name">Quotation/Purchase Order</field>
+        <field name="name">RFQ/Purchase Order</field>
         <field name="model">purchase.order</field>
         <field name="report_type">qweb-pdf</field>
         <field name="report_name">tijaarat_purchase_reports.report_tijaarat_purchase_report_id</field>
         <field name="binding_model_id" ref="purchase.model_purchase_order"/>
         <field name="print_report_name">
-            (object.state in ('draft', 'sent') and 'Request for Quotation - %s' % (object.name) or
-             'Purchase Order - %s' % (object.name))</field>
+            (object.state in ('draft', 'sent', 'approved', 'ceo_approval') and 'Request for Quotation - %s' % (
+                object.name) or
+             'Purchase Order - %s' % (object.name))
+        </field>
         <field name="binding_type">report</field>
     </record>
 </odoo>

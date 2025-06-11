@@ -1,0 +1,53 @@
+<odoo>
+    <data>
+        <record model="ir.ui.view" id="inherit_purchase_request_view">
+            <field name="name">inherit.purchase.request.form</field>
+            <field name="model">purchase.request</field>
+            <field name="inherit_id" ref="purchase_request.view_purchase_request_form"/>
+            <field name="type">form</field>
+            <field name="arch" type="xml">
+                <header>
+                    <!-- <button name="button_confirm" string="Confirm Order" type="object" attrs="{'invisible': [('show_confirm_order', '=', False)]}"/> -->
+                    <button string="Submit for Approval" type="object" class="oe_highlight" name="submit_for_approval"
+                            invisible="approval_state != 'draft' or state != 'draft'"/>
+                    <button string="Withdraw Approval" type="object" class="oe_highlight" name="action_withdraw"
+                            invisible="approval_state in ['draft','approved','rejected'] or state in ['draft','approved','rejected','done']"/>
+                    <button string="Assign from Inventory" type="object" name="action_assign_from_inventory"
+                            invisible="state != 'approved'"/>
+                </header>
+                <div name="button_box" class="oe_button_box">
+                    <button string="PR Approvals" type="object" icon="fa-file-text-o" name="open_related_approval"/>
+                </div>
+
+                <xpath expr="//header/button[@name='button_draft']" position="replace"/>
+                <xpath expr="//header/button[@name='button_to_approve']" position="replace"/>
+                <xpath expr="//header/button[@name='button_approved']" position="replace"/>
+                <xpath expr="//header/button[@name='button_rejected']" position="replace"/>
+
+                <xpath expr="//field[@name='name']" position="attributes">
+                    <attribute name="readonly">1</attribute>
+                </xpath>
+
+                <xpath expr="//field[@name='requested_by']" position="attributes">
+                    <attribute name="invisible">1</attribute>
+                </xpath>
+                <xpath expr="//field[@name='assigned_to']" position="attributes">
+                    <attribute name="invisible">1</attribute>
+                </xpath>
+
+                <xpath expr="//field[@name='group_id']" position="after">
+                    <field name="approval_state"/>
+                </xpath>
+
+                <xpath expr="//field[@name='purchase_state']" position="after">
+                    <field name="product_on_hand_qty"/>
+                </xpath>
+
+                <xpath expr="//field[@name='date_required']" position="after">
+                    <field name="unit_price"/>
+                </xpath>
+
+            </field>
+        </record>
+    </data>
+</odoo>

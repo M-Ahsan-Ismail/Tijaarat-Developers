@@ -1,0 +1,15 @@
+<odoo>
+    <data>
+        <record id="view_hr_applicant_interviewer_tree" model="ir.ui.view">
+            <field name="name">hr.applicant.interviewer.tree</field>
+            <field name="model">hr.applicant.interviewer</field>
+            <field name="arch" type="xml">
+                <tree editable="bottom">
+                    <field name="interviewer_id"/>
+                    <field name="feedback"/>
+                    <field name="decision"/>
+                </tree>
+            </field>
+        </record>
+    </data>
+</odoo>

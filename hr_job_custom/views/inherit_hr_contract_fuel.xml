@@ -1,0 +1,60 @@
+<odoo>
+    <data>
+        <record model="ir.ui.view" id="hr_contract_hr_contract_fuel_view_form_inherit_update">
+            <field name="name">hr.contract.hr_contract_fuel_view_form.inherit.update</field>
+            <field name="model">hr.contract</field>
+            <field name="inherit_id" ref="hr_contract.hr_contract_view_form"/>
+            <field name="type">form</field>
+            <field name="arch" type="xml">
+                <xpath expr="//field[@name='fuel_allowance']" position="after">
+
+                    <field name="request_fuel_allowance" invisible="1"/>
+                    <field name="request_fuel_allowance_booloean" invisible="1"/>
+                    <!-- <button string="Submit for Approval" type="object" class="oe_highlight"
+                    name="submit_for_approval" attrs="{'invisible': ['|','|',('fuel_state', '!=', 'draft'),('request_fuel_allowance','=',False),('request_fuel_allowance_booloean','!=',True)]}" />
+
+                  <button string="Withdraw Approval" type="object" class="oe_highlight"
+                    name="action_withdraw_fuel"
+                    attrs="{'invisible': ['|',('fuel_state', 'in', ['draft','approved','rejected']),('request_fuel_allowance','=',False)]}" /> -->
+
+                    <field name="fuel_state"
+                           invisible="not request_fuel_allowance or request_fuel_allowance_booloean != True"/>
+                </xpath>
+
+
+                <xpath expr="//div[@name='button_box']" position="inside">
+                    <button string="Fuel Approvals" type="object" icon="fa-file-text-o"
+                            name="open_related_approval"/>
+                </xpath>
+                <xpath expr="//field[@name='fuel_allowance']" position="attributes">
+                    <attribute name="readonly">1</attribute>
+                </xpath>
+
+            </field>
+        </record>
+
+        <record model="ir.ui.view" id="hr_contract_hr_contract_fuel_view_form_inherit_update_ext">
+            <field name="name">hr.contract.hr_contract_fuel_view_form.inherit.update.ext</field>
+            <field name="model">hr.contract</field>
+            <field name="inherit_id" ref="hr_contract.hr_contract_view_form"/>
+            <field name="type">form</field>
+            <field name="arch" type="xml">
+                <data>
+                    <xpath expr="//field[@name='fuel_allowance']" position="after">
+                        <xpath expr="//field[@name='request_fuel_allowance']" position="move"/>
+                        <button string="Submit for Approval" type="object" class="oe_highlight"
+                                name="submit_for_approval"
+                                invisible="fuel_state != 'draft' or not request_fuel_allowance or request_fuel_allowance_booloean != True"/>
+                        <button string="Withdraw Approval" type="object" class="oe_highlight"
+                                name="action_withdraw_fuel"
+                                invisible="fuel_state in ['draft','approved','rejected'] or not request_fuel_allowance"/>
+                        <field name="fuel_state"
+                               invisible="fuel_state in ['draft','approved','rejected'] or not request_fuel_allowance"/>
+                    </xpath>
+                </data>
+
+            </field>
+        </record>
+
+    </data>
+</odoo>

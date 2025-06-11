@@ -1,0 +1,132 @@
+<odoo>
+    <template id="tijaarat_stock_transfer_report_id">
+        <t t-call="web.html_container">
+            <t t-foreach="docs" t-as="obj">
+                <t t-call="web.external_layout">
+                    <div class="page">
+                        <div class="row">
+                            <div class="col-4" style="text-align:start;">
+                                <strong><span>TRF No: <t t-esc="obj.trf_no"/></span></strong>
+                            </div>
+                            <div class="col-4"></div>
+
+                            <div class="col-4" style="text-align:start;">
+                                <strong><span>Mode Of Transport: <t
+                                        t-esc="obj.mode_of_transfer_id.name"/></span></strong>
+                            </div>
+                        </div>
+                        <br/>
+                        <div class="row">
+                            <div class="col-12" style="text-align: center;">
+                                <strong><span>Date: <t t-esc="obj.date_done.strftime('%m-%d-%Y')"/></span></strong>
+
+                            </div>
+                        </div>
+                        <br/>
+                        <div class="row">
+                            <div class="col-4" style="text-align:start;">
+                                <strong><span>TRF From: <t t-esc="obj.location_id.name"/></span></strong>
+                            </div>
+                            <div class="col-4"></div>
+
+                            <div class="col-4" style="text-align:start;">
+                                <strong><span>To: <t t-esc="obj.location_dest_id.name"/></span></strong>
+                            </div>
+                        </div>
+                        <br/><br/>
+                        <table class="table table-sm table-bordered" style="width: 100%;">
+                            <thead>
+                                <tr>
+                                    <th class="text-center">Sr.</th>
+                                    <th class="text-center">System Reff.</th>
+                                    <th class="text-center">Item Description</th>
+                                    <th class="text-center">Size</th>
+                                    <th class="text-center">Packing</th>
+                                    <th class="text-center">Unit</th>
+                                    <th class="text-center">Quantity</th>
+                                    <th class="text-center">Rate</th>
+                                    <th class="text-center">Amount</th>
+                                    <th class="text-center">Remarks</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <t t-set="counter" t-value="0"/>
+                                <t t-foreach="obj.move_ids_without_package" t-as="line">
+                                    <t t-set="counter" t-value="counter+1"/>
+                                    <tr>
+                                        <td style="text-align: center;"><t t-esc="counter"/></td>
+                                        <td style="text-align: left;"></td>
+                                        <td style="text-align: left; "><t t-esc="line.product_id.name"/></td>
+                                        <td style="text-align: left;"></td>
+                                        <td style="text-align: left;"></td>
+                                        <td style="text-align: center;"><t t-esc="line.product_uom.name"/></td>
+                                        <td style="text-align: right;"><t t-esc="line.quantity" t-options='{"widget":
+                                            "float", "precision": 2}'/></td>
+                                        <td style="text-align: right;"><t t-esc="line.price"
+                                                                          t-options='{"widget": "float", "precision": 2}'/></td>
+                                        <td style="text-align: right;"><t t-esc="line.price*line.quantity"
+                                                                          t-options='{"widget": "float", "precision": 2}'/></td>
+                                        <td style="text-align: left;"></td>
+                                    </tr>
+                                </t>
+                            </tbody>
+                        </table>
+
+
+                        <br/><br/><br/>
+
+                        <div class="row" style="margin-top: 100px; text-align: center;">
+                            <div class="col-3">
+                                <span>_______________________</span><br/>
+                                <strong style="display: inline-block; margin-top: 5px;">Send By</strong>
+                            </div>
+                            <div class="col-3">
+                                <span>_______________________</span><br/>
+                                <strong style="display: inline-block; margin-top: 5px;">Sending VF By</strong>
+                            </div>
+                            <div class="col-3">
+                                <span>_______________________</span><br/>
+                                <strong style="display: inline-block; margin-top: 5px;">Received By</strong>
+                            </div>
+                            <div class="col-3">
+                                <span>_______________________</span><br/>
+                                <strong style="display: inline-block; margin-top: 5px;">Receiving VF By</strong>
+                            </div>
+                        </div>
+
+                    </div>
+                </t>
+            </t>
+        </t>
+    </template>
+
+
+    <record id="paper_format_id" model="report.paperformat">
+        <field name="name">PDC</field>
+        <field name="default" eval="True"/>
+        <field name="format">A4</field>
+        <field name="page_height">0</field>
+        <field name="page_width">0</field>
+        <field name="orientation">Portrait</field>
+        <field name="margin_top">30</field>
+        <field name="margin_bottom">8</field>
+        <field name="margin_left">2</field>
+        <field name="margin_right">2</field>
+        <field name="header_line" eval="False"/>
+        <field name="header_spacing">30</field>
+        <field name="dpi">80</field>
+    </record>
+
+    <record id="tijaarat_stock_transfer_report_action_id" model="ir.actions.report">
+        <field name="name">Stock Transfer Report</field>
+        <field name="model">stock.picking</field>
+        <field name="report_type">qweb-pdf</field>
+        <field name="report_name">goods_receiving_report.tijaarat_stock_transfer_report_id</field>
+        <field name="binding_model_id" ref="stock.model_stock_picking"/>
+        <field name="paperformat_id" ref="goods_receiving_report.paper_format_id"/>
+        <field name="binding_type">report</field>
+    </record>
+
+
+</odoo>
+

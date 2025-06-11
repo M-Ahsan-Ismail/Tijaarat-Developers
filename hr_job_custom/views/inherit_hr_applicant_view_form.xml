@@ -1,0 +1,66 @@
+<odoo>
+    <data>
+        <record model="ir.ui.view" id="inherit_hr_applicant_view_form">
+            <field name="name">inherit hr applicant view form</field>
+            <field name="model">hr.applicant</field>
+            <field name="inherit_id" ref="hr_recruitment.hr_applicant_view_form"/>
+            <field name="type">form</field>
+            <field name="arch" type="xml">
+                <div name="button_box">
+                    <button string="Approval" type="object" icon="fa-file-text-o"
+                            name="open_related_approval"/>
+                </div>
+                <xpath expr="//button[@name='action_makeMeeting']" position="attributes">
+                    <attribute name="invisible">
+                        state == 'submit_for_approval'
+                    </attribute>
+                </xpath>
+                <xpath expr="//button[@name='archive_applicant']" position="replace"/>
+                <xpath expr="//button[@name='create_employee_from_applicant']" position="before">
+                    <field name="show_submit_Button" invisible="1"/>
+                    <field name="state" invisible="1"/>
+                    <!-- maaz -->
+                    <!--  7 = 'Candidate Refused' stage, 6 = 'Refused' stage, 5 = 'Contract Signed' stage -->
+                    <button string="Refuse Candidate" class="btn-primary" name="action_refuse_job_application"
+                            invisible="stage_id in [7,5,6]"/>
+                    <!-- maaz -->
+                    <button name="submit_for_approval" type="object" string="Submit For Approval" class="oe_highlight"
+                            invisible="not show_submit_Button or state in ['submit_for_approval','approved','rejected']"/>
+                    <button string="Withdraw Approval" type="object" class="oe_highlight"
+                            name="action_withdraw"
+                            invisible="state in ['draft','approved','rejected']"/>
+                </xpath>
+                <xpath expr="//field[@name='interviewer_ids']" position="before">
+                    <field name="state" readonly="true"/>
+                </xpath>
+
+                <xpath expr="//field[@name='interviewer_ids']" position="after">
+                    <field name="isFirstReason" invisible="1"/>
+                    <field name="reason_for_rejection"
+                           invisible="isFirstReason"
+                           readonly="not isFirstReason"/>
+                    <field name="refused_by" widget="radio"
+                           invisible="isFirstReason"
+                           readonly="not isFirstReason"/>
+                </xpath>
+
+                <xpath expr="//field[@name='job_id']" position="replace">
+                    <field name="job_status" invisible="1"/>
+                    <field name="job_id" domain="[('state','=','approved')]"/>
+                </xpath>
+
+                <xpath expr="//form[1]/sheet[1]/notebook[1]" position="inside">
+                    <page string="Interviewers">
+                        <field name="applicant_interviewer_ids">
+                            <tree editable="bottom">
+                                <field name="interviewer_id"/>
+                                <field name="feedback"/>
+                                <field name="decision"/>
+                            </tree>
+                        </field>
+                    </page>
+                </xpath>
+            </field>
+        </record>
+    </data>
+</odoo>

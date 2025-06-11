@@ -1,0 +1,33 @@
+<odoo>
+    <data>
+        <record model="ir.ui.view" id="inherit_wfh_request_view">
+            <field name="name">inherit WFH Request form</field>
+            <field name="model">wfh_request</field>
+            <field name="inherit_id" ref="wfh_request.view_wfh_request_form"/>
+            <field name="type">form</field>
+            <field name="arch" type="xml">
+                <header>
+                    <field name="state" invisible='1'/>
+                    <button string="Submit for Approval" type="object" class="oe_highlight"
+                            name="submit_for_approval" invisible="state not in ['draft','new']"/>
+
+                    <button string="Withdraw Approval" type="object" class="oe_highlight"
+                            name="action_withdraw"
+                            invisible="state in ['draft','new','approved','rejected']"/>
+                </header>
+                <xpath expr="//field[@name='state']" position="attributes">
+                    <attribute name="options">{'clickable': 0}</attribute>
+                    <attribute name="statusbar_visible">"draft,submit_for_approval,approved,rejected"</attribute>
+                </xpath>
+                <xpath expr="//form[1]/sheet[1]/div[not(@name)][1]" position="before">
+                    <div name="button_box" class="oe_button_box">
+                        <button string="WFH Approvals" type="object" icon="fa-file-text-o"
+                                name="open_related_approval"/>
+                    </div>
+                </xpath>
+
+
+            </field>
+        </record>
+    </data>
+</odoo>
