@@ -1,0 +1,106 @@
+<odoo>
+
+    <record id="paperformat_cheque_0001" model="report.paperformat">
+        <field name="name">cheque A4</field>
+        <field name="default" eval="True"/>
+        <field name="format">custom</field>
+        <field name="page_height">297</field>
+        <!--        <field name="page_width">210</field>-->
+        <!--        <field name="page_height">80</field>-->
+        <field name="page_width">180</field>
+        <field name="orientation">Landscape</field>
+        <field name="margin_top">50</field>
+        <field name="margin_bottom">2</field>
+        <field name="margin_left">2</field>
+        <field name="margin_right">2</field>
+        <field name="header_line" eval="False"/>
+        <field name="header_spacing">0</field>
+        <field name="dpi">82</field>
+    </record>
+    <!-- Report Action -->
+    <record id="action_report_cheque" model="ir.actions.report">
+        <field name="name">Print Cheque</field>
+        <field name="model">account.payment</field>
+        <field name="report_type">qweb-pdf</field>
+        <field name="report_name">dev_print_cheque.cheque_report_template</field>
+        <field name="report_file">dev_print_cheque.cheque_report_template</field>
+        <field name="binding_model_id" ref="model_account_payment"/>
+        <field name="paperformat_id" ref="dev_print_cheque.paperformat_cheque_0001"/>
+        <field name="binding_type">report</field>
+    </record>
+
+    <!-- Report Template -->
+    <template id="cheque_report_template">
+        <t t-call="web.html_container">
+            <t t-foreach="docs" t-as="doc">
+                <!-- Full page wrapper to center the cheque -->
+                <div class="page text-center"
+                     style="display: flex; justify-content: center; align-items: center; height: 100vh;">
+                    <style>
+                        .rotate {
+                        -webkit-transform: rotate(-40deg);
+                        -moz-transform: rotate(-45deg);
+                        -ms-transform: rotate(-45deg);
+                        -o-transform: rotate(-45deg);
+                        border-top:1px solid black;
+                        border-bottom:1px solid black;
+                        }
+                    </style>
+                    <!-- The cheque body -->
+                    <div style="width: 696px; height: 288px; border: 1px solid #000; position: relative;">
+                        <br/>
+                        <div class='rotate text-center' style="width:80px;font-size:14px" t-if="doc.is_ac_pay">
+                            A/C PAY
+                        </div>
+                        <!-- Date -->
+                        <div style="position: absolute; top: 75px; right: 58px; font-size: 12px;">
+                            <t t-if="doc.date">
+                                <t t-set="date" t-value="doc.get_date(doc.date)"/>
+                                <span t-esc="date[2][0]" style="margin-left:13px;"/>
+                                <span t-esc="date[2][1]" style="margin-left:13px;"/>
+                                <span t-esc="date[1][0]" style="margin-left:13px;"/>
+                                <span t-esc="date[1][1]" style="margin-left:13px;"/>
+                                <span t-esc="date[0][0]" style="margin-left:13px;"/>
+                                <span t-esc="date[0][1]" style="margin-left:13px;"/>
+                                <span t-esc="date[0][2]" style="margin-left:13px;"/>
+                                <span t-esc="date[0][3]" style="margin-left:13px;"/>
+                            </t>
+                        </div>
+
+                        <!-- Payee Name -->
+                        <div style="position: absolute; top: 122px; left: 58px; font-size: 14px;">
+                            <span>
+                                <t t-if="doc.custom_partner_title">
+                                    <t t-esc="doc.partner_text"/>
+                                </t>
+                                <t t-if="not doc.custom_partner_title">
+                                    <t t-esc="doc.partner_id.name"/>
+                                </t>
+
+                            </span>
+                        </div>
+
+                        <!-- Amount in Numbers -->
+                        <div style="position: absolute; top: 142px; left: 500px; font-size: 14px;">
+                            <span><t t-esc="round(doc.amount)"/> /-</span>
+                        </div>
+
+                        <!-- Amount in Words -->
+                        <div style="position: absolute; top: 142px; left: 58px; width: 390px; font-size: 14px; line-height:2;">
+                            <span t-esc="doc.amount_word(doc)"/>
+                        </div>
+
+                        <!--                    &lt;!&ndash; Signature &ndash;&gt;-->
+                        <!--                    <div style="position: absolute; bottom: 58px; right: 58px; font-size: 14px;">-->
+                        <!--                        <span>____________________</span>-->
+                        <!--                        <br/>-->
+                        <!--                        <span>Authorized Signature</span>-->
+                        <!--                    </div>-->
+
+                    </div>
+                </div>
+            </t>
+        </t>
+    </template>
+
+</odoo>

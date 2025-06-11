@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+Copyright (C) 2015 DevIntelle Consulting Service Pvt.Ltd (<http://www.devintellecs.com>).
+
+For Module Support : devintelle@gmail.com  or Skype : devintelle 
+ -->
+<odoo>
+    <record id="view_account_cheque_formate_form" model="ir.ui.view">
+        <field name="name">account.voucher.formate.form.view</field>
+        <field name="model">account.payment</field>
+        <field name="inherit_id" ref="account.view_account_payment_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='ref']" position="after">
+                <field name="payment_method_name" invisible="1"/>
+                <field name="journal_id_type" invisible="1" readonly="state != 'draft'"/>
+                <field name="is_ac_pay" invisible="journal_id_type != 'bank'" readonly="state != 'draft'"/>
+                <field name="custom_partner_title" invisible="journal_id_type != 'bank'" readonly="state != 'draft'"/>
+                <field name="partner_text" invisible="not custom_partner_title" required="custom_partner_title" readonly="state != 'draft'"/>
+                <field name="cheque_no" invisible="journal_id_type != 'bank'" required="journal_id_type == 'bank'" readonly="state != 'draft'"/>
+            </xpath>
+        </field>
+    </record>
+
+    <record id="view_account_payment_register_form_inherit" model="ir.ui.view">
+        <field name="name">view.account.payment.register.form.inherit</field>
+        <field name="model">account.payment.register</field>
+        <field name="inherit_id" ref="account.view_account_payment_register_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='communication']" position="after">
+                <field name="cheque_no" invisible="journal_id_type != 'bank'" required="journal_id_type == 'bank'"/>
+                <field name="journal_id_type" invisible="1"/>
+            </xpath>
+        </field>
+    </record>
+</odoo>

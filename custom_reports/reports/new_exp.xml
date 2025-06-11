@@ -1,0 +1,244 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <template id="employee_experience_letter_id1">
+        <t t-name="testing_reports.employee_experience_letter_id1">
+            <t t-call="web.html_container">
+                <t t-foreach="docs" t-as="o">
+                    <t t-call="web.basic_layout">
+                        <br/>
+                        <div class="header" style="padding-top:20px; font-size:15px;">
+                            <span style="padding-right:20px;">
+                                <strong>Business Solution and Services</strong>
+                            </span>
+                            <span style="padding-left:520px;">
+                                <strong>Internal</strong>
+                            </span>
+                        </div>
+                        <div class="page">
+                            <br/>
+                            <br/>
+                            <div style="text-align: center;">
+                                <img src="/ol_custom_equipment_reports/static/src/img/images/header.png" alt="Company Logo" class="header-image"/>
+                            </div>
+                            <br/>
+                            <br/>
+
+                            <div style="text-align: center;" class="row">
+                                <h2>
+                                    <strong>Experience Letter</strong>
+                                </h2>
+                            </div>
+                            <br/>
+
+                            <table style="width:90%; margin-right:5%; margin-left:5%; font-size:16px; border: 1px solid white">
+                                <tr style="height:30px;">
+                                    <td class="col-4" style="padding:10px 0 10px 0; margin-bottom: 10px;padding-left: 10px; border-right:1px solid black; border-top:1px solid black; border-bottom:1px solid black;">
+                                Name
+                                    </td>
+                                    <td class="col-8" style="padding:10px 0 10px 0; text-align:left; margin-bottom: 10px;padding-left: 10px; border-top:1px solid black; border-bottom:1px solid black;"/>
+                                </tr>
+                                <tr style="height:30px;">
+                                    <td class="col-4" style="padding:10px 0 10px 0; margin-bottom: 10px;padding-left: 10px; border-right:1px solid black; border-top:1px solid black; border-bottom:1px solid black;">
+                                Category
+                                    </td>
+                                    <td class="col-8" style="padding:10px 0 10px 0; text-align:left; margin-bottom: 10px;padding-left: 10px; border-top:1px solid black; border-bottom:1px solid black;"/>
+                                </tr>
+                                <tr style="height:30px;">
+                                    <td class="col-4" style="padding:10px 0 10px 0; margin-bottom: 10px;padding-left: 10px; border-right:1px solid black; border-top:1px solid black; border-bottom:1px solid black;">
+                                Created By
+                                    </td>
+                                    <td class="col-8" style="padding:10px 0 10px 0; text-align:left; margin-bottom: 10px;padding-left: 10px; border-top:1px solid black; border-bottom:1px solid black;"/>
+                                </tr>
+                                <tr style="height:30px;">
+                                    <td class="col-4" style="padding:10px 0 10px 0; margin-bottom: 10px;padding-left: 10px; border-right:1px solid black; border-top:1px solid black; border-bottom:1px solid black;">
+                                Approved By
+                                    </td>
+                                    <td class="col-8" style="padding:10px 0 10px 0; text-align:left;padding-left: 10px; margin-bottom: 10px; border-top:1px solid black; border-bottom:1px solid black;">
+                                        <span>
+                                  Name<br/>
+                                  Title  
+                                        <span style="margin-left: 180px;">
+                                  Signature         
+                                        </span>
+                                    </span>
+                                </td>
+                            </tr>
+                            <tr style="height:30px;">
+                                <td class="col-4" style="padding:10px 0 10px 0; margin-bottom: 10px;padding-left: 10px; border-right:1px solid black; border-top:1px solid black; border-bottom:1px solid black;">
+                                    <span>Document number</span>
+                                    <br/>
+                                    <span style="padding:10px 0 10px 0;">Version</span>
+                                </td>
+                                <td class="col-8" style="padding:10px 0 10px 0; text-align:left; margin-bottom: 10px;padding-left: 10px; border-top:1px solid black; border-bottom:1px solid black;"/>
+                            </tr>
+                            <tr style="height:30px;">
+                                <td class="col-4" style="padding:10px 0 10px 0; margin-bottom: 10px;padding-left: 10px; border-right:1px solid black; border-top:1px solid black; border-bottom:1px solid black;">
+                                Date
+                                </td>
+                                <td class="col-8" style="padding:10px 0 10px 0; text-align:left; margin-bottom: 10px; padding-left: 10px; border-top:1px solid black; border-bottom:1px solid black;"/>
+                            </tr>
+                            <tr style="height:30px;">
+                                <td class="col-4" style="padding:10px 0 10px 0; margin-bottom: 10px;padding-left: 10px; border-right:1px solid black; border-top:1px solid black; border-bottom:1px solid black;">
+                                Confidentiality Level
+                                </td>
+                                <td class="col-8" style="padding:10px 0 10px 0; text-align:left; margin-bottom: 10px; padding-left: 10px; border-top:1px solid black; border-bottom:1px solid black;"/>
+                            </tr>
+                        </table>
+
+                    </div>
+
+                    <div class="page-break" style="page-break-before: always;"/>
+
+                    <br/>
+                    <br/>
+                    <br/>
+                    <div class="page">
+                        <div style="text-align: left; margin:0 5% 2% 5%;" class="row">
+                            <h3>Change history</h3>
+                        </div>
+
+                        <table style="border-collapse: collapse; width:90%; margin:0 5% 0 5%;font-size:16px;">
+                            <thead>
+                                <tr style="height:30px;">
+                                    <th style="padding-top: 8px;">Date</th>
+                                    <th style="padding-top: 8px;">Version</th>
+                                    <th style="padding-top: 8px;">Created by</th>
+                                    <th style="padding-top: 8px;">Description of Change</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr style="height:30px;">
+                                    <td/>
+                                    <td/>
+                                    <td/>
+                                    <td/>
+                                </tr>
+                                <tr style="height:30px;">
+                                    <td/>
+                                    <td/>
+                                    <td/>
+                                    <td/>
+                                </tr>
+                                <tr style="height:30px;">
+                                    <td/>
+                                    <td/>
+                                    <td/>
+                                    <td/>
+                                </tr>
+                                <tr style="height:30px;">
+                                    <td/>
+                                    <td/>
+                                    <td/>
+                                    <td/>
+                                </tr>
+                                <tr style="height:30px;">
+                                    <td/>
+                                    <td/>
+                                    <td/>
+                                    <td/>
+                                </tr>
+                            </tbody>
+                        </table>
+
+                    </div>
+
+
+                    <div class="page-break" style="page-break-before: always;"/>
+                    <!-- after -->
+                    <div style="padding:0 5%">
+                        <span t-esc="o.contract_id.date_end"/>
+                    </div>
+                    <div class="container text-center" style="padding:0 5%;">
+
+                        <div class="row" style="margin-top:10%;">
+                            <div class="col" style="text-align: center;">
+                                <strong>
+                                    <p style="text-decoration: underline; font-size:18px">
+                                        <strong>TO WHOM IT MAY CONCERN</strong>
+                                    </p>
+                                </strong>
+                                <br/>
+                                <br/>
+                            </div>
+                        </div>
+                        <br/>
+
+                        <div class="row">
+                            <div class="col" style="text-align: left;">
+                                <p>
+                                This is to confirm that 
+                                    <b>
+                                        <span t-if="o.gender == 'male'">Mr. <span t-esc="o.name"/>
+                                        </span>
+                                    </b>
+                                    <b>
+                                        <span t-if="o.gender == 'female'">
+                                            <t t-if="o.marital == 'married'">
+                                                  Mrs. <span t-esc="o.name"/>
+                                            </t>
+                                            <t t-if="o.marital == 'single' or o.marital == 'others'">
+                                                  Miss <span t-esc="o.name"/>
+                                            </t>
+                                        </span>
+                                    </b>
+                              has been a full-time employee of BSS from <b>
+                                    <span t-esc="o.contract_id.date_start"/>
+                                </b> to <b>
+                                <span t-esc="o.contract_id.date_end"/>
+                            </b>.                            <span t-if="o.gender == 'male'">His </span>
+                            <span t-if="o.gender == 'female'">Her </span>designation is that of <span t-esc="o.job_id.name"/>
+.
+                        </p>
+
+                        <br/>
+
+                        <p>We have found <b>
+                            <span t-if="o.gender == 'male'">Mr. <span t-esc="o.name"/>
+                            </span>
+                        </b>
+                        <b>
+                            <span t-if="o.gender == 'female'">
+                                <t t-if="o.marital == 'married'">
+                                                  Mrs. <span t-esc="o.name"/>
+                                </t>
+                                <t t-if="o.marital == 'single' or o.marital == 'others'">
+                                                  Miss <span t-esc="o.name"/>
+                                </t>
+                            </span>
+                        </b> 
+                        a mild mannered, punctual, focused resource with good skills in <span t-if="o.gender == 'male'">his </span>
+                        <span t-if="o.gender == 'female'">her </span>
+                        area of expertise. <span t-if="o.gender == 'male'">He </span>
+                        <span t-if="o.gender == 'female'">She </span>has shown maturity and responsibility in the work assigned to <span t-if="o.gender == 'male'">him.</span>
+                        <span t-if="o.gender == 'female'">her.</span>
+                    </p>
+                    <p>We wish him all the best in his future endeavors.</p>
+                    <div style="padding-top:20%">
+                        <p>
+                            <strong>
+                                <span t-esc="o.coach_id.name"/>
+                            </strong>
+                            <br/>
+                            <strong>Director/Country Manager</strong>
+                        </p>
+                    </div>
+                </div>
+            </div>
+            <div class="row" style="text-align:center; padding-top:30%; font-size:14px">
+                <p>
+                    <strong>[END OF DOCUMENT]</strong>
+                </p>
+            </div>
+            <div t-attf-class="footer o_standard_footer" style="margin-top:10%">
+                <hr style="border: 1px solid gray; width: 95%; margin: 30px auto;"/>
+                <span style="padding-left:3%;">BSS Experience Letter</span>
+                <span style="padding-left:70%;" t-if="report_type == 'pdf'">Page: <span class="page"/>
+                </span>
+            </div>
+        </div>
+    </t>
+</t>
+</t>
+</t>
+</template>
+</odoo>

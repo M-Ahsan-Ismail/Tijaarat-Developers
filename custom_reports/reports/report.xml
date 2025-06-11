@@ -1,0 +1,329 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+  <template id="custom_payslip_report_id">
+    <t t-call="web.html_container">
+      <t t-call="web.basic_layout">
+        <t t-foreach="docs" t-as="o">
+          <div class="page">
+            <div style="text-align: center;">
+              <img src="/ol_custom_equipment_reports/static/src/img/images/header.png" alt="Company Logo" class="header-image"/>
+            </div>
+            <br/>
+            <br/>
+            <table border="1" style="border-collapse: collapse;width:100%;font-size:20px">
+              <thead>
+                <tr>
+                  <th class="col-6" style="height:40px; background-color:black; color:white; padding-top: 10px;">PAY-SLIP
+                    FOR THE MONTH OF</th>
+                  <th class="col-6" style="height:40px; background-color:black; color:white; padding-top: 10px;">
+                    <span t-esc="o.get_month()"/>
+                  </th>
+                </tr>
+              </thead>
+            </table>
+            <table border="1" style="border-collapse: collapse;width:100%;font-size:20px">
+              <tr style="height:40px; margin-bottom: 10px; margin-top: 15px; padding-left: 10px;">
+                <td class="col-3" style="padding-left: 10px;">
+                  <strong>EMPLOYEE NAME</strong>
+                </td>
+                <td class="col-9" style="text-align:left; padding-left: 10px;">
+                  <span t-field="o.employee_id"/>
+                </td>
+              </tr>
+            </table>
+
+            <table border="1" style="border-collapse: collapse;width:100%;font-size:20px">
+              <tr style="height:40px; margin-bottom: 10px; margin-top: 10px; padding-left: 10px;">
+                <td class="col-3" style="padding-left: 10px; margin-top: 15px;">
+                  <strong>EMPLOYEE ID</strong>
+                </td>
+                <td class="col-3" style=" margin-top: 10px; text-align:center; align-items:center">
+                  <span t-field="o.id"/>
+                </td>
+                <td class="col-3" style="padding-left: 10px; margin-top: 15px;">
+                  <strong>CNIC No.</strong>
+                </td>
+                <td class="col-3" style=" padding-left: 10px; margin-top: 15px; text-align:center;">
+                  <span t-field="o.employee_id.identification_id"/>
+                </td>
+              </tr>
+              <tr style="height:40px; margin-bottom: 10px; margin-top: 10px; padding-left: 10px;">
+                <td class="col-3" style="padding-left: 10px; margin-top: 15px;">
+                  <strong>DESIGNATION</strong>
+                </td>
+                <td class="col-3" style=" padding-left: 10px; margin-top: 15px; text-align:center;">
+                  <span t-field="o.employee_id.job_id"/>
+                </td>
+                <td class="col-3" style="padding-left: 10px; margin-top: 15px;">
+                  <strong>EOBI No.</strong>
+                </td>
+                <td class="col-3" style=" padding-left: 10px; margin-top: 15px; text-align:center;">
+                  <span t-field="o.contract_id.eobi"/>
+                </td>
+              </tr>
+              <tr style="height:40px; margin-bottom: 10px; margin-top: 10px; padding-left: 10px;">
+                <td class="col-3" style="padding-left: 10px; margin-top: 15px;">
+                  <strong>JOINING DATE</strong>
+                </td>
+                <td class="col-3" style=" padding-left: 10px; margin-top: 15px; text-align:center;">
+                  <span t-field="o.contract_id.first_contract_date"/>
+                </td>
+                <td class="col-3" style="padding-left: 10px; margin-top: 15px;">
+                  <strong>A/C No.</strong>
+                </td>
+                <td class="col-3" style=" padding-left: 10px; margin-top: 15px; text-align:center;">
+                  <span t-field="o.employee_id.bank_account_id.acc_number"/>
+                </td>
+              </tr>
+            </table>
+            <table border="1" style="border-collapse: collapse;width:100%;font-size:20px">
+              <thead>
+                <tr>
+                  <th class="col-6" style="height:40px; background-color:black; color:white; padding-top: 10px;">OTHER
+                    FACILITIES</th>
+                  <th class="col-6" style="height:40px; background-color:black; color:white; padding-top: 10px;">
+                    <span t-esc="o.get_month()"/>
+                  </th>
+                </tr>
+              </thead>
+            </table>
+
+            <table border="1" style="border-collapse: collapse;width:100%;font-size:px">
+              <tr style="height:40px; margin-bottom: 10px; margin-top: 10px; padding-left: 10px;">
+                <td class="col-3" style="padding-left: 10px; padding-top: 10px;">
+                  <strong>Lunch</strong>
+                </td>
+                <td class="col-3" style=" padding-right: 10px; padding-top: 10px; text-align:right;">
+                  <span>Yes</span>
+                </td>
+                <td class="col-3" style="padding-left: 10px; padding-top: 10px;">
+                  <strong>Fuel Allowance</strong>
+                </td>
+                <td class="col-3" style=" padding-right: 10px; padding-top: 10px; text-align:right;"><span t-field="o.fuel_allowance"/> <span> Liter</span></td>
+              </tr>
+              <tr style="height:40px; margin-bottom: 10px; margin-top: 10px; padding-left: 10px;">
+                <td class="col-3" style="padding-left: 10px; padding-top: 10px;">
+                  <strong>GYM</strong>
+                </td>
+                <td class="col-3" style=" padding-right: 10px; padding-top: 10px; text-align:right;">
+                  <span t-field="o.gym"/>
+                </td>
+                <td class="col-3" style="padding-left: 10px; padding-top: 10px;">
+                  <strong>Insurance</strong>
+                </td>
+                <td class="col-3" style=" padding-right: 10px; padding-top: 10px; text-align:right;">
+                  <span t-field="o.insurance"/>
+                </td>
+              </tr>
+            </table>
+
+            <t t-set="filteredData" t-value="o.separateDeductionAndAllowance()"/>
+            <table border="1" style="border-collapse: collapse;width:100%;font-size:20px">
+              <thead>
+                <tr>
+                  <th class="col-6" style="height:40px; background-color:black; color:white; padding-top: 10px;">PAY
+                    AND ALLOWANCES</th>
+                  <th class="col-6" style="height:40px; background-color:black; color:white; padding-top: 10px;">
+                    DEDUCTIONS</th>
+                </tr>
+              </thead>
+            </table>
+            <!--<table border="1" style="border-collapse: collapse;width:100%;font-size:px">-->
+            <!--  <t t-set="total_salary" t-value="0.0"/>-->
+            <!--  <t t-set="total_deductions" t-value="0.0"/>-->
+            <!--  <tr style="height:40px; margin-bottom: 10px; margin-top: 10px; padding-left: 10px;">-->
+            <!--    <td class="col-3" style="padding-left: 10px; padding-top: 10px;">-->
+            <!--      <strong>Basic Salary</strong>-->
+            <!--    </td>-->
+            <!--    <td class="col-3" style=" padding-right: 10px; padding-top: 10px; text-align:right;">-->
+            <!--      <span t-field="o.basic_salary"/>-->
+            <!--    </td>-->
+            <!--    <td class="col-3" style="padding-left: 10px; padding-top: 10px;">-->
+            <!--      <strong>Employee Loan</strong>-->
+            <!--    </td>-->
+            <!--    <t t-set="total_deductions" t-value="total_deductions + o.loan_d"/>-->
+            <!--    <td class="col-3" style=" padding-right: 10px; padding-top: 10px; text-align:right;">-->
+            <!--      <span t-field="o.loan_d"/>-->
+            <!--    </td>-->
+            <!--  </tr>-->
+            <!--  <tr style="height:40px; margin-bottom: 10px; margin-top: 10px; padding-left: 10px;">-->
+            <!--    <td class="col-3" style="padding-left: 10px; padding-top: 10px;">-->
+            <!--      <strong>House Rent Allowance</strong>-->
+            <!--    </td>-->
+            <!--    <td class="col-3" style=" padding-right: 10px; padding-top: 10px; text-align:right;">-->
+            <!--      <span t-field="o.contract_id.house_rent"/>-->
+            <!--    </td>-->
+            <!--    <td class="col-3" style="padding-left: 10px; padding-top: 10px;">-->
+            <!--      <strong>Income Tax</strong>-->
+            <!--    </td>-->
+            <!--    <t t-set="total_deductions" t-value="total_deductions + o.income_tax_d"/>-->
+            <!--    <td class="col-3" style=" padding-right: 10px; padding-top: 10px; text-align:right;">-->
+            <!--      <span t-field="o.income_tax_d"/>-->
+            <!--    </td>-->
+            <!--  </tr>-->
+            <!--  <tr style="height:40px; margin-bottom: 10px; margin-top: 10px; padding-left: 10px;">-->
+            <!--    <td class="col-3" style="padding-left: 10px; padding-top: 10px;">-->
+            <!--      <strong>Conveyance Allowance</strong>-->
+            <!--    </td>-->
+            <!--    <td class="col-3" style=" padding-right: 10px; padding-top: 10px; text-align:right;">-->
+            <!--      <span t-field="o.contract_id.conveyance"/>-->
+            <!--    </td>-->
+            <!--    <td class="col-3" style="padding-left: 10px; padding-top: 10px;">-->
+            <!--      <strong>Health Insurance Premium</strong>-->
+            <!--    </td>-->
+            <!--    <t t-set="total_deductions" t-value="total_deductions + o.health_d"/>-->
+            <!--    <td class="col-3" style=" padding-right: 10px; padding-top: 10px; text-align:right;">-->
+            <!--      <span t-field="o.health_d"/>-->
+            <!--    </td>-->
+            <!--  </tr>-->
+            <!--  <tr style="height:40px; margin-bottom: 10px; margin-top: 10px; padding-left: 10px;">-->
+            <!--    <td class="col-3" style="padding-left: 10px; padding-top: 10px;">-->
+            <!--      <strong>Utilities Allowance</strong>-->
+            <!--    </td>-->
+            <!--    <td class="col-3" style=" padding-right: 10px; padding-top: 10px; text-align:right;">-->
+            <!--      <span t-field="o.contract_id.utilities"/>-->
+            <!--    </td>-->
+            <!--    <td class="col-3" style="padding-left: 10px; padding-top: 10px;">-->
+            <!--      <strong>EOBI Deduction</strong>-->
+            <!--    </td>-->
+            <!--    <t t-set="total_deductions" t-value="total_deductions + o.eobi_d"/>-->
+            <!--    <td class="col-3" style=" padding-right: 10px; padding-top: 10px; text-align:right;">-->
+            <!--      <span t-field="o.eobi_d"/>-->
+            <!--    </td>-->
+            <!--  </tr>-->
+            <!--  <tr style="height:40px; margin-bottom: 10px; margin-top: 10px; padding-left: 10px;">-->
+            <!--    <td class="col-3" style="padding-left: 10px; padding-top: 10px;">-->
+            <!--      <strong>Mobile Allowance</strong>-->
+            <!--    </td>-->
+            <!--    <td class="col-3" style=" padding-right: 10px; padding-top: 10px; text-align:right;">-->
+            <!--      <span t-field="o.contract_id.mobile_allowance"/>-->
+            <!--    </td>-->
+            <!--    <td class="col-3" style="padding-left: 10px; padding-top: 6px;">-->
+            <!--      <strong>Leaves without Pay / Late Joining</strong>-->
+            <!--    </td>-->
+            <!--    <t t-set="total_deductions" t-value="total_deductions + o.leave_d"/>-->
+            <!--    <td class="col-3" style=" padding-right: 10px; padding-top: 10px; text-align:right;">-->
+            <!--      <span t-field="o.leave_d"/>-->
+            <!--    </td>-->
+            <!--  </tr>-->
+            <!--  <t t-set="total_salary" t-value="total_salary + o.gross"/>-->
+            <!--  <tr style="height:40px; margin-bottom: 10px; margin-top: 10px; padding-left: 10px;">-->
+            <!--    <td class="col-3" style="padding-left: 10px; padding-top: 10px;">-->
+            <!--      <strong>Gross Salary</strong>-->
+            <!--    </td>-->
+            <!--    <td class="col-3" style=" padding-right: 10px; padding-top: 10px; text-align:right;">-->
+            <!--      <span t-field="o.gross"/>-->
+            <!--    </td>-->
+            <!--    <td class="col-3" style="padding-left: 10px; padding-top: 10px;">-->
+            <!--      <strong>Others</strong>-->
+            <!--    </td>-->
+            <!--    <t t-set="total_deductions" t-value="total_deductions + o.other_d"/>-->
+            <!--    <td class="col-3" style=" padding-right: 10px; padding-top: 10px; text-align:right;">-->
+            <!--      <span t-field="o.other_d"/>-->
+            <!--    </td>-->
+            <!--  </tr>-->
+            <!--  <tr style="height:40px; margin-bottom: 10px; margin-top: 10px; padding-left: 10px;">-->
+            <!--    <td class="col-3" style="padding-left: 10px; padding-top: 10px;">-->
+            <!--      <strong>Gratuity</strong>-->
+            <!--    </td>-->
+            <!--    <t t-set="total_salary" t-value="total_salary + o.contract_id.graduatiy"/>-->
+            <!--    <td class="col-3" style=" padding-right: 10px; padding-top: 10px; text-align:right;">-->
+            <!--      <span t-field="o.contract_id.graduatiy"/>-->
+            <!--    </td>-->
+            <!--    <td class="col-3" style="padding-left: 10px; padding-top: 10px;"/>-->
+            <!--    <td class="col-3" style=" padding-right: 10px; padding-top: 10px; text-align:right;"/>-->
+            <!--  </tr>-->
+            <!--  <tr style="height:40px; margin-bottom: 10px; margin-top: 10px; padding-left: 10px;">-->
+            <!--    <td class="col-3" style="padding-left: 10px; padding-top: 10px;">-->
+            <!--      <strong>Hardship Allowance</strong>-->
+            <!--    </td>-->
+            <!--    <t t-set="total_salary" t-value="total_salary + o.contract_id.hardship_allowance"/>-->
+            <!--    <td class="col-3" style=" padding-right: 10px; padding-top: 10px; text-align:right;">-->
+            <!--      <span t-field="o.contract_id.hardship_allowance"/>-->
+            <!--    </td>-->
+            <!--    <td class="col-3" style="padding-left: 10px; padding-top: 10px;"/>-->
+            <!--    <td class="col-3" style=" padding-right: 10px; padding-top: 10px; text-align:right;"/>-->
+            <!--  </tr>-->
+            <!--  <tr style="height:40px; margin-bottom: 10px; margin-top: 10px; padding-left: 10px;">-->
+            <!--    <t t-set="total_salary" t-value="total_salary + o.contract_id.others"/>-->
+            <!--    <td class="col-3" style="padding-left: 10px; padding-top: 10px;">-->
+            <!--      <strong>Others</strong>-->
+            <!--    </td>-->
+            <!--    <td class="col-3" style=" padding-right: 10px; padding-top: 10px; text-align:right;">-->
+            <!--      <span t-field="o.contract_id.others"/>-->
+            <!--    </td>-->
+            <!--    <td class="col-3" style="padding-left: 10px; padding-top: 10px;">-->
+            <!--      <strong>Total Deductions</strong>-->
+            <!--    </td>-->
+            <!--    <td class="col-3" style=" padding-right: 10px; padding-top: 10px; text-align:right;">-->
+            <!--      <span t-esc="total_deductions"/>-->
+            <!--    </td>-->
+            <!--  </tr>-->
+            <!--</table>-->
+            <div class="row" style="display:flex;justify-content:space-between;">
+              <!--Pay And Allowance Column-->
+              <div class="column" style="width:50%; border:1px solid black;">
+                <t t-set="counter" t-value="0"/>
+                <t t-foreach="filteredData['payAndAllowanceKeys']" t-as="l">
+                  <div class="row" style="height:40px; border-width: thin;  padding-left: 10px; border-bottom: 1px solid black;">
+                    <div class="col-6" style="padding-left: 10px; padding-top: 10px; border-width: thin; border-right: 1px solid black;">
+                      <strong><t t-esc="l"/></strong>
+                    </div>
+                    <div class="col-6" style="padding-left: 10px; padding-right: 10px; padding-top: 10px; text-align: right;">
+                      <t t-esc="round(filteredData['payAndAllowanceValues'][counter])"/>
+                    </div>
+                  </div>
+                  <t t-set="counter" t-value="counter + 1"/>
+                </t>
+              </div>
+              <!--Deduction column-->
+              <div class="column" style="width:50%;border-width:1px 1px 1px 1px border:1px solid black;">
+                <t t-set="counter" t-value="0"/>
+                <t t-foreach="filteredData['deductionKeys']" t-as="l">
+                  <div class="row" style="height:40px;   padding-left: 10px; border-width: thin; border-bottom: 1px solid black;">
+                    <div class="col-6" style="padding-left: 10px; padding-top: 10px; border-width: thin; border-right: 1px solid black;">
+                      <strong><t t-esc="l"/></strong>
+                    </div>
+                    <div class="col-6" style="padding-left: 10px; padding-right: 10px; padding-top: 10px; text-align: right;">
+                      <t t-esc="round(filteredData['deductionValues'][counter])"/>
+                    </div>
+                  </div>
+                  <t t-set="counter" t-value="counter + 1"/>
+                </t>
+              </div>
+            </div>
+            
+            
+            <table border="1" style="border-collapse: collapse;width:100%;font-size:18px">
+              <thead>
+                <tr>
+                  <th class="col-3" style="height:40px; background-color:black; color:white; padding-top: 10px; text-align:left; padding-left: 10px;">TOTAL
+                    SALARY</th>
+                  <th class="col-3" style="height:40px; background-color:black; color:white; padding-top: 10px; text-align:right; padding-right: 10px;">
+                    <span t-esc="total_salary"/>
+                  </th>
+                  <th class="col-3" style="height:40px; background-color:black; color:white; padding-top: 10px; text-align:left; padding-left: 10px;">NET
+                    SALARY</th>
+                  <th class="col-3" style="height:40px; background-color:black; color:white; padding-top: 10px; text-align:right; padding-right: 10px;">
+                    <span t-field="o.net_salary"/>
+                  </th>
+                </tr>
+              </thead>
+            </table>
+            <br/>
+            <br/>
+            <p><strong>NOTE: </strong>This Pay slip is subject to adjustments in case of any
+              errors / omissions found at any stage &amp; any applicable Income Tax
+              adjustments would be made from the next months as per new scale.</p>
+            <br/>
+            <br/>
+            <p>**This is computer generated receipt no need of manual verification.</p>
+          </div>
+        </t>
+      </t>
+    </t>
+
+  </template>
+
+
+</odoo>

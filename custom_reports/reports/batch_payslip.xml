@@ -1,0 +1,130 @@
+<odoo>
+    <template id="batch_payslip_report_id">
+      <t t-call="web.html_container">
+        <t t-call="web.basic_layout">
+
+          <div class="page">
+            <div class="header">
+              <t t-set="o" t-value="env['hr.payslip'].search([('id','=', ids[0])])"/>
+                <div class="col-4">
+                    <img src="/custom_reports/static/src/img/images/header.png" alt="Company Logo" class="header-image"/>
+                    <br/>
+                </div>
+                <br/>
+                <div class="row">
+                  <div style="font-weight:bold">
+                    <p>
+                      <h2><t t-esc="o.payslip_run_id.name"/> / <t t-esc="o.payslip_run_id.date_start"/> till <t t-esc="o.payslip_run_id.date_end"/>
+                      </h2>
+                    </p>
+                    <br/>
+                    <br/>
+                  </div>
+                </div>
+            </div>
+            <br/>
+            <br/>
+
+          <table border="1" style="width:100%">
+            <tr>
+              <th>Name</th>
+              <th>Basic Salary</th>
+              <th>Mobile</th>
+              <th>House Rent</th>
+              <th>Conveyance</th>
+              <th>Utilities</th>
+              <th>Gross</th>
+              <th>EOBI</th>
+              <th>Income Tax</th>
+              <th>Unpaid Leave</th>
+              <th>Net Salary</th>
+            </tr>
+            <t t-foreach="ids" t-as="id">
+              <t t-set="o" t-value="env['hr.payslip'].search([('id','=', id)])"/>
+              <tr>
+                <th><t t-esc="o.employee_id.name"/></th>
+                
+                <t t-foreach="o.line_ids" t-as="line">
+                  <t t-if="line.name == 'Basic Salary'">
+                    <th>
+                      <t t-esc="line.total"/>
+                    </th>
+                  </t>
+
+                  <t t-if="line.name == 'Mobile'">
+                    <th>
+                      <t t-esc="line.total"/>
+                    </th>
+                  </t>
+                
+                  <t t-if="line.name == 'House Rent'">
+                    <th>
+                      <t t-esc="line.total"/>
+                    </th>
+                  </t>
+
+                  <t t-if="line.name == 'Conveyance'">
+                    <th>
+                      <t t-esc="line.total"/>
+                    </th>
+                  </t>
+
+                  <t t-if="line.name == 'Utilities'">
+                    <th>
+                      <t t-esc="line.total"/>
+                    </th>
+                  </t>
+
+                  <t t-if="line.name == 'Gross'">
+                    <th>
+                      <t t-esc="line.total"/>
+                    </th>
+                  </t>
+
+                  <t t-if="line.name == 'EOBI'">
+                    <th>
+                      <t t-esc="line.total"/>
+                    </th>
+                  </t>
+
+                  <t t-if="line.name == 'Income Tax'">
+                    <th>
+                      <t t-esc="line.total"/>
+                    </th>
+                  </t>
+
+                  <t t-if="line.name == 'Unpaid Leave'">
+                    <th>
+                      <t t-esc="line.total"/>
+                    </th>
+                  </t>
+
+                  <t t-if="line.name == 'Net Salary'">
+                    <th>
+                      <t t-esc="line.total"/>
+                    </th>
+                  </t>
+                    
+                </t>
+                
+              </tr>
+            </t>
+            </table>
+            <br/>
+            <br/>
+            <p><strong>NOTE: </strong>This Pay slip is subject to adjustments in case of any
+              errors / omissions found at any stage &amp; any applicable Income Tax
+              adjustments would be made from the next months as per new scale.</p>
+            <br/>
+            <br/>
+            <p>**This is computer generated receipt no need of manual verification.</p>
+      </div>
+
+
+        </t>
+      </t>
+  
+    </template>
+  
+  
+  </odoo>

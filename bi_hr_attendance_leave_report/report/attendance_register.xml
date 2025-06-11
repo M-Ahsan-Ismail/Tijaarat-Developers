@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <template id="report_attendance_register">
+        <t t-call="web.html_container">
+            <t t-call="web.external_layout">
+                <div class="page">
+                    <t t-foreach="docs" t-as="o">
+                        <div class="text-center">
+                            <h2 style="font-weight: bold;">Employee Attendance</h2>
+                            <span t-field="o.start_date"/>-<span t-field="o.end_date"/>
+                        </div>
+                        <br/>
+                        <table class="table table-sm table-bordered" width="100%">
+                            <thead>
+                                <tr>
+                                    <th name="th_sno" class="text-center">
+                                        <span>S.No</span>
+                                    </th>
+                                    <th name="th_emp_name" class="text-left">
+                                        <span>Name of Employee</span>
+                                    </th>
+                                    <th colspan="35" name="th_date" class="text-left">
+                                        <span>Dates</span>
+                                    </th>
+                                </tr>
+                                <tr>
+                                    <td colspan="2">
+                                    </td>
+                                    <td t-foreach="o.get_data()" t-as="line">
+                                        <span t-esc="line['date_list']"/>
+                                    </td>
+                                </tr>
+                            </thead>
+                            <t t-foreach="o.employee_ids" t-as="employee">
+                                <tr>
+                                    <td>
+                                        <span t-esc="employee_index+1"/>
+                                    </td>
+                                    <td>
+                                        <span t-esc="employee.name"/>
+                                    </td>
+                                    <td t-foreach="o.get_data()" t-as="date">
+                                        <t t-set="attn_date"/>
+                                        <t t-foreach="o.check_attendance()" t-as="attendance">
+                                            <t t-if="attendance['employee'] == employee.id">
+                                                <t t-if="attendance['date'] == date['date_list']">
+                                                    <t t-set="attn_date" t-value="attendance['date']"/>
+                                                    <span t-esc="attendance['state']"/>
+                                                </t>
+                                            </t>
+                                        </t>
+                                        <t t-if="date['date_list'] != attn_date">
+                                            <span t-esc="o.absent"/>
+                                        </t>
+                                    </td>
+                                </tr>
+                            </t>
+                        </table>
+                    </t>
+                </div>
+            </t>
+        </t>
+    </template>
+</odoo>
+
+

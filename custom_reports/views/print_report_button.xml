@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+<!--        <record id="custom_payslip_inherited" model="ir.ui.view">-->
+<!--            <field name="name">Custom Payslip</field>-->
+<!--            <field name="model">hr.payslip</field>-->
+<!--            <field name="inherit_id" ref="hr_payroll.view_hr_payslip_form"/>-->
+<!--            <field name="arch" type="xml">-->
+<!--                <xpath expr="//header" position="inside">-->
+<!--                   <header>-->
+<!--                       <button name="print_report" type="object" string="Print Payslip" class="oe_highlight"/>-->
+<!--                    </header>-->
+<!--                </xpath>-->
+<!--            </field>-->
+<!--        </record>-->
+
+<!--        <record id="batch_payslip_tree_view" model="ir.ui.view">-->
+<!--            <field name="name">hr.payslip.batch.payslip</field>-->
+<!--            <field name="model">hr.payslip</field>-->
+<!--            <field name="inherit_id" ref="hr_payroll.view_hr_payslip_tree"/>-->
+<!--            <field name="arch" type="xml">-->
+<!--                <xpath expr="//field[@name='company_id']" position="before">-->
+<!--                    <header>-->
+<!--                        <button string="Print Batch" type="object" name="action_print_batch_payslip" class="oe_highlight"/>-->
+<!--                    </header>-->
+<!--                </xpath>-->
+<!--            </field>-->
+<!--        </record>-->
+
+<!--        <record id="action_print_batch_payslip" model="ir.actions.server">-->
+<!--            <field name="name">Print Batch Payslip</field>-->
+<!--            <field name="model_id" ref="model_hr_payslip"/>-->
+<!--            <field name="state">code</field>-->
+<!--            &lt;!&ndash; <field name="code">self.env['report'].get_action(self, 'custom_reports.batch_payslip_report_id', data=ids)</field> &ndash;&gt;-->
+<!--            <field name="code">records.env['hr.payslip'].action_print_batch_payslip()</field>-->
+<!--        </record>-->
+    </data>
+</odoo>

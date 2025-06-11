@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <record id="attendance_register_wizard_form" model="ir.ui.view">
+                <field name="name">Attendance Register Wizard</field>
+                <field name="model">employee.attendance.register</field>
+                <field name="type">form</field>
+                <field name="arch" type="xml">
+                    <form string="Attendance Register Wizard ">
+                        <sheet>
+                          <group>
+                                <group>
+<!--                                    <field name="dept_id"/>-->
+                                    <field name="employee_ids" widget="many2many_tags"/>
+                                </group>
+                                <group>
+                                    <field name="start_date"/>
+                                    <field name="end_date"/>
+                                </group>
+                          </group>
+                        </sheet>
+                        <footer>
+                          <button name="print_pdf" string="Print PDF" type="object" class="btn-primary"/>
+                          <button string="Cancel" class="btn-secondary" special="cancel"/>
+                        </footer>
+                    </form>
+                </field>
+        </record>
+        <record id="wizard_action_attendance_register" model="ir.actions.act_window">
+                <field name="name">Employee Attendance Register</field>
+                <field name="type">ir.actions.act_window</field>
+                <field name="res_model">employee.attendance.register</field>
+                <field name="view_mode">form</field>
+                <field name="target">new</field>
+        </record>
+
+        <menuitem parent="hr.hr_menu_hr_reports" name="Employee Attendance Register"
+                              action="wizard_action_attendance_register" id="menu_attendance_register"
+                              sequence="500"/>
+
+
+
+
+
+
+        <record id="attendance_register_daily_form" model="ir.ui.view">
+                <field name="name">Daily Attendance Wizard</field>
+                <field name="model">employee.attendance.daily</field>
+                <field name="type">form</field>
+                <field name="arch" type="xml">
+                    <form string="Daily Attendance">
+                        <sheet>
+                          <group>
+                                <group>
+                                    <field name="employee_ids" widget="many2many_tags"/>
+                                </group>
+                                <group>
+                                    <field name="date_today"/>
+                                </group>
+                          </group>
+                        </sheet>
+                        <footer>
+                          <button name="print_pdf" string="Print PDF" type="object" class="btn-primary"/>
+                          <button string="Cancel" class="btn-secondary" special="cancel"/>
+                        </footer>
+                    </form>
+                </field>
+        </record>
+        <record id="wizard_action_attendance_daily" model="ir.actions.act_window">
+                <field name="name">Daily Attendance Report</field>
+                <field name="type">ir.actions.act_window</field>
+                <field name="res_model">employee.attendance.daily</field>
+                <field name="view_mode">form</field>
+                <field name="target">new</field>
+        </record>
+
+        <menuitem parent="hr.hr_menu_hr_reports" name="Daily Attendance Report"
+                              action="wizard_action_attendance_daily" id="menu_attendance_daily"
+                              sequence="501"/>
+    </data>
+</odoo>

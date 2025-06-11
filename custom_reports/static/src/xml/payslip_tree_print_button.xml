@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<templates>
+    <t t-name="PayslipListView.print_button" t-inherit="web.ListView.Buttons" t-inherit-mode="primary" owl="1">
+        <!-- <xpath expr="//t[@t-if='props.showButtons']" position="inside"> -->
+        <xpath expr="//button[@class='btn btn-secondary o_button_print_payslip']" position="replace">
+        </xpath>
+    </t>
+</templates>
