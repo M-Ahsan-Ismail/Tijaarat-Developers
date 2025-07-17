@@ -2,7 +2,20 @@
 Assisted In customizing the hrms modules and its portal development and assited in customization of---> purchase ,inventory ,accounting , project modules.  
 
 ## SubContractor Bill
+Developed a Subcontractor Management Module to streamline payments for subcontracted work.
+Allows creation of bills for subcontractors based on the work they’ve completed.
+Supports advance deductions and links each bill to a specific project.
+Once approved, the bill is automatically posted to accounting, similar to a vendor bill.
+Integrated smart buttons to quickly view linked bills and journal entries.
 
+Also developed:
+A modern Kanban view for better workflow visibility.
+
+A detailed PDF report showing:
+Work done
+Payable amount
+Deductions (like advances)
+Final amount to be paid
 
 
 ## Project_Reports
