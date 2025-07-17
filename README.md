@@ -1,6 +1,10 @@
 # Tijaarat-Developers
 Assisted In customizing the hrms modules and its portal development and assited in customization of---> purchase ,inventory ,accounting , project modules.  
 
+## SubContractor Bill
+
+
+
 ## Project_Reports
 -Task Wise Summary Report
 Developed the project task summary report that shows the main project, all its tasks, and their subtasks. For each subtask, it lists the materials used,  with Planned Quantity, Issued Quantity, Purchased Quantity,  Billed Quantity. also includes details for each task , subtask like labor , overhead info. The report has links so you can easily click to open the form for any task, subtask, labor, or overhead
