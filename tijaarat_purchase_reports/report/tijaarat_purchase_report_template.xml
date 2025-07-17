@@ -54,6 +54,25 @@
                                          t-options='{"widget": "contact", "fields": ["address", "name", "phone", "vat"], "no_marker": True, "phone_icons": True}'/>
                                 </div>
                             </div>
+                            <br/><br/>
+                            <div class="row">
+                                <div class="col-4">
+                                    <h5 style="text-align: left">Project: </h5><span><t
+                                        t-esc="obj.project_id.name"/></span>
+                                </div>
+                                <div class="col-4"/>
+                                <div class="col-4">
+                                    <h5 style="text-align: left">Vendor Reference: </h5><span><t
+                                        t-esc="obj.partner_ref"/></span>
+                                </div>
+                            </div>
+                            <br/>
+                            <div class="row">
+                                <div class="col-4">
+                                    <h5 style="text-align: left">Site Spr: </h5><span><t
+                                        t-esc="obj.site_spr_no"/></span>
+                                </div>
+                            </div>
                         </t>
                         <t t-if="obj.state in ['draft', 'sent', 'approved', 'ceo_approval']">
                             <div class="row">

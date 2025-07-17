@@ -1,0 +1,15 @@
+<odoo>
+    <data>
+        <template id="report_picking_inherit_spr" inherit_id="stock.report_picking">
+            <!-- Insert after the row with Order/Status/Scheduled Date -->
+            <xpath expr="//div[@class='row mt32 mb32']" position="after">
+                <div class="row mt16 mb16">
+                    <div class="col-auto">
+                        <strong>Site SPR:</strong>
+                        <p t-field="o.site_spr_no"/>
+                    </div>
+                </div>
+            </xpath>
+        </template>
+    </data>
+</odoo>

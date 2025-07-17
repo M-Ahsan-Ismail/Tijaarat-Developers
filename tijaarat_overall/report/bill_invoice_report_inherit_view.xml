@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <template id="custom_report_invoice_document_inherit_id" inherit_id="account.report_invoice_document">
+            <!-- Add header for Analytic Distribution before Amount -->
+            <xpath expr="//table[@name='invoice_line_table']/thead/tr/th[@name='th_subtotal']" position="before">
+                <!-- New Analytic Distribution header with centered text -->
+                <th name="th_analytic_distribution"
+                    t-attf-class="{{ 'd-none d-md-table-cell' if report_type == 'html' else '' }} text-center">
+                    <span>Analytic Distribution</span>
+                </th>
+            </xpath>
+
+            <!-- Add Analytic Distribution column after Taxes in the table body -->
+            <xpath expr="//table[@name='invoice_line_table']/tbody/t[@t-foreach='lines']/tr/t[@t-if=&quot;line.display_type == 'product'&quot;]/td[@name='td_taxes']"
+                   position="after">
+                <td style="text-align:center;">
+                    <t t-if="line.compute_analytic_distribution_formatted()">
+                        <t t-foreach="line.compute_analytic_distribution_formatted()"
+                           t-as="distribution">
+                            <span t-esc="distribution"/>
+                            <br/>
+                        </t>
+                    </t>
+                </td>
+            </xpath>
+
+            <xpath expr="//div[@name='origin']" position="after">
+                <div t-attf-class="#{'col-auto col-3 mw-100' if report_type != 'html' else 'col'} mb-2"
+                     t-if="o.move_reference" name="move_reference">
+                    <strong>Move Reference:</strong><br/>
+                    <span t-field="o.move_reference"/>
+                </div>
+            </xpath>
+
+            <!-- Add Project and Bill Reference in a new row after informations -->
+            <xpath expr="//div[@id='informations']" position="after">
+                <div class="row mt-3 mb-1">
+                    <!-- First Row: Project and Site Spr -->
+                    <div class="col-4">
+                        <strong style="color: #c3c49a;">Project:</strong><br/>
+                        <span t-field="o.analytic_account_id.name"/>
+                    </div>
+                    <div class="col-4"/>
+                    <div class="col-4">
+                        <strong style="color: #c3c49a;">Date:</strong><br/>
+                        <span t-field="o.invoice_date"/>
+                    </div>
+                </div>
+            </xpath>
+
+
+            <!-- Add Project and Bill Reference in a new row after informations -->
+            <xpath expr="//div[@id='informations']" position="after">
+                <div class="row mt-3 mb-1">
+                    <div t-attf-class="#{'col-auto col-3 mw-100' if report_type != 'html' else 'col'} mb-2">
+                        <strong style="color: #c3c49a;">Bill Reference:</strong><br/>
+                        <span t-field="o.ref"/>
+                    </div>
+
+                    <div t-attf-class="#{'col-auto col-3 mw-100' if report_type != 'html' else 'col'} mb-2">
+                        <strong style="color: #c3c49a;">GRN#:</strong><br/>
+                        <span t-field="o.grn_ids"/>
+                    </div>
+
+                    <div t-attf-class="#{'col-auto col-3 mw-100' if report_type != 'html' else 'col'} mb-2">
+                        <strong style="color: #c3c49a;">Site Spr:</strong><br/>
+                        <span t-field="o.site_spr_no"/>
+                    </div>
+
+                </div>
+            </xpath>
+
+
+        </template>
+    </data>
+</odoo>
