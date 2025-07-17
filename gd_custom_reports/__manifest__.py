@@ -27,7 +27,6 @@ Long description of module's purpose
         'report/report.xml',
         # 'report/jv_document_view.xml',
         'report/bank_cash_voucher_template.xml',
-        'report/bill_invoice_report_inherit_view.xml',
         # 'report/gd_custom_headerfotter.xml',
         # 'views/po_reqQuotation_report_doc.xml',
         # 'views/po_report_inherited_doc.xml',
