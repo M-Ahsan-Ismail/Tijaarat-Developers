@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        
+        <record model="ir.actions.act_window" id="action_material_cost_sheet_line">
+            <field name="name">Material Cost Lines</field>
+            <field name="res_model">job.cost.line</field>
+            <field name="view_mode">tree,form</field>
+            <field name="domain">[('job_type', '=', 'material')]</field>
+<!--            <field name="view_type">form</field>-->
+        </record>
+        
+        <record model="ir.actions.act_window" id="action_overhead_cost_sheet_line">
+            <field name="name">Overhead Cost Lines</field>
+            <field name="res_model">job.cost.line</field>
+            <field name="view_mode">tree,form</field>
+            <field name="domain">[('job_type', '=', 'overhead')]</field>
+<!--            <field name="view_type">form</field>-->
+        </record>
+        
+        <record model="ir.actions.act_window" id="action_labour_cost_sheet_line">
+            <field name="name">Labour Cost Lines</field>
+            <field name="res_model">job.cost.line</field>
+            <field name="view_mode">tree,form</field>
+            <field name="domain">[('job_type', '=', 'labour')]</field>
+<!--            <field name="view_type">form</field>-->
+        </record>
+        
+    </data>
+</odoo>

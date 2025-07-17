@@ -1,0 +1,375 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record model="ir.ui.view" id="view_jobcostsheet_dashboard_kanban">
+        <field name="name">project.project.dashboard.kanban</field>
+        <field name="model">project.project</field>
+        <field name="arch" type="xml">
+            <kanban class="oe_background_grey o_kanban_dashboard o_project_kanban o_emphasize_colors"
+                    on_create="project.open_create_project">
+                <field name="name"/>
+                <field name="partner_id"/>
+                <field name="color"/>
+                <field name="task_count"/>
+                <field name="label_tasks"/>
+                <field name="alias_id"/>
+                <field name="alias_name"/>
+                <field name="alias_domain"/>
+                <field name="alias_domain"/>
+                <templates>
+                    <t t-name="kanban-box">
+                        <div t-attf-class="#{kanban_color(record.color.raw_value)} o_has_icon"
+                             style="background: #ffffff;
+                                border: 1px solid #e0e0e0;
+                                border-radius: 8px;
+                                box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+                                transition: all 0.2s ease;
+                                margin: 4px;"
+                             onmouseover="this.style.boxShadow='0 4px 16px rgba(0,0,0,0.12)'; this.style.transform='translateY(-2px)'"
+                             onmouseout="this.style.boxShadow='0 2px 8px rgba(0,0,0,0.08)'; this.style.transform='translateY(0)'">
+
+                            <!-- Header Section -->
+                            <div style="padding: 16px 20px;
+                                    border-bottom: 1px solid #f0f0f0;
+                                    background: #714B67;
+                                    border-radius: 8px 8px 0 0;">
+                                <div style="display: flex;
+                                        justify-content: space-between;
+                                        align-items: flex-start;">
+                                    <div style="flex: 1;">
+                                        <h3 style="color: #ffffff;
+                                               font-size: 18px;
+                                               font-weight: 600;
+                                               margin: 0 0 8px 0;
+                                               line-height: 1.2;">
+                                            <t t-esc="record.name.value"/>
+                                        </h3>
+                                        <div t-if="record.alias_name.value and record.alias_domain.value"
+                                             style="color: #ffffff;
+                                                font-size: 13px;
+                                                display: flex;
+                                                align-items: center;
+                                                gap: 6px;">
+                                            <i class="fa fa-envelope" style="font-size: 12px;"></i>
+                                            <span><t t-esc="record.alias_id.value"/></span>
+                                        </div>
+                                    </div>
+
+                                    <!-- Documents Button -->
+                                    <div style="display: flex;
+                                            gap: 8px;
+                                            align-items: center;">
+                                        <button class="btn btn-sm btn-light shadow-sm"
+                                                name="action_open_document"
+                                                type="object"
+                                                style="padding: 6px 12px;
+                                                   font-size: 12px;
+                                                   border-radius: 4px;
+                                                   transition: all 0.2s ease;"
+                                                onmouseover="this.style.backgroundColor='#6c757d'; this.style.color='white'"
+                                                onmouseout="this.style.backgroundColor='transparent'; this.style.color='#6c757d'">
+                                            <i class="fa fa-file-text-o" style="margin-right: 4px;"></i>
+                                            Documents
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Settings Section -->
+                            <div style="padding: 12px 20px;
+                                    border-bottom: 1px solid #f0f0f0;
+                                    display: flex;
+                                    justify-content: center;">
+                                <div class="o_kanban_card_manage_section o_project_kanban_manage"
+                                     groups="project.group_project_manager">
+                                    <a class="o_kanban_manage_toggle_button"
+                                       type="edit"
+                                       href="#"
+                                       aria-label="Project Settings"
+                                       title="Project Settings"
+                                       style="color: #6c757d;
+              font-size: 14px;
+              padding: 8px 16px;
+              border: 1px solid #dee2e6;
+              border-radius: 6px;
+              background: #f8f9fa;
+              text-decoration: none;
+              display: flex;
+              align-items: center;
+              gap: 8px;
+              transition: all 0.2s ease;"
+                                       onmouseover="this.style.backgroundColor='#e9ecef'; this.style.borderColor='#adb5bd'; this.style.color='#495057'"
+                                       onmouseout="this.style.backgroundColor='#f8f9fa'; this.style.borderColor='#dee2e6'; this.style.color='#6c757d'">
+                                        <i class="fa fa-cog" style="font-size: 13px;"></i>
+                                        <span style="font-weight: 500;">Project Settings</span>
+                                    </a>
+                                </div>
+                            </div>
+
+                            <!-- Main Content Section -->
+                            <div style="padding: 20px;">
+                                <div style="display: grid;
+                                        grid-template-columns: 1fr 1fr;
+                                        gap: 16px;">
+
+                                    <!-- Left Column - Cost Management -->
+                                    <div style="background: #f8f9fa;
+                                            border: 1px solid #dee2e6;
+                                            border-radius: 6px;
+                                            padding: 16px;">
+                                        <div style="display: flex;
+                                                align-items: center;
+                                                margin-bottom: 16px;
+                                                padding-bottom: 8px;
+                                                border-bottom: 1px solid #dee2e6;">
+                                            <i class="fa fa-calculator"
+                                               style="color: #dc3545;
+                                                  font-size: 16px;
+                                                  margin-right: 8px;"></i>
+                                            <h4 style="color: #495057;
+                                                   font-size: 14px;
+                                                   font-weight: 600;
+                                                   margin: 0;">
+                                                Cost Management
+                                            </h4>
+                                        </div>
+
+                                        <button class="btn btn-primary btn-sm"
+                                                name="action_create_cost_sheet"
+                                                type="object"
+                                                style="width: 100%;
+                                                   margin-bottom: 12px;
+                                                   padding: 8px 12px;
+                                                   font-size: 13px;
+                                                   font-weight: 500;
+                                                   border-radius: 4px;
+                                                   transition: all 0.2s ease;"
+                                                onmouseover="this.style.transform='translateY(-1px)'; this.style.boxShadow='0 2px 8px rgba(0,123,255,0.25)'"
+                                                onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='none'">
+                                            <i class="fa fa-plus" style="margin-right: 6px;"></i>
+                                            New Cost Sheet
+                                        </button>
+
+                                        <div style="display: flex;
+                                                flex-direction: column;
+                                                gap: 6px;">
+                                            <a class="btn btn-link btn-sm"
+                                               name="action_open_cost_sheet"
+                                               type="object"
+                                               style="color: #495057;
+                                                  text-decoration: none;
+                                                  padding: 6px 8px;
+                                                  border-radius: 4px;
+                                                  font-size: 12px;
+                                                  text-align: left;
+                                                  transition: all 0.2s ease;
+                                                  border: 1px solid transparent;"
+                                               onmouseover="this.style.backgroundColor='#e9ecef'; this.style.borderColor='#dee2e6'"
+                                               onmouseout="this.style.backgroundColor='transparent'; this.style.borderColor='transparent'">
+                                                <i class="fa fa-file-text-o"
+                                                   style="margin-right: 6px; color: #dc3545;"></i>
+                                                Cost Sheets
+                                            </a>
+
+                                            <a class="btn btn-link btn-sm"
+                                               name="action_open_job_orders_hr_timesheet"
+                                               type="object"
+                                               style="color: #495057;
+                                                  text-decoration: none;
+                                                  padding: 6px 8px;
+                                                  border-radius: 4px;
+                                                  font-size: 12px;
+                                                  text-align: left;
+                                                  transition: all 0.2s ease;
+                                                  border: 1px solid transparent;"
+                                               onmouseover="this.style.backgroundColor='#e9ecef'; this.style.borderColor='#dee2e6'"
+                                               onmouseout="this.style.backgroundColor='transparent'; this.style.borderColor='transparent'">
+                                                <i class="fa fa-clock-o" style="margin-right: 6px; color: #28a745;"></i>
+                                                Timesheets
+                                            </a>
+
+                                            <a class="btn btn-link btn-sm"
+                                               name="action_open_job_orders_vendor_invoice"
+                                               type="object"
+                                               style="color: #495057;
+                                                  text-decoration: none;
+                                                  padding: 6px 8px;
+                                                  border-radius: 4px;
+                                                  font-size: 12px;
+                                                  text-align: left;
+                                                  transition: all 0.2s ease;
+                                                  border: 1px solid transparent;"
+                                               onmouseover="this.style.backgroundColor='#e9ecef'; this.style.borderColor='#dee2e6'"
+                                               onmouseout="this.style.backgroundColor='transparent'; this.style.borderColor='transparent'">
+                                                <i class="fa fa-file-o" style="margin-right: 6px; color: #6c757d;"></i>
+                                                Vendor Bills
+                                            </a>
+
+                                            <a class="btn btn-link btn-sm"
+                                               name="action_open_job_orders_po"
+                                               type="object"
+                                               style="color: #495057;
+                                                  text-decoration: none;
+                                                  padding: 6px 8px;
+                                                  border-radius: 4px;
+                                                  font-size: 12px;
+                                                  text-align: left;
+                                                  transition: all 0.2s ease;
+                                                  border: 1px solid transparent;"
+                                               onmouseover="this.style.backgroundColor='#e9ecef'; this.style.borderColor='#dee2e6'"
+                                               onmouseout="this.style.backgroundColor='transparent'; this.style.borderColor='transparent'">
+                                                <i class="fa fa-shopping-cart"
+                                                   style="margin-right: 6px; color: #6f42c1;"></i>
+                                                Purchase Orders
+                                            </a>
+                                        </div>
+                                    </div>
+
+                                    <!-- Right Column - Job Management -->
+                                    <div style="background: #f8f9fa;
+                                            border: 1px solid #dee2e6;
+                                            border-radius: 6px;
+                                            padding: 16px;">
+                                        <div style="display: flex;
+                                                align-items: center;
+                                                margin-bottom: 16px;
+                                                padding-bottom: 8px;
+                                                border-bottom: 1px solid #dee2e6;">
+                                            <i class="fa fa-tasks"
+                                               style="color: #17a2b8;
+                                                  font-size: 16px;
+                                                  margin-right: 8px;"></i>
+                                            <h4 style="color: #495057;
+                                                   font-size: 14px;
+                                                   font-weight: 600;
+                                                   margin: 0;">
+                                                Job Management
+                                            </h4>
+                                        </div>
+
+                                        <button class="btn btn-success btn-sm"
+                                                name="action_create_job_order"
+                                                type="object"
+                                                style="width: 100%;
+                                                   margin-bottom: 12px;
+                                                   padding: 8px 12px;
+                                                   font-size: 13px;
+                                                   font-weight: 500;
+                                                   border-radius: 4px;
+                                                   transition: all 0.2s ease;"
+                                                onmouseover="this.style.transform='translateY(-1px)'; this.style.boxShadow='0 2px 8px rgba(40,167,69,0.25)'"
+                                                onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='none'">
+                                            <i class="fa fa-plus" style="margin-right: 6px;"></i>
+                                            New Job Order
+                                        </button>
+
+                                        <div style="display: flex;
+                                                flex-direction: column;
+                                                gap: 6px;">
+                                            <a class="btn btn-link btn-sm"
+                                               name="action_open_job_orders"
+                                               type="object"
+                                               style="color: #495057;
+                                                  text-decoration: none;
+                                                  padding: 6px 8px;
+                                                  border-radius: 4px;
+                                                  font-size: 12px;
+                                                  text-align: left;
+                                                  transition: all 0.2s ease;
+                                                  border: 1px solid transparent;"
+                                               onmouseover="this.style.backgroundColor='#e9ecef'; this.style.borderColor='#dee2e6'"
+                                               onmouseout="this.style.backgroundColor='transparent'; this.style.borderColor='transparent'">
+                                                <i class="fa fa-list-alt"
+                                                   style="margin-right: 6px; color: #17a2b8;"></i>
+                                                Job Orders
+                                            </a>
+
+                                            <a class="btn btn-link btn-sm"
+                                               name="action_open_sheet_materials"
+                                               type="object"
+                                               style="color: #495057;
+                                                  text-decoration: none;
+                                                  padding: 6px 8px;
+                                                  border-radius: 4px;
+                                                  font-size: 12px;
+                                                  text-align: left;
+                                                  transition: all 0.2s ease;
+                                                  border: 1px solid transparent;"
+                                               onmouseover="this.style.backgroundColor='#e9ecef'; this.style.borderColor='#dee2e6'"
+                                               onmouseout="this.style.backgroundColor='transparent'; this.style.borderColor='transparent'">
+                                                <i class="fa fa-cubes" style="margin-right: 6px; color: #fd7e14;"></i>
+                                                Material Costs
+                                            </a>
+
+                                            <a class="btn btn-link btn-sm"
+                                               name="action_open_sheet_overheads"
+                                               type="object"
+                                               style="color: #495057;
+                                                  text-decoration: none;
+                                                  padding: 6px 8px;
+                                                  border-radius: 4px;
+                                                  font-size: 12px;
+                                                  text-align: left;
+                                                  transition: all 0.2s ease;
+                                                  border: 1px solid transparent;"
+                                               onmouseover="this.style.backgroundColor='#e9ecef'; this.style.borderColor='#dee2e6'"
+                                               onmouseout="this.style.backgroundColor='transparent'; this.style.borderColor='transparent'">
+                                                <i class="fa fa-building-o"
+                                                   style="margin-right: 6px; color: #6c757d;"></i>
+                                                Overhead Costs
+                                            </a>
+
+                                            <a class="btn btn-link btn-sm"
+                                               name="action_open_sheet_labours"
+                                               type="object"
+                                               style="color: #495057;
+                                                  text-decoration: none;
+                                                  padding: 6px 8px;
+                                                  border-radius: 4px;
+                                                  font-size: 12px;
+                                                  text-align: left;
+                                                  transition: all 0.2s ease;
+                                                  border: 1px solid transparent;"
+                                               onmouseover="this.style.backgroundColor='#e9ecef'; this.style.borderColor='#dee2e6'"
+                                               onmouseout="this.style.backgroundColor='transparent'; this.style.borderColor='transparent'">
+                                                <i class="fa fa-users" style="margin-right: 6px; color: #20c997;"></i>
+                                                Labour Costs
+                                            </a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </t>
+                </templates>
+            </kanban>
+        </field>
+    </record>
+
+    <record id="job_cost_sheet_dashboard_action" model="ir.actions.act_window">
+        <field name="name">Project Dashboard</field>
+        <field name="res_model">project.project</field>
+        <field name="domain">[]</field>
+        <field name="view_mode">kanban,form</field>
+        <field name="view_id" ref="view_jobcostsheet_dashboard_kanban"/>
+        <field name="target">main</field>
+        <field name="help" type="html">
+            <p class="oe_view_nocontent_create">
+                Click to create a new project.
+                <br/>
+            </p>
+        </field>
+    </record>
+
+    <menuitem
+            action="job_cost_sheet_dashboard_action"
+            id="job_cost_sheet_dashboard_menu"
+            parent="odoo_job_costing_management.menu_job_managmt" sequence="0"
+            name="Dashboard"/>
+
+    <menuitem
+            id="odoo_job_costing_management.menu_job_projects"
+            name="Projects"
+            parent="odoo_job_costing_management.menu_job_cost_project"
+            action="project.open_view_project_all"
+            sequence="1"/>
+</odoo>

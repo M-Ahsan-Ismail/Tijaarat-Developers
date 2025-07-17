@@ -1,0 +1,122 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+        <record model="ir.ui.view" id="view_jobcostsheet_dashboard_kanban">
+            <field name="name">project.project.dashboard.kanban</field>
+            <field name="model">project.project</field>
+            <field name="arch" type="xml">
+                <kanban class="oe_background_grey o_kanban_dashboard o_project_kanban o_emphasize_colors" on_create="project.open_create_project">
+                    <field name="name"/>
+                    <field name="partner_id"/>
+                    <field name="color"/>
+                    <field name="task_count"/>
+                  <!--  <field name="task_needaction_count"/> -->
+                    <field name="label_tasks"/>
+                    <field name="alias_id"/>
+                    <field name="alias_name"/>
+                    <field name="alias_domain"/>
+                    <templates>
+                        <t t-name="kanban-box">
+                            <div t-attf-class="#{kanban_color(record.color.raw_value)} o_has_icon">
+                                <div class="o_project_kanban_main">
+                                    <div class="o_kanban_card_content">
+                                        <div class="o_kanban_primary_left">
+                                            <div class="o_primary">
+                                                <span><t t-esc="record.name.value"/></span>
+                                                <button class="btn btn-link" name="action_open_document" type="object">
+                                                    <span>Documents</span>
+                                                </button>
+                                            </div>
+                                            <div t-if="record.alias_name.value and record.alias_domain.value">
+                                                <span><i class="fa fa-envelope"></i> <t t-esc="record.alias_id.value"/></span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="o_kanban_card_manage_pane text-end">
+                                        <div class="o_kanban_card_manage_section o_kanban_manage_reports">
+                                            <div groups="project.group_project_manager">
+                                                <a type="edit">Settings</a>
+                                            </div>
+                                        </div>
+                                      <!--  <div t-if="widget.editable" class="o_project_kanban_colorpicker">
+                                            <ul class="oe_kanban_colorpicker" data-field="color"/>
+                                        </div>-->
+                                    </div>
+                                    <div class="o_project_kanban_manage">
+                                        <a class="o_kanban_manage_toggle_button o_left" href="#" aria-label="Dropdown menu" title="Dropdown menu"><span class="fa fa-ellipsis-v" />
+                                    </a>
+                                    </div>
+                                </div>
+                                <div class="o_project_kanban_boxes">
+                                    <div class="container o_kanban_card_content">
+                                        <div class="row">
+                                            <div class="col-6 o_kanban_primary_left">
+                                                <button class="btn btn-primary" name="action_create_cost_sheet" type="object">
+                                                    <span>New Job Cost Sheets</span>
+                                                </button>
+                                                <button class="btn btn-link" name="action_open_cost_sheet" type="object">
+                                                    <span style="color:#DC143C;">Job Cost Sheets</span>
+                                                </button>
+                                                <button class="btn btn-link" name="action_open_job_orders_hr_timesheet" type="object">
+                                                    <span style="color:#006400;">Timesheets</span>
+                                                </button>
+                                                <button class="btn btn-link" name="action_open_job_orders_vendor_invoice" type="object">
+                                                    <span style="color:#800000;">Vendor Bills</span>
+                                                </button>
+                                                <button class="btn btn-link" name="action_open_job_orders_po" type="object">
+                                                    <span style="color:#800080;">Purchase Orders</span>
+                                                </button>
+                                            </div>
+                                            <div class="col-6 o_kanban_primary_right">
+                                                <button class="btn btn-primary" name="action_create_job_order" type="object">
+                                                    <span>New Job Orders</span>
+                                                </button>
+                                                <button class="btn btn-link" name="action_open_job_orders" type="object">
+                                                    <span style="color:#DC143C;">Job Orders</span>
+                                                </button>
+                                                <button class="btn btn-link" name="action_open_sheet_materials" type="object">
+                                                    <span style="color:#006400;">Material Cost Lines</span>
+                                                </button>
+                                                <button class="btn btn-link" name="action_open_sheet_overheads" type="object">
+                                                    <span style="color:#800000;">Overhead Cost Lines</span>
+                                                </button>
+                                                <button class="btn btn-link" name="action_open_sheet_labours" type="object">
+                                                    <span style="color:#800080;">Labour Cost Lines</span>
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div> 
+                        </t>
+                    </templates>
+                </kanban>
+            </field>
+        </record>
+
+        <record id="job_cost_sheet_dashboard_action" model="ir.actions.act_window">
+            <field name="name">Project Dashboard</field>
+            <field name="res_model">project.project</field>
+            <field name="domain">[]</field>
+            <field name="view_mode">kanban,form</field>
+            <field name="view_id" ref="view_jobcostsheet_dashboard_kanban"/>
+            <field name="target">main</field>
+            <field name="help" type="html">
+                <p class="oe_view_nocontent_create">
+                    Click to create a new project.<br/>
+                </p>
+            </field>
+        </record>
+
+        <menuitem
+            action="job_cost_sheet_dashboard_action"
+            id="job_cost_sheet_dashboard_menu"
+            parent="odoo_job_costing_management.menu_job_managmt" sequence="0"
+            name="Dashboard"/>
+
+        <menuitem
+            id="odoo_job_costing_management.menu_job_projects"
+            name="Projects"
+            parent="odoo_job_costing_management.menu_job_cost_project"
+            action="project.open_view_project_all"
+            sequence="1"/>
+</odoo>
