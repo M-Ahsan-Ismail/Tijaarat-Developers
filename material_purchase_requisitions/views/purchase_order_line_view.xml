@@ -1,0 +1,35 @@
+<odoo>
+    <record id="view_purchase_order_line_tree_comparison" model="ir.ui.view">
+        <field name="name">purchase.order.line.tree.comparison</field>
+        <field name="model">purchase.order.line</field>
+        <field name="arch" type="xml">
+<!--            <tree string="Purchase Order Line Comparison" decoration-danger="is_minimum" default_order="price_subtotal asc">-->
+            <tree string="Purchase Order Line Comparison" default_order="price_subtotal asc">
+                <field name="order_id" widget="many2one"/>
+                <field name="partner_id" string="Vendor"/>
+                <field name="product_id" optional="show"/>
+                <field name="product_uom"/>
+                <field name="product_qty"/>
+                <field name="discount"/>
+                <field name="price_unit"/>
+                <field name="price_subtotal" optional="show"/>
+                <field name="is_minimum" column_invisible="1"/>
+            </tree>
+        </field>
+    </record>
+
+    <record id="action_purchase_order_line_comparison" model="ir.actions.act_window">
+        <field name="name">Purchase Line Comparison</field>
+        <field name="res_model">purchase.order.line</field>
+        <field name="view_mode">tree</field>
+        <field name="view_id" ref="view_purchase_order_line_tree_comparison"/>
+        <field name="domain">[]</field>
+<!--        <field name="context">{"group_by": "product_id", "group_by_no_leaf": 0}</field>-->
+    </record>
+
+    <menuitem id="menu_purchase_line_comparison"
+              name="Purchase Line Comparison"
+              parent="purchase.menu_procurement_management"
+              sequence="9"
+              action="action_purchase_order_line_comparison"/>
+</odoo>
