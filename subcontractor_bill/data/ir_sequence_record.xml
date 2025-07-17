@@ -1,0 +1,12 @@
+<odoo noupdate="1">
+    <data noupdate="1">
+        <record id="sequence_subcontractor_bill" model="ir.sequence">
+            <field name="name">Subcontractor Bill Sequence</field>
+            <field name="code">subcontractor.bill.sequence</field>
+            <field name="prefix">SBILL/%(year)s/</field>
+            <field name="padding">5</field>
+            <field name="number_increment">1</field>
+            <field name="number_next_actual">1</field>
+        </record>
+    </data>
+</odoo>

@@ -2,7 +2,7 @@
     <template id="tijaarat_sub_contractor_report_id">
         <t t-call="web.html_container">
             <t t-foreach="docs" t-as="o">
-                <t t-call="web.external_layout">
+                <t t-call="web.basic_layout">
                     <div class="page">
                         <h1 class="text-center"><t t-esc="o.company_id.name"/></h1>
                         <h4 class="text-center">
@@ -26,16 +26,16 @@
                             <div class="col-6" style="text-align: right;">
                                 <p>
                                     <strong>Bill:-</strong> <t t-esc="o.name"/>
-                                    <br/>Bill for the Month of: <t t-esc="o.date_from.strftime('%B')"/> &amp; <t
-                                        t-esc="o.date_to.strftime('%B')"/> <t t-esc="o.date_from.strftime('%Y')"/>
-                                    <br/>Bill Preparation Date: <t t-esc="o.create_date.strftime('%d %B - %Y')"/>
+                                    <br/>Bill for the Month of: <t t-esc="o.bill_date.strftime('%B')"/>
+                                    <!--                                    <t t-esc="o.date_from.strftime('%Y')"/>-->
+                                    <br/>Bill Preparation Date: <t t-esc="o.bill_date.strftime('%d %B - %Y')"/>
                                 </p>
                             </div>
                         </div>
 
 
                         <br/><br/>
-                        <table class="table table-sm table-bordered" style="width: 100%;">
+                        <table class="table table-sm table-bordered" style="width: 100%; line-height: 1;">
                             <thead>
                                 <tr>
                                     <th class="text-center" rowspan="2">Sr.#</th>
@@ -99,7 +99,7 @@
                                 </tr>
                             </tbody>
                         </table>
-                        <table class="table table-sm table-bordered" style="width: 100%;">
+                        <table class="table table-sm table-bordered" style="width: 100%; line-height: 1;">
                             <thead>
                                 <tr>
                                     <th class="text-center" rowspan="2">Sr.#</th>
@@ -116,9 +116,11 @@
                                 </tr>
                                 <tr>
                                     <td style="text-align: center">2</td>
-                                    <td style="text-align: left">Deduction</td>
-                                    <td style="text-align: right"><t t-esc="o.total_deduction"
-                                                                     t-options='{"widget": "float", "precision": 2}'/></td>
+                                    <td style="text-align: left"><strong>Deduction</strong></td>
+                                    <td style="text-align: right">
+                                        <!--                                        <t t-esc="o.total_deduction"-->
+                                        <!--                                                                     t-options='{"widget": "float", "precision": 2}'/>-->
+                                    </td>
                                 </tr>
 
                                 <t t-set="counter" t-value="2"/>
@@ -153,8 +155,8 @@
                         <div class="row" style="margin-top: 100px; text-align: center;">
                             <div class="col-3">
                                 <span>_______________________</span><br/>
-                                <strong style="display: inline-block; margin-top: 5px;">Prepared By<br/>
-                                    Faiz ul Hassan (QS)</strong>
+                                <strong style="display: inline-block; margin-top: 5px;">Prepared By<br/><t
+                                        t-esc="(o.env['res.users'].browse(10).name) + ' (QS)'"/></strong>
                             </div>
                             <div class="col-3">
                                 <span>_______________________</span><br/>
@@ -186,13 +188,13 @@
         <field name="format">A4</field>
         <field name="page_height">0</field>
         <field name="page_width">0</field>
-        <field name="orientation">Landscape</field>
-        <field name="margin_top">30</field>
-        <field name="margin_bottom">8</field>
+        <field name="orientation">Portrait</field>
+        <field name="margin_top">2</field>
+        <field name="margin_bottom">2</field>
         <field name="margin_left">2</field>
         <field name="margin_right">2</field>
         <field name="header_line" eval="False"/>
-        <field name="header_spacing">30</field>
+        <field name="header_spacing">2</field>
         <field name="dpi">80</field>
     </record>
 

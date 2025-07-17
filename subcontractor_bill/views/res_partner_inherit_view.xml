@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <record id="res-partner_form_inherit" model="ir.ui.view">
+            <field name="name">res.partner.form</field>
+            <field name="model">res.partner</field>
+            <field name="inherit_id" ref="base.view_partner_form"/>
+            <field name="arch" type="xml">
+                <xpath expr="//field[@name='vat']" position="after">
+                    <field name="is_subcontractor"/>
+                </xpath>
+            </field>
+        </record>
+
+        <record id="odoo_job_costing_management.action_partner_contractor_form" model="ir.actions.act_window">
+        <field name="domain">[('is_subcontractor','=', 1)]</field>
+        <field name="context">{'default_is_subcontractor': 1}</field>
+    </record>
+    </data>
+</odoo>

@@ -1,0 +1,29 @@
+<odoo>
+    <record id="res_config_settings_view_inherit_id" model="ir.ui.view">
+        <field name="name">res.config.settings.view.form.inherit.accountant</field>
+        <field name="model">res.config.settings</field>
+        <field name="inherit_id" ref="account.res_config_settings_view_form"/>
+        <field name="arch" type="xml">
+            <app name="account" position="inside">
+                <h2>Default Deduction &amp; Advance Account</h2>
+                <div>
+                    <div class="row mt16 o_settings_container" name="deduction_setting_container">
+                        <div class="col-12 col-lg-12 o_setting_box" id="advance_deduction_account_setting"
+                             style="display: flex; flex-direction: row; align-items: center;">
+                            <div class="o_setting_right_pane" style="flex: 1; padding-right: 10px;">
+                                <label for="ded_adv_account_id"/>
+                                <div class="text-muted">
+                                    Default account used for subcontractor deduction or advance entries.
+                                </div>
+                            </div>
+                            <div class="o_setting_left_pane" style="flex: 1; min-width: 200px;">
+                                <field name="ded_adv_account_id"/>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </app>
+        </field>
+    </record>
+
+</odoo>

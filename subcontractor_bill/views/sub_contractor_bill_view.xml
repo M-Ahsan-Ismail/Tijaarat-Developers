@@ -1,22 +1,31 @@
 <?xml version="1.0" encoding="utf-8"?>
-<odoo noupdate="1">
-    <data noupdate="1">
-        <record id="sequence_subcontractor_bill" model="ir.sequence">
-            <field name="name">Subcontractor Bill Sequence</field>
-            <field name="code">subcontractor.bill.sequence</field>
-            <field name="prefix">SBILL/%(year)s/</field>
-            <field name="padding">5</field>
-            <field name="number_increment">1</field>
-            <field name="number_next_actual">1</field>
-        </record>
-    </data>
-
+<odoo>
     <record id="view_subcontractor_bill_form" model="ir.ui.view">
         <field name="name">subcontractor.bill.form</field>
         <field name="model">subcontractor.bill</field>
         <field name="arch" type="xml">
             <form string="Subcontractor Bill">
+                <header>
+                    <button name="button_confirm" string="Confirm" class="oe_highlight" type="object"
+                            invisible="state in 'posted'"/>
+                    <button name="create_accounting_entry" string="Create Bill" class="oe_highlight" type="object"
+                            invisible="state != 'posted' or move_id"/>
+                    <button name="reset_to_draft" string="Reset To Draft" class="oe_highlight" type="object"
+                            invisible="state in ['draft']"/>
+                    <field name="state" widget="statusbar" statusbar_visible="draft,posted"/>
+                </header>
                 <sheet>
+                    <div class="oe_button_box" name="button_box">
+                        <button name="action_view_related_bills" type="object" class="oe_stat_button"
+                                invisible="not move_id"
+                                icon="fa-file-text">
+                            <div class="o_stat_info">
+                                <field name="count_bill_id" class="o_stat_value"/>
+                                <span class="o_stat_text">Bill</span>
+                            </div>
+                        </button>
+                    </div>
+
                     <div class="oe_title">
                         <h1>
                             <field name="name" readonly="1"/>
@@ -24,34 +33,48 @@
                     </div>
 
                     <group>
-                        <group string="Project">
-                            <field name="project_id"/>
+                        <group string="Contractor Details">
+                            <field name="state" invisible="1"/>
+                            <field name="project_id" options="{'no_create': True, 'no_create_edit': True}"
+                                   readonly="state == 'posted'"/>
+                            <field name="sub_contractor_id" options="{'no_create': True, 'no_create_edit': True}"
+                                   readonly="state == 'posted'"/>
+                            <field name="bill_reference" readonly="state == 'posted'"/>
+                            <field name="move_id" readonly="1" invisible="not move_id"
+                                   options="{'no_create': True, 'no_create_edit': True}"/>
                         </group>
-                        <group string="Company">
-                            <field name="company_id" readonly="1"/>
+
+                        <group string="Accounts">
+                            <field name="analytic_account_ids" widget="many2many_tags"
+                                   options="{'no_create': True, 'no_create_edit': True}" readonly="state == 'posted'"/>
+                            <field name="deduction_adv_account_id"/>
                         </group>
                     </group>
 
                     <group>
-                        <group string="Sub Contractor">
-                            <field name="sub_contractor_id"/>
+                        <group string="Dates">
+                            <field name="bill_date" readonly="state == 'posted'"/>
+                            <field name="accounting_date" readonly="state == 'posted'"/>
+                            <field name="due_date" readonly="state == 'posted'"/>
                         </group>
-                        <group string="Period">
-                            <div>
-                                <field name="date_from" class="oe_inline"/> - <field name="date_to" class="oe_inline"/>
-                            </div>
+
+                        <group string="Company &amp; Journal">
+                            <field name="company_id" readonly="1"/>
+                            <field name="journal_id" readonly="state == 'posted'"
+                                   options="{'no_create': True, 'no_create_edit': True}"/>
                         </group>
                     </group>
 
                     <notebook>
                         <page string="Work Lines">
                             <field name="work_lines">
-                                <tree editable="bottom">
-                                    <field name="product_id"/>
+                                <tree editable="bottom" delete="0">
+                                    <field name="product_id" options="{'no_create': True, 'no_create_edit': True}"
+                                           readonly="parent.state == 'posted'"/>
                                     <field name="uom" readonly="1"/>
-                                    <field name="unit_price"/>
-                                    <field name="previous_work_done"/>
-                                    <field name="this_bill"/>
+                                    <field name="unit_price" readonly="parent.state == 'posted'"/>
+                                    <field name="previous_work_done" readonly="parent.state == 'posted'"/>
+                                    <field name="this_bill" readonly="parent.state == 'posted'"/>
                                     <field name="todated" readonly="1"/>
                                     <field name="total_amount" readonly="1"/>
                                 </tree>
@@ -66,17 +89,19 @@
                         <page string="Deduction &amp; Advances">
                             <field name="deduction_lines">
                                 <tree editable="bottom">
-                                    <field name="description"/>
-                                    <field name="amount" sum="Total"/>
+                                    <field name="description" readonly="parent.state == 'posted'"/>
+                                    <field name="amount" sum="Total" readonly="parent.state == 'posted'"/>
                                 </tree>
                             </field>
                         </page>
                     </notebook>
                 </sheet>
+
                 <div class="oe_chatter">
                     <field name="message_follower_ids"/>
                     <field name="message_ids" colspan="4" nolabel="1"/>
                 </div>
+
             </form>
         </field>
     </record>
@@ -91,38 +116,285 @@
                 <field name="project_id"/>
                 <field name="sub_contractor_id"/>
                 <field name="company_id"/>
+                <field name="state" widget="badge"
+                       decoration-info="state == 'draft'"
+                       decoration-success="state == 'posted'"/>
             </tree>
         </field>
     </record>
 
-    <record id="view_subcontractor_bill_kanban" model="ir.ui.view">
+    <record id="subcontractor_bill_kanban_view" model="ir.ui.view">
         <field name="name">subcontractor.bill.kanban</field>
         <field name="model">subcontractor.bill</field>
         <field name="arch" type="xml">
-            <kanban>
-                <field name="id"/> <!-- Required for click-to-open behavior -->
-                <field name="priority"/>
+            <kanban default_group_by="state" class="o_kanban_mobile">
+                <field name="id"/>
                 <field name="name"/>
+                <field name="state"/>
+                <field name="priority"/>
                 <field name="project_id"/>
                 <field name="sub_contractor_id"/>
+                <field name="bill_date"/>
+                <field name="due_date"/>
+                <field name="sum_this_bill"/>
+                <field name="net_payable_amount"/>
+                <field name="total_deduction"/>
                 <field name="company_id"/>
+                <field name="bill_reference"/>
+                <field name="move_id"/>
                 <templates>
                     <t t-name="kanban-box">
-                        <div t-att-style="'border-left: 5px solid ' + (priority == 'high' ? '#ff4d4f' : '#40c4ff') + '; background: linear-gradient(145deg, #f5f7fa, #e4e7eb); border-radius: 8px; box-shadow: 0 3px 6px rgba(0,0,0,0.1); margin: 8px; border: none;'">
-                            <div class="oe_kanban_content" style="padding: 12px;">
-                                <!-- Priority Stars -->
-                                <div style="float: right;">
-                                    <field name="priority" widget="priority" style="color: #ff4d4f;"/>
+                        <div class="oe_kanban_card oe_kanban_global_click"
+                             style="background: linear-gradient(135deg, #ffffff 0%, #f8f9fa 100%);
+                                border-radius: 12px;
+                                box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+                                border: 1px solid #e9ecef;
+                                transition: all 0.3s ease;
+                                margin-bottom: 8px;">
+
+                            <!-- Header Section -->
+                            <div style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+                                    color: white;
+                                    padding: 12px 16px;
+                                    border-radius: 12px 12px 0 0;
+                                    display: flex;
+                                    justify-content: space-between;
+                                    align-items: center;">
+                                <div>
+                                    <strong style="font-size: 16px; font-weight: 600;">
+                                        <field name="name"/>
+                                    </strong>
+                                    <div style="font-size: 12px; opacity: 0.9; margin-top: 2px;">
+                                        <t t-if="record.bill_reference.value">
+                                            Status: <field name="state" widget="badge"
+                                                           decoration-muted="state == 'draft'"
+                                                           decoration-success="state == 'posted'"/>
+                                        </t>
+                                    </div>
                                 </div>
-                                <!-- Bill Name -->
-                                <h4 style="margin: 0 0 8px; color: #1a237e; font-weight: 600; text-transform: uppercase; letter-spacing: 1px;">
-                                    <field name="name"/>
-                                </h4>
-                                <!-- Details -->
-                                <div style="font-size: 0.9em; color: #455a64;">
-                                    <div><field name="project_id"/></div>
-                                    <div><field name="sub_contractor_id"/></div>
-                                    <div><field name="company_id"/></div>
+                                <div style="display: flex; align-items: center; gap: 8px;">
+                                    <!-- Priority Badge -->
+                                    <t t-if="record.priority.value == 'high'">
+                                        <span style="background: #ff6b6b;
+                                                 color: white;
+                                                 padding: 4px 8px;
+                                                 border-radius: 20px;
+                                                 font-size: 10px;
+                                                 font-weight: 600;
+                                                 text-transform: uppercase;">
+                                            High
+                                        </span>
+                                    </t>
+                                    <t t-if="record.priority.value == 'low'">
+                                        <span style="background: #4ecdc4;
+                                                 color: white;
+                                                 padding: 4px 8px;
+                                                 border-radius: 20px;
+                                                 font-size: 10px;
+                                                 font-weight: 600;
+                                                 text-transform: uppercase;">
+                                            Low
+                                        </span>
+                                    </t>
+                                </div>
+                            </div>
+
+                            <!-- Content Section -->
+                            <div style="padding: 16px;">
+                                <!-- Subcontractor Info -->
+                                <div style="display: flex;
+                                        align-items: center;
+                                        margin-bottom: 12px;
+                                        padding: 8px 12px;
+                                        background: #f8f9fa;
+                                        border-radius: 8px;
+                                        border-left: 4px solid #667eea;">
+                                    <div style="background: #667eea;
+                                           color: white;
+                                           width: 32px;
+                                           height: 32px;
+                                           border-radius: 50%;
+                                           display: flex;
+                                           align-items: center;
+                                           justify-content: center;
+                                           font-weight: bold;
+                                           margin-right: 12px;
+                                           font-size: 14px;">
+                                        <t t-esc="record.sub_contractor_id.value and record.sub_contractor_id.value.slice(0,1).toUpperCase()"/>
+                                    </div>
+                                    <div>
+                                        <div style="font-weight: 600; color: #343a40; font-size: 14px;">
+                                            <field name="sub_contractor_id"/>
+                                        </div>
+                                        <div style="font-size: 12px; color: #6c757d;">
+                                            <t t-if="record.project_id.value">
+                                                Project: <field name="project_id"/>
+                                            </t>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- total and current -->
+                                <div style="display: grid;
+                                        grid-template-columns: 1fr 1fr;
+                                        gap: 12px;
+                                        margin-bottom: 12px;">
+                                    <div style="background: linear-gradient(135deg, #48CAE4 0%, #0077B6 100%);
+                                           color: white;
+                                           padding: 12px;
+                                           border-radius: 8px;
+                                           text-align: center;">
+                                        <div style="font-size: 12px; opacity: 0.9; margin-bottom: 4px;">
+                                            Total Bill
+                                        </div>
+                                        <div style="font-size: 16px; font-weight: 700;">
+                                            <field name="sum_total_amount" widget="monetary"/>
+                                        </div>
+                                    </div>
+                                    <div style="background: linear-gradient(135deg, #f39c12 0%, #e67e22 100%);
+                                           color: white;
+                                           padding: 12px;
+                                           border-radius: 8px;
+                                           text-align: center;">
+                                        <div style="font-size: 12px; opacity: 0.9; margin-bottom: 4px;">
+                                            Current Bill
+                                        </div>
+                                        <div style="font-size: 16px; font-weight: 700;">
+                                            <field name="sum_this_bill" widget="monetary"/>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- previous and net -->
+                                <div style="display: grid;
+                                        grid-template-columns: 1fr 1fr;
+                                        gap: 12px;
+                                        margin-bottom: 12px;">
+                                    <div style="background: linear-gradient(135deg, #95a5a6 0%, #7f8c8d 100%);
+                                           color: white;
+                                           padding: 12px;
+                                           border-radius: 8px;
+                                           text-align: center;">
+                                        <div style="font-size: 12px; opacity: 0.9; margin-bottom: 4px;">
+                                            Previous Bill
+                                        </div>
+                                        <div style="font-size: 16px; font-weight: 700;">
+                                            <field name="sum_previous" widget="monetary"/>
+                                        </div>
+                                    </div>
+                                    <div style="background: linear-gradient(135deg, #06FFA5 0%, #00CC88 100%);
+                                           color: white;
+                                           padding: 12px;
+                                           border-radius: 8px;
+                                           text-align: center;">
+                                        <div style="font-size: 12px; opacity: 0.9; margin-bottom: 4px;">
+                                            Net Payable
+                                        </div>
+                                        <div style="font-size: 16px; font-weight: 700;">
+                                            <field name="net_payable_amount" widget="monetary"/>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- Deduction Info -->
+
+                                <div style="background: #fff3cd;
+                                           border: 1px solid #ffeaa7;
+                                           border-radius: 8px;
+                                           padding: 8px 12px;
+                                           margin-bottom: 12px;">
+                                    <div style="display: flex;
+                                               align-items: center;
+                                               justify-content: space-between;">
+                                        <span style="font-size: 12px; color: #856404; font-weight: 600;">
+                                            Total Deduction
+                                        </span>
+                                        <span style="font-size: 14px; color: #856404; font-weight: 700;">
+                                            <field name="total_deduction" widget="monetary"/>
+                                        </span>
+                                    </div>
+                                </div>
+
+
+                                <!-- Dates Section -->
+                                <div style="display: grid;
+                                        grid-template-columns: 1fr 1fr;
+                                        gap: 8px;
+                                        font-size: 12px;
+                                        color: #6c757d;">
+                                    <div style="display: flex;
+                                           align-items: center;
+                                           background: #f8f9fa;
+                                           padding: 6px 8px;
+                                           border-radius: 6px;">
+                                        <span style="margin-right: 6px;">📅</span>
+                                        <div>
+                                            <div style="font-weight: 600;">Bill Date</div>
+                                            <field name="bill_date"/>
+                                        </div>
+                                    </div>
+                                    <div style="display: flex;
+                                           align-items: center;
+                                           background: #f8f9fa;
+                                           padding: 6px 8px;
+                                           border-radius: 6px;">
+                                        <span style="margin-right: 6px;">⏰</span>
+                                        <div>
+                                            <div style="font-weight: 600;">Due Date</div>
+                                            <field name="due_date"/>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Footer Section -->
+                            <div style="background: #f8f9fa;
+                                    padding: 12px 16px;
+                                    border-radius: 0 0 12px 12px;
+                                    border-top: 1px solid #e9ecef;
+                                    display: flex;
+                                    justify-content: space-between;
+                                    align-items: center;">
+                                <div style="display: flex; align-items: center; gap: 8px;">
+                                    <span style="font-size: 12px; color: #6c757d;">
+                                        <field name="company_id"/>
+                                    </span>
+                                </div>
+                                <div>
+                                    <t t-if="record.move_id.value">
+                                        <a href="#"
+                                           t-attf-href="/web#id={{ record.move_id.raw_value }}&amp;model=account.move&amp;view_type=form"
+                                           style="color: #007bff; text-decoration: none; font-size: 14px; display: flex; align-items: center; gap: 6px;">
+                                            <i class="fa fa-eye"/>
+                                            View Bill
+                                        </a>
+                                    </t>
+                                </div>
+
+                                <!-- Status Badge -->
+                                <div>
+                                    <t t-if="record.state.value == 'draft'">
+                                        <span style="background: #ffc107;
+                                                 color: #212529;
+                                                 padding: 6px 12px;
+                                                 border-radius: 20px;
+                                                 font-size: 12px;
+                                                 font-weight: 600;
+                                                 text-transform: uppercase;">
+                                            Draft
+                                        </span>
+                                    </t>
+                                    <t t-if="record.state.value == 'posted'">
+                                        <span style="background: #28a745;
+                                                 color: white;
+                                                 padding: 6px 12px;
+                                                 border-radius: 20px;
+                                                 font-size: 12px;
+                                                 font-weight: 600;
+                                                 text-transform: uppercase;">
+                                            Posted
+                                        </span>
+                                    </t>
                                 </div>
                             </div>
                         </div>
@@ -131,6 +403,8 @@
             </kanban>
         </field>
     </record>
+
+
 
 
 </odoo>
