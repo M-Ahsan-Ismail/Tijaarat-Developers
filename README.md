@@ -36,7 +36,7 @@ Developed report to request materials for a store. It shows the project, date, a
 ## Accounting__Inv_Bill_Rep_Inherit
 
 -Invoice Report On Bills Customized
-customized the invoice report on bill, receipts added the analytic distribution column in table and move reference next to date.
+customized the invoice report on bill, receipts added the analytic distribution column in table and move reference, GRN, Site spr, project and date fields.
 
 
 
